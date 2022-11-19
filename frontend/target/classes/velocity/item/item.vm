@@ -1,0 +1,18 @@
+#parse("/velocity/layout.vm")
+#@mainLayout()
+<form id="itemForm" method="post">
+    <h1>Add New Item</h1>
+    <p>Fill in the following form</p>
+    <br>
+    <label>Item Name</label>
+    <input type="text" name="item_name" placeholder="Name" value="" required>
+    <br>
+    <label>Item Description</label>
+    <input type="text" name="description" placeholder="Description" value="" required>
+    <br>
+    <label>Item Category </label>
+    <input type="text" name="category" placeholder="Category" value="" required>
+    <br>
+    <input type="submit" value="Upload Item">
+</form>
+#end

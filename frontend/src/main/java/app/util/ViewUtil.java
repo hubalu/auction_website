@@ -4,8 +4,12 @@ import org.apache.velocity.app.*;
 import org.eclipse.jetty.http.*;
 import spark.*;
 import spark.template.velocity.*;
-import java.util.*;
-import static app.util.RequestUtil.*;
+
+import java.util.HashMap;
+import java.util.Map;
+
+import static app.util.RequestUtil.getSessionCurrentUser;
+import static app.util.RequestUtil.getSessionLocale;
 
 public class ViewUtil {
 

@@ -1,6 +1,7 @@
 package app.user;
 
 import org.mindrot.jbcrypt.*;
+
 import static app.Application.userDao;
 
 public class UserController {

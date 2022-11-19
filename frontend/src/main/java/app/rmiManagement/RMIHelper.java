@@ -1,6 +1,5 @@
 package app.rmiManagement;
 
-import java.rmi.RMISecurityManager;
 import java.rmi.Remote;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
@@ -15,17 +14,17 @@ public class RMIHelper {
         }
     }
     public RMIHelper(){
-        if (System.getSecurityManager() == null) {
-            SecurityManager sm = new MySecurityManager();
-            System.setSecurityManager(sm);
-        }
+//        if (System.getSecurityManager() == null) {
+//            SecurityManager sm = new MySecurityManager();
+//            System.setSecurityManager(sm);
+//        }
     }
     public RemoteItemManagement getRemItemManagement(){
         RemoteItemManagement remoteObj = null;
         Registry registry;
         try{
             // get the registry
-            registry= LocateRegistry.getRegistry("172.17.0.2", 5678);
+            registry= LocateRegistry.getRegistry("172.17.0.4", 12345);
             // look up the remote object in the RMI Registry
             remoteObj= (RemoteItemManagement)(registry.lookup("itemManagement"));
         }

@@ -1,7 +1,8 @@
 package app.util;
 
 import spark.*;
-import static app.util.RequestUtil.*;
+
+import static app.util.RequestUtil.getQueryLocale;
 
 public class Filters {
 

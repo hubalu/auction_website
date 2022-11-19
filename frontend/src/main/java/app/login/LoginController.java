@@ -1,9 +1,13 @@
 package app.login;
 
-import app.user.*;
-import app.util.*;
+import app.user.UserController;
+import app.util.Path;
+import app.util.ViewUtil;
 import spark.*;
-import java.util.*;
+
+import java.util.HashMap;
+import java.util.Map;
+
 import static app.util.RequestUtil.*;
 
 public class LoginController {

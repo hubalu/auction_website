@@ -24,7 +24,7 @@ public class RMIHelper {
         Registry registry;
         try{
             // get the registry
-            registry= LocateRegistry.getRegistry("172.17.0.2", 12345);
+            registry= LocateRegistry.getRegistry("localhost", 12345);
             // look up the remote object in the RMI Registry
             remoteObj= (RemoteItemManagement)(registry.lookup("itemManagement"));
         }

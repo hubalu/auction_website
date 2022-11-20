@@ -1,4 +1,5 @@
-import java.util.List;
+package app.rmiManagement;
+
 import java.rmi.*;
 import java.rmi.registry.*;
 import java.net.*;
@@ -9,14 +10,7 @@ public class ItemManagement extends java.rmi.server.UnicastRemoteObject implemen
     String address;
     Registry registry;
 
-    public static void main(String args[]) {
-        try {
-            ItemManagement service = new ItemManagement();
-        } catch (Exception e) {
-            e.printStackTrace();
-            System.exit(1);
-        }
-    }
+
 
     public ItemManagement() throws RemoteException {
         try {

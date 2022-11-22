@@ -1,0 +1,13 @@
+#parse("/velocity/layout.vm")
+#@mainLayout()
+    <a class="book" href="$WebPath.getITEMS()">
+        Back to All Items
+    </a>
+    #if($item)
+    <h1>$item.getItemName()</h1>
+    <h2>$item.getDescription()</h2>
+    <h2>$item.getCategory()</h2>
+    #else
+    <h1>Sorry, this item can no longer be found</h1>
+    #end
+#end

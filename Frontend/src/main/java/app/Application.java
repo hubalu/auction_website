@@ -1,6 +1,6 @@
 package app;
 
-import app.item.ItemContoller;
+import app.item.ItemController;
 import app.login.LoginController;
 import app.user.UserDao;
 import app.util.Filters;
@@ -11,7 +11,6 @@ import static spark.Spark.*;
 import static spark.debug.DebugScreen.*;
 
 public class Application {
-
 
     public static UserDao userDao;
 
@@ -33,8 +32,10 @@ public class Application {
         get(Path.Web.LOGIN,          LoginController.serveLoginPage);
         post(Path.Web.LOGIN,         LoginController.handleLoginPost);
         post(Path.Web.LOGOUT,        LoginController.handleLogoutPost);
-        get(Path.Web.ITEM,           ItemContoller.uploadItem);
-        post(Path.Web.ITEM,          ItemContoller.handleUploadItemPost);
+        get(Path.Web.ITEM,           ItemController.uploadItem);
+        post(Path.Web.ITEM,          ItemController.handleUploadItemPost);
+        get(Path.Web.ITEMS,          ItemController.getAllItemsPlaceholder);
+        get(Path.Web.ONE_ITEM,       ItemController.getOneItemPlaceholder);
         get("*",                     ViewUtil.notFound);
         get("/hello/",           (request, response) -> {return "hello world";});
 

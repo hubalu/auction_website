@@ -80,7 +80,7 @@ public class ItemController {
         return ViewUtil.notAcceptable.handle(request, response);
     };
 
-    private static ArrayList<Item> generateItemList(){
+    public static ArrayList<Item> generateItemList(){
         ArrayList<Item> itemList = new ArrayList<Item>();
         List<String> name = Arrays.asList("Hello", "World", "Sunscreen", "Mouse", "Keyboard");
         int id = 0;

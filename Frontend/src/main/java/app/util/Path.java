@@ -15,6 +15,9 @@ public class Path {
         @Getter public static final String ITEM = "/items/";
         @Getter public static final String ITEMS = "/allitems/";
         @Getter public static final String ONE_ITEM = "/items/:ItemID/";
+        @Getter public static final String UPLOAD_AUCTION = "/auction/";
+        @Getter public static final String ALL_AUCTIONS = "/auctions/";
+        @Getter public static final String ONE_AUCTION = "/auction/:AuctionID/";
     }
 
     public static class Template {
@@ -27,6 +30,9 @@ public class Path {
 
         public static final String ITEMS = "/velocity/item/allitems.vm";
         public static final String ONE_ITEM = "/velocity/item/oneitem.vm";
+        public static final String UPLOAD_AUCTION = "/velocity/auction/auction.vm";
+        public static final String ALL_AUCTIONS = "/velocity/auction/allauctions.vm";
+        public static final String ONE_AUCTION = "/velocity/auction/oneauction.vm";
     }
 
 }

@@ -1,0 +1,32 @@
+#parse("/velocity/layout.vm")
+#@mainLayout()
+<a class="book" href="$WebPath.getALL_AUCTIONS()">
+    Back to All Auctions
+</a>
+
+<form id="auctionForm" method="post">
+    <h1>Upload New Auction</h1>
+    <p>Fill in the following form</p>
+    <br>
+    <label>Item to auction</h1>
+    <select name="item" id="item">
+        #foreach($item in $itemList)
+            <option value="$item.getItemID()">$item.getItemName()</option>
+        #end
+    </select>
+    <br>
+    <label>Starting Price</label>
+    <input type="number" name="start_price" placeholder="Start Price" value="" required>
+    <br>
+    <label>Buy Now Price (Leave empty if you don't want this option)</label>
+    <input type="number" name="buy_now_price" placeholder="Buy Now Price" value="">
+    <br>
+    <label> Start Time </label>
+    <input type="datetime-local" name="start_time" placeholder="Start Time" value="" required>
+    <br>
+    <label> Start Time </label>
+    <input type="datetime-local" name="end_time" placeholder="End Time" value="" required>
+    <br>
+    <input type="submit" value="Upload Auction">
+</form>
+#end

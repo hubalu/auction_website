@@ -1,5 +1,6 @@
 package app;
 
+import app.bidding.BidController;
 import app.item.ItemController;
 import app.login.LoginController;
 import app.user.UserDao;
@@ -36,6 +37,12 @@ public class Application {
         post(Path.Web.ITEM,          ItemController.handleUploadItemPost);
         get(Path.Web.ITEMS,          ItemController.getAllItemsPlaceholder);
         get(Path.Web.ONE_ITEM,       ItemController.getOneItemPlaceholder);
+
+        get(Path.Web.UPLOAD_AUCTION,    BidController.uploadAuctionPlaceholder);
+        post(Path.Web.UPLOAD_AUCTION,   BidController.handleUploadAuctionPostPlaceholder);
+        get(Path.Web.ALL_AUCTIONS,      BidController.getAllAuctionPlaceholder);
+        get(Path.Web.ONE_AUCTION,       BidController.getOneAuctionPlaceholder);
+
         get("*",                     ViewUtil.notFound);
         get("/hello/",           (request, response) -> {return "hello world";});
 

@@ -1,8 +1,7 @@
 package app.database;
 
 import java.sql.*;
-import java.util.ArrayList;
-import java.util.HashSet;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
 
@@ -35,7 +34,8 @@ public class Database {
                     "ItemName TEXT NOT NULL)" +
                     "Description TEXT" +
                     "Category TEXT" +
-                    "Flag BOOLEAN DEFAULT FALSE";
+                    "Flag BOOLEAN DEFAULT FALSE"+
+                    "UploadTime DATETIME DEFAULT CURRENT_TIMESTAMP NOT NULL";
 
             stmt.executeUpdate(sql);
             stmt.close();
@@ -45,35 +45,39 @@ public class Database {
         }
     }
 
-
-    public void insertIntoTable(String user_id, String item_name, String description, String category){
-        //TODO 5. Use the sqlite connection to insert a new record into the
-        //the database.
-        //The timestamp can be insertion time and doesn't have to be the actual
-        //fetch time
+    public boolean modifySQL(String sql){
         Statement stmt;
         try {
             stmt = conn.createStatement();
-            String sql = "INSERT INTO item (UserId, ItemName, Description, Category) VALUES ("
-                    + user_id + "," + item_name + ", " + description + "," + category +")";
             stmt.executeUpdate(sql);
             stmt.close();
         } catch (Exception e){
             e.printStackTrace();
-            System.exit(0);
+            return false;
         }
+        return true;
     }
 
-    public void executeSQL(String sql){
+    public List<String> querySQL(String sql){
         Statement stmt;
-        try {
+        List<String> res = new LinkedList<>();
+        try{
             stmt = conn.createStatement();
-            stmt.executeUpdate(sql);
-            stmt.close();
+            ResultSet queryResult = stmt.executeQuery(sql);
+            while (queryResult.next()){
+                String temp = "";
+                temp = temp + "Item ID:" + queryResult.getInt("ItemId") + " ";
+                temp = temp + "Owner ID" + queryResult.getInt("UserId") + " ";
+                temp = temp + "Name" + queryResult.getString("ItemName") + " ";
+                temp = temp + "Description" + queryResult.getString("Description") + " ";
+                temp = temp + "is inappropriate? " + queryResult.getBoolean("Flag");
+                res.add(temp);
+            }
         } catch (Exception e){
             e.printStackTrace();
-            System.exit(0);
+            return null;
         }
+        return res;
     }
 }
 

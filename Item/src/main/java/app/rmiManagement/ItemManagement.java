@@ -38,35 +38,55 @@ public class ItemManagement extends java.rmi.server.UnicastRemoteObject implemen
         db.createTableIfNotExists("item");
     }
 
-    public void upload_item(String user_id, String item_name, String description, String category) throws RemoteException{
+    public boolean upload_item(String user_id, String item_name, String description, String category) throws RemoteException{
         // Need to create a unique item id
         System.out.println(user_id + "/" + item_name + "/" + description + "/" + category);
         String sql = "INSERT INTO item (UserId, ItemName, Description, Category) VALUES ("
                 + user_id + "," + item_name + ", " + description + "," + category +")";
-        db.executeSQL(sql);
+        return db.modifySQL(sql);
     }
 
-    public void remove_item(String item_id){
+    public boolean remove_item(String item_id){
         String sql = "DELETE FROM item where ItemId = " + item_id;
-        db.executeSQL(sql);
+        return db.modifySQL(sql);
     }
 
     public boolean update_item(String field, Object value) {
         return true;
     }
 
-    public void flag_item(int item_id) {
+    public boolean flag_item(int item_id) {
         String sql = "UPDATE item SET Flag = TRUE where ItemId = " + item_id;
-        db.executeSQL(sql);
+        return db.modifySQL(sql);
     }
 
-    public List<String> search_item(String key_word, String Category, String sort_key, String order) {
-        return null;
+    public List<String> search_item(String key_word, String Category, String sort_key, boolean desc) {
+        String sql;
+        if(key_word != null){
+            sql = "SELECT * FROM item where item_name LIKE '%" + key_word + "%'";
+        } else if (Category != null) {
+            sql = "SELECT * FROM item where Category = " + Category;
+        } else {
+            sql = "SELECT * FROM item";
+        }
+
+        if (sort_key == null){
+            System.out.println("Error! Sort key couldn't be null");
+            return null;
+        }
+        sql = sql + " ORDER BY " + sort_key;
+
+        if(desc){
+            sql = sql + "DESC";
+        }else{
+            sql = sql + "ASC";
+        }
+        return db.querySQL(sql);
     }
 
-    public void update_category(String action, String category) {
-
+    public boolean delete_category(String action, String category) {
+        String sql = "UPDATE item SET Category = \"null\" where Category = " + category;
+        return db.modifySQL(sql);
     }
-
 
 }

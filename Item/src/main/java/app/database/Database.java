@@ -34,7 +34,9 @@ public class Database {
                     " UserId INT NOT NULL," +
                     "ItemName TEXT NOT NULL)" +
                     "Description TEXT" +
-                    "Category TEXT";
+                    "Category TEXT" +
+                    "Flag BOOLEAN DEFAULT FALSE";
+
             stmt.executeUpdate(sql);
             stmt.close();
         } catch (Exception e){
@@ -54,6 +56,18 @@ public class Database {
             stmt = conn.createStatement();
             String sql = "INSERT INTO item (UserId, ItemName, Description, Category) VALUES ("
                     + user_id + "," + item_name + ", " + description + "," + category +")";
+            stmt.executeUpdate(sql);
+            stmt.close();
+        } catch (Exception e){
+            e.printStackTrace();
+            System.exit(0);
+        }
+    }
+
+    public void executeSQL(String sql){
+        Statement stmt;
+        try {
+            stmt = conn.createStatement();
             stmt.executeUpdate(sql);
             stmt.close();
         } catch (Exception e){

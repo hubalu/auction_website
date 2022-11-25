@@ -1,6 +1,8 @@
 import java.util.ArrayList;
 import java.util.List;
 import org.bson.Document;
+
+import com.mongodb.client.FindIterable;
 import com.mongodb.client.MongoClient;
 import com.mongodb.client.MongoClients;
 import com.mongodb.client.MongoCollection;
@@ -117,21 +119,33 @@ public class MongoDB {
 	
 	public void addToWatchlist(String itemId, String userId) {
 		try {
-//			boolean watchlistExists = db.listCollectionNames().into(new ArrayList()).contains("watchlist_"+itemId);
-//			if (watchlistExists == false) {
-//				db.createCollection("watchlist_"+itemId);
-//				System.out.println("watchlist_"+itemId + " collection created successfully");
-//			}
-			Document doc = new Document();
-			doc.append("itemId", itemId);
-			doc.append("userId", userId);
-			db.getCollection("watchlist").insertOne(doc);
-			System.out.println("added successfully");
+			MongoCollection<Document> watchlist = db.getCollection("watchlist");
+			List<String> users = new ArrayList<String>();
+			if(!itemExistInWatchlist(itemId)) {
+				Document doc = new Document();
+				doc.append("itemId", itemId);
+				 
+		        users.add(userId);
+		        watchlist.insertOne(doc);
+		        watchlist.findOneAndUpdate(Filters.eq("itemId", itemId), Updates.pushEach("watchlist", users));
+		       
+				System.out.println("added successfully");
+			}else {
+				users.add(userId);
+				watchlist.findOneAndUpdate(Filters.eq("itemId", itemId), Updates.pushEach("watchlist", users));
+			}
+			
+			
+			
 		} catch (Exception e) {
 			System.out.println("error in addToWatchlist");
 		}
 	}
 	
+	public boolean itemExistInWatchlist(String itemId) {
+	    FindIterable<Document> iterable = db.getCollection("watchlist")
+	                                        .find(new Document("itemId", itemId));
+	    return iterable.first() != null;
+	}
 	
-
 }

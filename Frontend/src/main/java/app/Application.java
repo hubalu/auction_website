@@ -3,6 +3,7 @@ package app;
 import app.bidding.BidController;
 import app.item.ItemController;
 import app.login.LoginController;
+import app.user.UserController;
 import app.user.UserDao;
 import app.util.Filters;
 import app.util.Path;
@@ -18,7 +19,6 @@ public class Application {
     public static void main(String[] args) {
 
         userDao = new UserDao();
-        userDao.addUser();
 
         // Configure Spark
         port(4567);
@@ -38,13 +38,15 @@ public class Application {
         get(Path.Web.ITEMS,          ItemController.getAllItemsPlaceholder);
         get(Path.Web.ONE_ITEM,       ItemController.getOneItemPlaceholder);
 
+        get(Path.Web.CREATE_USER,       UserController.getCreateUserPage);
+        post(Path.Web.CREATE_USER,      UserController.createUser);
+
         get(Path.Web.UPLOAD_AUCTION,    BidController.uploadAuctionPlaceholder);
         post(Path.Web.UPLOAD_AUCTION,   BidController.handleUploadAuctionPostPlaceholder);
         get(Path.Web.ALL_AUCTIONS,      BidController.getAllAuctionPlaceholder);
         get(Path.Web.ONE_AUCTION,       BidController.getOneAuctionPlaceholder);
 
         get("*",                     ViewUtil.notFound);
-        get("/hello/",           (request, response) -> {return "hello world";});
 
         //Set up after-filters (called after each get/post)
         after("*",                   Filters.addGzipHeader);

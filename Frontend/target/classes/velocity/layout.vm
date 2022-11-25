@@ -9,19 +9,22 @@
 <body>
 <header>
 
-    <nav style="height:4%">
-        <div style="float:right">
+    <nav style="height:7%">
+        <ul id="menu">
             #if($currentUser)
-            <a href=$WebPath.getALL_AUCTIONS()>User</a> |
-            <a href=$WebPath.getALL_AUCTIONS()>Auctions</a> |
-            <a href=$WebPath.getITEMS()>Items</a> |
-            <a href=$WebPath.getITEMS()>Shopping Cart</a> |
-            <a href=$WebPath.getLOGOUT()>Logout </a>
+            <li> <a href=$WebPath.getALL_AUCTIONS()>User</a> </li>
+            <li> <a href=$WebPath.getALL_AUCTIONS()>Auctions</a> </li>
+            <li> <a href=$WebPath.getITEMS()>Items</a> </li>
+            <li> <a href=$WebPath.getITEMS()>Shopping Cart</a> </li>
+            <li>
+                <form method="post" action="$WebPath.getLOGOUT()">
+                    <button id="logout">$msg.get("COMMON_NAV_LOGOUT")</button>
+                </form>
+            </li>
             #else
                 <li><a href="$WebPath.getLOGIN()"">$msg.get("COMMON_NAV_LOGIN")</a></li>
             #end
         </div>
-
     </nav>
 
 </header>

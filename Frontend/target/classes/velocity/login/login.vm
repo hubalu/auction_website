@@ -19,4 +19,7 @@
     #end
     <input type="submit" value="$msg.get("LOGIN_BUTTON_LOGIN")">
 </form>
+<form id="loginForm" method="get" action="$WebPath.getCREATE_USER()">
+    <input type="submit" value="Create User">
+</form>
 #end

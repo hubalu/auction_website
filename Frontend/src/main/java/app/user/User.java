@@ -7,4 +7,10 @@ public class User {
     String username;
     String salt;
     String hashedPassword;
+
+    public User(String username, String salt, String hashedPassword) {
+        this.username = username;
+        this.salt = salt;
+        this.hashedPassword = hashedPassword;
+    }
 }

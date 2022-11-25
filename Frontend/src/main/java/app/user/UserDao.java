@@ -7,6 +7,8 @@ import java.util.stream.Collectors;
 
 import com.mongodb.*;
 import com.mongodb.client.FindIterable;
+import com.mongodb.client.MongoClients;
+import com.mongodb.client.MongoClient;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
 import com.mongodb.util.JSON;
@@ -31,7 +33,7 @@ public class UserDao {
     private CodecRegistry pojoCodecRegistry;
 
     public UserDao(){
-        mongoClient = new MongoClient("localhost", 27017);
+        mongoClient = MongoClients.create("mongodb://localhost:27017");
         database = mongoClient.getDatabase("LoginService");
         //database.createCollection("userData");
         /*this.pojoCodecRegistry =

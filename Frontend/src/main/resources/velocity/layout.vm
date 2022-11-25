@@ -9,7 +9,7 @@
 <body>
 <header>
 
-    <nav style="height:7%">
+    <nav style="height:10%">
         <ul id="menu">
             #if($currentUser)
             <li> <a href=$WebPath.getALL_AUCTIONS()>User</a> </li>

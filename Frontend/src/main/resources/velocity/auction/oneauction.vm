@@ -1,0 +1,22 @@
+#parse("/velocity/layout.vm")
+#@mainLayout()
+    <a class="book" href="$WebPath.getALL_AUCTIONS()">
+        Back to All Auctions
+    </a>
+
+    #if($item&&$auction)
+    <h1>$item.getItemName()</h1>
+    <h2>$item.getDescription()</h2>
+    <h2>$item.getCategory()</h2>
+    <div>
+    <h2>Current Price: $auction.getCurrentPrice()</h2>
+    #if($auction.BuyNowPrice > 0)
+        <h2>Buy Now: $auction.getBuyNowPrice()</h2>
+    #end
+    <h2> Auction expires at: $auction.getEndTime()</h2>
+
+    </div>
+    #else
+    <h1>Sorry, this item can no longer be found</h1>
+    #end
+#end

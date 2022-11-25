@@ -11,7 +11,6 @@ public class UserManagement {
         this.db.createTableIfNotExists();
     }
 
-
     public boolean deleteUser(Integer id, Integer operatorId, UserType operatorRole) {
         try {
             if (operatorId.equals(id) || operatorRole == UserType.Admin) {

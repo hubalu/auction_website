@@ -13,6 +13,12 @@ public class Path {
         @Getter public static final String BOOKS = "/books/";
         @Getter public static final String ONE_BOOK = "/books/:isbn/";
         @Getter public static final String ITEM = "/items/";
+        @Getter public static final String ITEMS = "/allitems/";
+        @Getter public static final String ONE_ITEM = "/items/:ItemID/";
+        @Getter public static final String UPLOAD_AUCTION = "/auction/";
+        @Getter public static final String ALL_AUCTIONS = "/auctions/";
+        @Getter public static final String ONE_AUCTION = "/auction/:AuctionID/";
+        @Getter public static final String CREATE_USER = "/user/";
     }
 
     public static class Template {
@@ -22,6 +28,14 @@ public class Path {
         public static final String BOOKS_ONE = "/velocity/book/one.vm";
         public static final String NOT_FOUND = "/velocity/notFound.vm";
         public static final String ITEM = "/velocity/item/item.vm";
+
+        public static final String ITEMS = "/velocity/item/allitems.vm";
+        public static final String ONE_ITEM = "/velocity/item/oneitem.vm";
+        public static final String UPLOAD_AUCTION = "/velocity/auction/auction.vm";
+        public static final String ALL_AUCTIONS = "/velocity/auction/allauctions.vm";
+        public static final String ONE_AUCTION = "/velocity/auction/oneauction.vm";
+
+        public static final String CREATE_USER = "/velocity/login/createuser.vm";
     }
 
 }

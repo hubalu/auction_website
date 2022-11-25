@@ -1,0 +1,16 @@
+#parse("/velocity/layout.vm")
+#@mainLayout()
+<h1>All Items</h1>
+<a class="book" href="$WebPath.getITEM()">
+    Upload Items
+</a>
+<div class="row row-3">
+    #foreach($item in $itemList)
+        <div class="col">
+            <a class="book" href="$WebPath.getITEM()$item.getItemID()">
+                $item.getItemName()
+            </a>
+        </div>
+    #end
+</div>
+#end

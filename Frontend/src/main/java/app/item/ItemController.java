@@ -12,6 +12,7 @@ import spark.Route;
 import java.lang.reflect.Array;
 import java.util.*;
 import static app.util.RequestUtil.*;
+import static spark.Spark.redirect;
 
 
 public class ItemController {
@@ -37,6 +38,7 @@ public class ItemController {
 //        return itemManagement;
 //    }
 
+    private static List<Item> cachedItems;
     public static RMIHelper rmiHelper = new RMIHelper();
     public static Route uploadItem = (Request request, Response response) -> {
         LoginController.ensureUserIsLoggedIn(request, response);
@@ -53,19 +55,23 @@ public class ItemController {
         String item_desc = request.queryParams("description");
         String category = request.queryParams("category");
         // RMI call Item microservice
-        //rmItemManagement.upload_item("1", item_name, item_desc, category);
+        rmItemManagement.upload_item("1", item_name, item_desc, category);
         Map<String, Object> model = new HashMap<>();
-        ArrayList<Item> itemList = generateItemList();
-        itemList.add(new Item("30", "sdf", "sdf", "Sdf"));
-        model.put("itemList", itemList);
-        return ViewUtil.render(request, model, Path.Template.ITEMS);
+        ArrayList<Item> itemList = new ArrayList<>();
+//        itemList.add(new Item("30", "sdf", "sdf", "Sdf"));
+//        model.put("itemList", itemList);
+//        return ViewUtil.render(request, model, Path.Template.ITEMS);
+        response.redirect(Path.Web.ITEMS);
+        return null;
     };
 
     public static Route getAllItemsPlaceholder = (Request request, Response response) -> {
         LoginController.ensureUserIsLoggedIn(request, response);
+        RemoteItemManagement rmItemManagement = rmiHelper.getRemItemManagement();
+        cachedItems = rmItemManagement.search_item(null, null, "UploadTime", true);
         Map<String, Object> model = new HashMap<>();
-        ArrayList<Item> itemList = generateItemList();
-        model.put("itemList", itemList);
+//        ArrayList<Item> itemList = generateItemList();
+        model.put("itemList", cachedItems);
         return ViewUtil.render(request, model, Path.Template.ITEMS);
     };
 
@@ -73,25 +79,29 @@ public class ItemController {
         LoginController.ensureUserIsLoggedIn(request, response);
         if (clientAcceptsHtml(request)) {
             HashMap<String, Object> model = new HashMap<>();
-            Item item = new Item("4399", "Sunscreen", "A bottle of new Sunscreen", "Suncare");
-            model.put("item", item);
+            String itemId = request.params(":ItemID");
+            for (Item item : cachedItems){
+                if(item.getItemID().equals(itemId)){
+                    model.put("item", item);
+                }
+            }
             return ViewUtil.render(request, model, Path.Template.ONE_ITEM);
         }
         return ViewUtil.notAcceptable.handle(request, response);
     };
 
-    public static ArrayList<Item> generateItemList(){
-        ArrayList<Item> itemList = new ArrayList<Item>();
-        List<String> name = Arrays.asList("Hello", "World", "Sunscreen", "Mouse", "Keyboard");
-        int id = 0;
-        String category = "Skincare";
-        List<String> description = Arrays.asList("A bottle of Sunscreen", "A mechanical keyboard", "A good mouse", "Hello", "World");
-        for (int i = 0; i < 5; i++){
-            for (int j = 0; j < 5; j++){
-                itemList.add(new Item(Integer.toString(i * 5 + j), name.get(i), description.get(j),category));
-            }
-        }
-
-        return itemList;
-    }
+//    public static ArrayList<Item> generateItemList(){
+//        ArrayList<Item> itemList = new ArrayList<Item>();
+//        List<String> name = Arrays.asList("Hello", "World", "Sunscreen", "Mouse", "Keyboard");
+//        int id = 0;
+//        String category = "Skincare";
+//        List<String> description = Arrays.asList("A bottle of Sunscreen", "A mechanical keyboard", "A good mouse", "Hello", "World");
+//        for (int i = 0; i < 5; i++){
+//            for (int j = 0; j < 5; j++){
+//                itemList.add(new Item(Integer.toString(i * 5 + j), name.get(i), description.get(j),category));
+//            }
+//        }
+//
+//        return itemList;
+//    }
 }

@@ -117,15 +117,21 @@ public class MongoDB {
 	
 	public void addToWatchlist(String itemId, String userId) {
 		try {
-			
+//			boolean watchlistExists = db.listCollectionNames().into(new ArrayList()).contains("watchlist_"+itemId);
+//			if (watchlistExists == false) {
+//				db.createCollection("watchlist_"+itemId);
+//				System.out.println("watchlist_"+itemId + " collection created successfully");
+//			}
+			Document doc = new Document();
+			doc.append("itemId", itemId);
+			doc.append("userId", userId);
+			db.getCollection("watchlist").insertOne(doc);
+			System.out.println("added successfully");
 		} catch (Exception e) {
 			System.out.println("error in addToWatchlist");
 		}
 	}
 	
-	
-
-
 	
 
 }

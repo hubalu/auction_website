@@ -28,9 +28,8 @@ public class MongoDB {
 			}
 		
 		} catch (Exception e) {
-            System.out.println("error in database initialization"); 
-    }
-		
+           		 System.out.println("error in database initialization"); 
+   		}
 	}
 	
 	public void insertToBankBalance(String userId, double initialAmount) {
@@ -40,9 +39,10 @@ public class MongoDB {
 			doc.append("amount", initialAmount);
 			db.getCollection("bankBalance").insertOne(doc);
 			System.out.println("added successfully");
+			
 		} catch (Exception e) {
-	            System.out.println("error in insertToBankBalance"); 
-	    }
+	            	System.out.println("error in insertToBankBalance"); 
+	        }
 	}
 
 	public void makePayment(String userId, double paymentAmount) {
@@ -60,7 +60,6 @@ public class MongoDB {
 			
 		} catch (Exception e) {
 			System.out.println("error in makePayment"); 
-
 		}
 	}
 }

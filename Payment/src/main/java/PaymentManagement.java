@@ -18,7 +18,7 @@ public class PaymentManagement {
 			return true;
 
 		} catch (Exception e){
-			System.out.println("error in placeBid"); 
+			System.out.println("error in insertToBankBalance"); 
 			return false;
 		}
 	}
@@ -34,19 +34,4 @@ public class PaymentManagement {
 			return false;
 		}
 	}
-	
-//	public boolean updateAuction(String auctionId, String userId, String param, String newVal) {
-//		try {
-//			this.db.updateAuction(auctionId, userId, param, newVal);
-//			System.out.println("Succesfully updated auction item " + auctionId + " with " + param + " = " + newVal);
-//			return true;
-//		} catch (Exception e){
-//			System.out.println(e);
-//			System.out.println("error in updateAuction"); 
-//			return false;
-//		}
-//	}
-	
-	
-	
 }

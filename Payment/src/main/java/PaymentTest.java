@@ -14,12 +14,12 @@ public class PaymentTest {
 		pm.insertToBankBalance("1001", 100);
 		pm.makePayment("1001", 30.8);
 		
-		// edge test case - makepayment with the userId that does not exist
+		// edge test case 1 - makepayment with the userId that does not exist
 		// show error
 		pm.makePayment("1008", 30.8); 
 		
-		// edge test case - currentAmount < paymentAmount
-		// currentAmount will not change
+		// edge test case 2 - currentAmount < paymentAmount
+		// throw an error and currentAmount will not change
 		pm.makePayment("1001", 1000);
 		
 		

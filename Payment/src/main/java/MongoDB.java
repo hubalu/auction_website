@@ -40,7 +40,7 @@ public class MongoDB {
 			System.out.println("added successfully");
 		} catch (Exception e) {
 	            System.out.println("error in insertToBankBalance"); 
-	    }
+	    	}
 	}
 
 	public void makePayment(String userId, double paymentAmount) {

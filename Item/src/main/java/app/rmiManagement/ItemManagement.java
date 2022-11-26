@@ -1,5 +1,7 @@
 package app.rmiManagement;
 
+import app.database.Database;
+
 import java.rmi.*;
 import java.rmi.registry.*;
 import java.net.*;
@@ -9,6 +11,8 @@ public class ItemManagement extends java.rmi.server.UnicastRemoteObject implemen
     int port;
     String address;
     Registry registry;
+
+    public Database db;
 
 
 
@@ -28,12 +32,15 @@ public class ItemManagement extends java.rmi.server.UnicastRemoteObject implemen
         } catch (RemoteException e) {
             throw e;
         }
+
+        db = new Database("Item");
+        db.createTableIfNotExists("item");
     }
 
-    public boolean upload_item(String user_id, String item_name, String description, String category) throws RemoteException{
+    public void upload_item(String user_id, String item_name, String description, String category) throws RemoteException{
         // Need to create a unique item id
         System.out.println(user_id + "/" + item_name + "/" + description + "/" + category);
-        return true;
+        db.insertIntoTable(user_id, item_name, description, category);
     }
 
 //    public boolean update_item(String field, Object value) {
@@ -51,7 +58,5 @@ public class ItemManagement extends java.rmi.server.UnicastRemoteObject implemen
 //
 //    }
 //
-//    public boolean add_to_watchlist(int item_id, int user_id) {
-//        return true;
-//    }
+
 }

@@ -14,6 +14,7 @@ import com.mongodb.client.model.Updates;
 public class MongoDB {
 	private MongoClient mongoClient;
 	private MongoDatabase db;
+	
 	public MongoDB(String database_path) {
 		try {
 			mongoClient = MongoClients.create();
@@ -27,8 +28,9 @@ public class MongoDB {
 			}
 		
 		} catch (Exception e) {
-            		System.out.println("error in database initialization"); 
-    		}	
+            System.out.println("error in database initialization"); 
+    }
+		
 	}
 	
 	public void insertToBankBalance(String userId, double initialAmount) {
@@ -40,7 +42,7 @@ public class MongoDB {
 			System.out.println("added successfully");
 		} catch (Exception e) {
 	            System.out.println("error in insertToBankBalance"); 
-	    	}
+	    }
 	}
 
 	public void makePayment(String userId, double paymentAmount) {
@@ -48,11 +50,17 @@ public class MongoDB {
 			MongoCollection<Document> balance = db.getCollection("bankBalance");
 			Document query = new Document("userId", userId);
 			
-		    	double currentAmount = balance.find(query).first().getDouble("amount");
+		        double currentAmount = balance.find(query).first().getDouble("amount");
+		        if (currentAmount < paymentAmount) {
+			    throw new Exception();
+		        }
+		    
 			balance.updateOne(Filters.eq("userId", userId), Updates.set("amount", currentAmount - paymentAmount));
+			System.out.println("Successfully make payment $" + paymentAmount);    
 			
 		} catch (Exception e) {
 			System.out.println("error in makePayment"); 
+
 		}
 	}
 }

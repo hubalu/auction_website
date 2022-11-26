@@ -1,4 +1,5 @@
 import java.sql.SQLException;
+import java.util.List;
 
 public class UserManagement {
 
@@ -61,5 +62,23 @@ public class UserManagement {
             return true;
         }
         return false;
+    }
+
+    public List<User> fetchAllUser(){
+        try {
+            return this.db.findAllUsers();
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+        return null;
+    }
+
+    public User fetchUserById(Integer id) {
+        try {
+            return this.db.findUserById(id);
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+        return null;
     }
 }

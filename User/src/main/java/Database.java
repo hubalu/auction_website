@@ -1,4 +1,6 @@
 import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Database {
     private Connection conn;
@@ -40,10 +42,6 @@ public class Database {
     }
 
     public void insertIntoTable(String username, UserType userType, String password, String email,String phoneNumber) throws SQLException {
-        //TODO 5. Use the sqlite connection to insert a new record into the
-        //the database.
-        //The timestamp can be insertion time and doesn't have to be the actual
-        //fetch time
         String sql = "INSERT INTO Users.User (username,userType,password,email,phoneNumber,suspend) VALUES(?,?,?,?,?,?)";
         PreparedStatement pstmt = conn.prepareStatement(sql);
         pstmt.setString(1, username);
@@ -123,6 +121,32 @@ public class Database {
             return rs.getInt("id");
         }
         return -1;
+    }
+
+    public User findUserById(Integer Id) throws SQLException {
+        String sql = String.format("SELECT * FROM Users.User WHERE id = '%s'", Id);
+        Statement stmt = null;
+
+        stmt = conn.createStatement();
+        ResultSet rs = stmt.executeQuery(sql);
+        User result = new User();
+        while (rs.next()) {
+            return User.createUser(rs);
+        }
+        return result;
+    }
+
+    public List<User> findAllUsers() throws SQLException {
+        String sql = "SELECT * FROM Users.User";
+        Statement stmt = null;
+
+        stmt = conn.createStatement();
+        ResultSet rs = stmt.executeQuery(sql);
+        List<User> results = new ArrayList<>();
+        while (rs.next()) {
+            results.add(User.createUser(rs));
+        }
+        return results;
     }
 
 }

@@ -1,6 +1,5 @@
 package app.user;
 
-import app.item.Item;
 import app.login.LoginController;
 import app.util.Path;
 import app.util.ViewUtil;

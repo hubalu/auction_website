@@ -46,8 +46,8 @@ public class BidController {
         LoginController.ensureUserIsLoggedIn(request, response);
         Map<String, Object> model = new HashMap<>();
 
-        ArrayList<Item> itemList = ItemController.generateItemList();
-        model.put("itemList", itemList);
+//        ArrayList<Item> itemList = ItemController.generateItemList();
+//        model.put("itemList", itemList);
         return ViewUtil.render(request, model, Path.Template.UPLOAD_AUCTION);
     };
 
@@ -101,8 +101,8 @@ public class BidController {
             String endTime = dateFormat.format(et);
             Auction auction = new Auction(40, "Sunscreen", 30, 60, 70, 100, startTime, endTime );
             model.put("auction", auction);
-            Item item = new Item("4399", "Sunscreen", "A bottle of new Sunscreen", "Suncare");
-            model.put("item", item);
+//            Item item = new Item("4399", "Sunscreen", "A bottle of new Sunscreen", "Suncare");
+//            model.put("item", item);
             return ViewUtil.render(request, model, Path.Template.ONE_AUCTION);
         }
         return ViewUtil.notAcceptable.handle(request, response);

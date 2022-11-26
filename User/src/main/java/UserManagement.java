@@ -12,8 +12,11 @@ public class UserManagement {
     }
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 
+>>>>>>> main
+=======
 >>>>>>> main
     public boolean deleteUser(Integer id, Integer operatorId, UserType operatorRole) {
         try {

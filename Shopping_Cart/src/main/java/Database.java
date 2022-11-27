@@ -31,7 +31,7 @@ public class Database {
                 + "	item_id INT NOT NULL,\n"
                 + "	item_name VARCHAR(255) NOT NULL,\n"
                 + "	quantity INT NOT NULL,\n"
-                + "	bid_price DOUBLE NOT NULL\n"
+                + "	buy_now_price DOUBLE NOT NULL\n"
                 + ");";
         try (Statement stmt = conn.createStatement()) {
             // create a new table

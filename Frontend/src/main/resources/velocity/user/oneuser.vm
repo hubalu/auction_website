@@ -1,0 +1,51 @@
+#parse("/velocity/layout.vm")
+#@mainLayout()
+
+#if($passwordUpdateSuccess)
+    <p class="good notification">Password Update Success</p>
+#elseif($passwordUpdateFail)
+    <p class="bad notification">Password Update Failed</p>
+#elseif($userInfoUpdateSuccess)
+    <p class="good notification">User Info Update Success</p>
+#elseif($userInfoUpdateFail)
+    <p class="bad notification">User Info Update Failed</p>
+#end
+
+#if(!$admin)
+<form id="userPasswordForm" method="post" action="$WebPath.getUPDATE_PASSWORD()">
+    <h1>Update your password</h1>
+    <br>
+    <label>Username: $user.getUsername() </label>
+    <br>
+    <label> New Password
+    <input type="text" name="username" value="$user.getUsername()" required hidden>
+    <input type="text" name="password" minlength="8" value="" required>
+    <input type = "submit" value="Update Password">
+</form>
+<br>
+<br>
+<form id="userInfoForm" method="post" action="$WebPath.getUPDATE_USER_INFO()">
+    <h1>Update Your Data</h1>
+    <p>Update your information</p>
+    <br>
+    <label>Email</label>
+    <input type="number" name="userid" value="$userInfo.getUserId()" required hidden>
+    <input type="text" name="username" value="$userInfo.getUsername()" required hidden>
+    <input type="text" name="email" placeholder="Email" value="$userInfo.getEmail()" required>
+    <br>
+    <label>Phone Number </label>
+    <input type="text" name="phoneNumber" placeholder="Phone Number" value="$userInfo.getPhoneNumber()" required>
+    <br>
+    <input type="submit" value="Update Info">
+</form>
+#else
+<h1> User Info</h1>
+    <label>User ID: $userInfo.getUserId()</label>
+    <br>
+    <label>Username: $userInfo.getUsername() </label>
+    <br>
+    <label>Email: $userInfo.getEmail()</label>
+    <br>
+    <label>Phone Number: $userInfo.getPhoneNumber()</label>
+#end
+#end

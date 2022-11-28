@@ -64,9 +64,9 @@ public class ItemManagement extends java.rmi.server.UnicastRemoteObject implemen
     public List<Item> search_item(String key_word, String Category, String sort_key, boolean desc) throws RemoteException {
         String sql;
         if(key_word != null){
-            sql = "SELECT * FROM item where item_name LIKE '%" + key_word + "%'";
+            sql = "SELECT * FROM item where itemname LIKE '%" + key_word + "%'";
         } else if (Category != null) {
-            sql = "SELECT * FROM item where Category = '" + Category +"'";
+            sql = "SELECT * FROM item where category = '" + Category +"'";
         } else {
             sql = "SELECT * FROM item";
         }

@@ -1,9 +1,23 @@
 #parse("/velocity/layout.vm")
 #@mainLayout()
 <h1>All Items</h1>
+
+<form id="searchForm" method="get">
+    <h1>Search Items: </h1> <br>
+    <input type="radio" name="search_type" value="keyword" checked="yes" required/> By Name
+    <input type="radio" name="search_type" value="category" required/> By Category
+    <input type="text" name="search_value" placeholder="Search" value="" required>
+    <input type="submit" value="Search">
+    Order: <select name="order" id="order" required>
+        <option value="DESC">Descending</option>
+        <option value="ASC">Ascending</option>
+    </select>
+</form>
+
 <a class="book" href="$WebPath.getITEM()">
     Upload Items
 </a>
+
 <div class="row row-3">
     #foreach($item in $itemList)
         <div class="col">

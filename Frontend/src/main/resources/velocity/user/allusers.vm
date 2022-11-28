@@ -1,0 +1,13 @@
+#parse("/velocity/layout.vm")
+#@mainLayout()
+<h1>All Users</h1>
+<div class="row row-3">
+    #foreach($user in $userList)
+        <div class="col">
+            <a class="book" href="$WebPath.getUSER_INFO()$user.getUserId()">
+                $user.getUsername()
+            </a>
+        </div>
+    #end
+</div>
+#end

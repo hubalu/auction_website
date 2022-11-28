@@ -1,0 +1,32 @@
+#parse("/velocity/layout.vm")
+#@mainLayout()
+<form id="userForm" method="post">
+    #if($userCreateFailed)
+        <p class="bad notification">User Creation Failed: Username already exists</p>
+    #end
+    <h1>Create an Account</h1>
+    <p>Fill in the following form</p>
+    <br>
+    <label>Name</label>
+    <input type="text" name="name" placeholder="Name" value="" required>
+    <br>
+
+    <label>Username</label>
+    <input type="text" name="username" placeholder="Username" value="" required>
+    <br>
+
+    <label>Email Address</label>
+    <input type="text" name="email" placeholder="Email" value="" required>
+    <br>
+
+    <label>Password</label>
+    <input type="text" name="password" placeholder="Password" value="" required>
+    <br>
+
+    <label>Phone Number</label>
+    <input type="text" name="phone_number" placeholder="Phone Number" value="" required>
+    <br>
+
+    <input type="submit" value="Create User">
+</form>
+#end

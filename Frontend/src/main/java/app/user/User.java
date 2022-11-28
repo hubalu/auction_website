@@ -7,10 +7,14 @@ public class User {
     String username;
     String salt;
     String hashedPassword;
+    int userId;
+    UserType userType;
 
-    public User(String username, String salt, String hashedPassword) {
+    public User(String username, String salt, String hashedPassword, int userId, UserType userType) {
         this.username = username;
         this.salt = salt;
         this.hashedPassword = hashedPassword;
+        this.userId = userId;
+        this.userType = userType;
     }
 }

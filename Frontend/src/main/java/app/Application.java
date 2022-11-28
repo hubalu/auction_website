@@ -3,6 +3,7 @@ package app;
 import app.bidding.BidController;
 import app.item.ItemController;
 import app.login.LoginController;
+import app.user.User;
 import app.user.UserController;
 import app.user.UserDao;
 import app.util.Filters;
@@ -37,6 +38,11 @@ public class Application {
         post(Path.Web.ITEM,          ItemController.handleUploadItemPost);
         get(Path.Web.ITEMS,          ItemController.getAllItemsPlaceholder);
         get(Path.Web.ONE_ITEM,       ItemController.getOneItemPlaceholder);
+
+        get(Path.Web.ONE_USER_INFO,     UserController.getOneUserInfo);
+        get(Path.Web.USER_INFO,         UserController.getUserInfo);
+        post(Path.Web.UPDATE_PASSWORD,  UserController.updatePassword);
+        post(Path.Web.UPDATE_USER_INFO, UserController.updateUserInfo);
 
         get(Path.Web.CREATE_USER,       UserController.getCreateUserPage);
         post(Path.Web.CREATE_USER,      UserController.createUser);

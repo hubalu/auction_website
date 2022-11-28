@@ -46,8 +46,13 @@ public class BidController {
         LoginController.ensureUserIsLoggedIn(request, response);
         Map<String, Object> model = new HashMap<>();
 
-//        ArrayList<Item> itemList = ItemController.generateItemList();
-//        model.put("itemList", itemList);
+        String item_id = request.queryParams("item_id");
+        model.put("selected", item_id);
+
+        RemoteItemManagement rmItemManagement = rmiHelper.getRemItemManagement();
+        List<Item> itemList = rmItemManagement.search_item(null, null, "UploadTime", true);
+
+        model.put("itemList", itemList);
         return ViewUtil.render(request, model, Path.Template.UPLOAD_AUCTION);
     };
 

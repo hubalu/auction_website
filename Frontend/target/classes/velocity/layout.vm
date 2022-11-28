@@ -12,7 +12,7 @@
     <nav style="height:10%">
         <ul id="menu">
             #if($currentUser)
-            <li> <a href=$WebPath.getALL_AUCTIONS()>User</a> </li>
+            <li> <a href=$WebPath.getUSER_INFO()>User</a> </li>
             <li> <a href=$WebPath.getALL_AUCTIONS()>Auctions</a> </li>
             <li> <a href=$WebPath.getITEMS()>Items</a> </li>
             <li> <a href=$WebPath.getITEMS()>Shopping Cart</a> </li>

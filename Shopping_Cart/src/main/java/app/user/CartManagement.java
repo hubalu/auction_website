@@ -1,3 +1,5 @@
+package app.user;
+
 import java.sql.SQLException;
 import java.util.List;
 
@@ -5,8 +7,8 @@ public class CartManagement {
 
     private Database db;
 
-    public CartManagement(String databaseName) {
-        this.db = new Database(databaseName);
+    public CartManagement() {
+        this.db = new Database();
         this.db.createDatabase();
         this.db.createTableIfNotExists();
     }

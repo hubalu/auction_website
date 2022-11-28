@@ -1,3 +1,5 @@
+package app.user;
+
 import lombok.Value;
 
 import java.sql.ResultSet;

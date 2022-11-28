@@ -1,3 +1,5 @@
+package app.user;
+
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -6,7 +8,7 @@ public class Database {
 
     private Connection conn;
 
-    public Database(String database_path) {
+    public Database() {
         try {
             conn = DriverManager.getConnection("jdbc:mysql://localhost/", "root", "123qweASD-");
         } catch (SQLException throwables) {

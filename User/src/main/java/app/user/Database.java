@@ -1,13 +1,15 @@
+package app.user;
+
 import java.sql.*;
-import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 
 public class Database {
     private Connection conn;
-
     public Database(String database_path) {
         try {
-            conn = DriverManager.getConnection("jdbc:mysql://localhost/", "root", "123qweASD-");
+            conn = DriverManager.getConnection("jdbc:mysql://localhost/", "root", "secretpassword");
+            System.out.println("Connection Established");
         } catch (SQLException throwables) {
             throwables.printStackTrace();
         }
@@ -18,6 +20,7 @@ public class Database {
         try (Statement stmt = conn.createStatement()) {
             // create a new table
             stmt.execute(sql);
+            System.out.println("Users Datbase Created");
         } catch (SQLException e) {
             System.out.println(e.getMessage());
         }
@@ -28,7 +31,6 @@ public class Database {
                 + "	id INT AUTO_INCREMENT PRIMARY KEY,\n"
                 + "	username VARCHAR(255) NOT NULL,\n"
                 + "	userType VARCHAR(255) NOT NULL,\n"
-                + "	password VARCHAR(255) NOT NULL,\n"
                 + "	email VARCHAR(255) NOT NULL,\n"
                 + "	phoneNumber VARCHAR(255) NOT NULL,\n"
                 + "	suspend Boolean NOT NULL\n"
@@ -36,23 +38,27 @@ public class Database {
         try (Statement stmt = conn.createStatement()) {
             // create a new table
             stmt.execute(sql);
+            System.out.println("Users.User Table Created");
         } catch (SQLException e) {
             System.out.println(e.getMessage());
         }
     }
 
-    public void insertIntoTable(String username, UserType userType, String password, String email,String phoneNumber) throws SQLException {
-        String sql = "INSERT INTO Users.User (username,userType,password,email,phoneNumber,suspend) VALUES(?,?,?,?,?,?)";
+    public void insertIntoTable(String username, UserType userType, String email,String phoneNumber) throws SQLException {
+        //TODO 5. Use the sqlite connection to insert a new record into the
+        //the database.
+        //The timestamp can be insertion time and doesn't have to be the actual
+        //fetch time
+        String sql = "INSERT INTO Users.User (username,userType,email,phoneNumber,suspend) VALUES(?,?,?,?,?)";
         PreparedStatement pstmt = conn.prepareStatement(sql);
         pstmt.setString(1, username);
         pstmt.setString(2, userType.toString());
-        pstmt.setString(3, password);
-        pstmt.setString(4, email);
-        pstmt.setString(5, phoneNumber);
-        pstmt.setBoolean(6, false);
+        pstmt.setString(3, email);
+        pstmt.setString(4, phoneNumber);
+        pstmt.setBoolean(5, false);
 
         pstmt.executeUpdate();
-
+        System.out.println("User Inserted");
     }
 
     public void suspendUser(Integer id) throws SQLException {
@@ -61,8 +67,8 @@ public class Database {
         pstmt.executeUpdate();
     }
 
-    public void updateUser(Integer id, String username, String password, String email,String phoneNumber) throws SQLException {
-        String sql = String.format("UPDATE Users.User SET username = '%s', password = '%s', email = '%s', phoneNumber = '%s' WHERE id = %d", username, password, email, phoneNumber ,id);
+    public void updateUser(Integer id, String username, String email,String phoneNumber) throws SQLException {
+        String sql = String.format("UPDATE Users.User SET username = '%s', email = '%s', phoneNumber = '%s' WHERE id = %d", username, email, phoneNumber ,id);
         PreparedStatement pstmt = conn.prepareStatement(sql);
         pstmt.executeUpdate();
     }
@@ -123,30 +129,47 @@ public class Database {
         return -1;
     }
 
-    public User findUserById(Integer Id) throws SQLException {
-        String sql = String.format("SELECT * FROM Users.User WHERE id = '%s'", Id);
+    public List<UserInfo> getAllUser() throws SQLException {
+        String sql = String.format("SELECT id, username, email, phoneNumber FROM Users.User");
         Statement stmt = null;
-
-        stmt = conn.createStatement();
-        ResultSet rs = stmt.executeQuery(sql);
-        User result = new User();
-        while (rs.next()) {
-            return User.createUser(rs);
+        List<UserInfo> res = new LinkedList<>();
+        System.out.println("Calling Get All Users");
+        try {
+            stmt = conn.createStatement();
+            ResultSet rs = stmt.executeQuery(sql);
+            while (rs.next()){
+                UserInfo user = new UserInfo(
+                    rs.getInt("id"),
+                    rs.getString("username"),
+                    rs.getString("email"),
+                    rs.getString("phoneNumber"));
+                res.add(user);
+            }
+            return res;
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+            return null;
         }
-        return result;
     }
 
-    public List<User> findAllUsers() throws SQLException {
-        String sql = "SELECT * FROM Users.User";
+    public UserInfo getOneUser(int id) throws  SQLException{
+        String sql = String.format("SELECT id, username, email, phoneNumber FROM Users.User WHERE id = %d", id);
         Statement stmt = null;
-
-        stmt = conn.createStatement();
-        ResultSet rs = stmt.executeQuery(sql);
-        List<User> results = new ArrayList<>();
-        while (rs.next()) {
-            results.add(User.createUser(rs));
+        try {
+            stmt = conn.createStatement();
+            ResultSet rs = stmt.executeQuery(sql);
+            while (rs.next()){
+                int userId = rs.getInt("id");
+                String username = rs.getString("username");
+                String email = rs.getString("email");
+                String phoneNumber = rs.getString("phoneNumber");
+                UserInfo user = new UserInfo(userId, username, email, phoneNumber);
+                return user;
+            }
+            return null;
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+            return null;
         }
-        return results;
     }
-
 }

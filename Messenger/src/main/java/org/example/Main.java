@@ -1,64 +1,65 @@
 package org.example;
 
-import java.util.*;
-import javax.mail.*;
-import javax.mail.internet.*;
-import javax.activation.*;
+import com.rabbitmq.client.Channel;
+import com.rabbitmq.client.Connection;
+import com.rabbitmq.client.ConnectionFactory;
+import com.rabbitmq.client.DeliverCallback;
+import org.example.notification.EmailService;
+import com.google.gson.*;
+
+import java.nio.charset.StandardCharsets;
 
 public class Main {
 
+    private final static String QUEUE_NAME = "auction";
     public static void main(String[] args){
         // Recipient's email ID needs to be mentioned.
-        String to = "hanzehu1998@gmail.com";
+        EmailService emailService = new EmailService();
 
-        // Sender's email ID needs to be mentioned
-        String from = "ruige306@gmail.com";
-
-        // Assuming you are sending email from localhost
-//        String host = "localhost";
-        String host = "smtp.gmail.com";
-        // Get system properties
-        Properties properties = System.getProperties();
-        properties.put("mail.smtp.port", "465");
-
-        // Setup mail server
-        properties.setProperty("mail.smtp.host",host);
-        properties.put("mail.smtp.ssl.enable", "true");
-        properties.put("mail.smtp.auth", "true");
-
-        // Get the default Session object.
-//        Session session = Session.getDefaultInstance(properties);
-        Session session = Session.getInstance(properties, new javax.mail.Authenticator(){
-            protected PasswordAuthentication getPasswordAuthentication() {
-                // use app application password here https://opensource.com/article/18/8/postfix-open-source-mail-transfer-agent Step 1
-                return new PasswordAuthentication("ruige306@gmail.com", "wurhwxpfsaliudds");
-            }
-        });
-
-        session.setDebug(true);
-
+        ConnectionFactory factory = new ConnectionFactory();
+        factory.setHost("localhost");
         try{
-            // Create a default MimeMessage object.
-            MimeMessage message = new MimeMessage(session);
+            Connection connection = factory.newConnection();
+            Channel channel = connection.createChannel();
+            channel.queueDeclare(QUEUE_NAME, false, false, false, null);
+            DeliverCallback deliverCallback = (consumerTag, delivery) -> {
+                String message = new String(delivery.getBody(), StandardCharsets.UTF_8);
+                System.out.println(" [x] Received '" + message + "'");
+                JsonObject jsonObj = JsonParser.parseString(message).getAsJsonObject();
+                String type = jsonObj.get("type").getAsString();
+                String receiver = jsonObj.get("email").getAsString();
+                String user_id = jsonObj.get("user_id").getAsString();
+                switch (type) {
+                    case "new bid" -> {
+                        String auction_id = jsonObj.get("auction_id").getAsString();
+                        emailService.send_email(receiver, "New bid on your auction: " + auction_id,
+                                "Dear customer " + user_id + ", there is a new bid from others on the auction: "
+                                        + auction_id + ". Give us a higher price or go away, thank you.");
 
-            // Set From: header field of the header.
-            message.setFrom(new InternetAddress(from));
+                        break;
+                    }
+                    case "alert one day" -> {
+                        String auction_id = jsonObj.get("auction_id").getAsString();
+                        emailService.send_email(receiver, "Alert! 24 hours before the auction expiration: " + auction_id, "Dear customer " + user_id + ", the auction: "
+                                + auction_id + "is gonna end soon. Please bear in mind that anything could happen, have a good one.");
 
-            // Set To: header field of the header.
-            message.addRecipient(Message.RecipientType.TO, new InternetAddress(to));
+                        break;
+                    }
+                    case "alert one hour" -> {
+                        String auction_id = jsonObj.get("auction_id").getAsString();
+                        emailService.send_email(receiver, "Alert! One hour before the auction expiration: " + auction_id, "Dear customer " + user_id + ", the auction: "
+                                + auction_id + "is gonna end very soon. Please bear in mind that anything could happen, have a good one.");
 
-            // Set Subject: header field
-            message.setSubject("This is the Subject Line!");
-
-            // Now set the actual message
-            message.setText("This is actual message");
-
-            // Send message
-            Transport.send(message);
-            System.out.println("Sent message successfully....");
+                        break;
+                    }
+                    default -> throw new RuntimeException("illegal json object content");
+                }
+            };
+            channel.basicConsume(QUEUE_NAME, true, deliverCallback, consumerTag -> { });
         }catch (Exception e){
             e.printStackTrace();
         }
+
     }
 
 }

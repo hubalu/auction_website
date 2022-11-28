@@ -1,6 +1,10 @@
 package app.auction;
 
+import app.rmiManagement.RMIHelper;
 import app.rmiManagement.RemoteAuctionManagement;
+import app.rmiManagement.RemoteUserManagement;
+import app.timertasks.OneDayAlert;
+import app.timertasks.OneHourAlert;
 import com.google.gson.JsonObject;
 import com.rabbitmq.client.Channel;
 import com.rabbitmq.client.Connection;
@@ -12,6 +16,10 @@ import java.nio.charset.StandardCharsets;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 import java.util.Timer;
 
@@ -19,17 +27,22 @@ public class AuctionManagement extends java.rmi.server.UnicastRemoteObject imple
 
 	private MongoDB db;
 
-	public final static String QUEUE_NAME = "app/auction";
+	public final static String QUEUE_NAME = "auction";
 
 	private Channel channel;
 	int port;
 	String address;
 	Registry registry;
 
+	Timer timer;
+
+	RemoteUserManagement rmiUser;
+
 	public AuctionManagement() throws RemoteException{
 		try {
-			db = new MongoDB("");
-			Timer timer = new Timer();
+			db = new MongoDB("auctionSite");
+			timer = new Timer();
+			rmiUser = new RMIHelper().getRemUserManagement();
 			ConnectionFactory factory = new ConnectionFactory();
 			factory.setHost("localhost");
 			Connection conn = factory.newConnection();
@@ -42,28 +55,45 @@ public class AuctionManagement extends java.rmi.server.UnicastRemoteObject imple
 			} catch (Exception e) {
 				throw new RemoteException("can't get inet address.");
 			}
-			port = 55555;  // our port
+			port = 23456;  // our port
 			System.out.println("using address=" + address + ",port=" + port);
 			// create the registry and bind the name and object.
 			registry = LocateRegistry.createRegistry(port);
-			registry.rebind("itemManagement", this);
+			registry.rebind("auctionManagemen", this);
 
 
 		} catch (Exception e){
-			System.out.println("error in auction.AuctionManagement");
+			e.printStackTrace();
 		}
 
 
 	}
 	
-	public boolean listForAuction(String auctionId, String itemId, String itemName, Double startingPrice,
+	public boolean listForAuction(String itemId, String itemName, Double startingPrice,
 					 Double buyNowPrice, String startTime, String expireTime, String sellerId) throws RemoteException{
 		try {
-			this.db.insertToAuction(auctionId, itemId, itemName, startingPrice, buyNowPrice, startTime, expireTime, sellerId);
+			ObjectId objectId = this.db.insertToAuction(itemId, itemName, startingPrice, buyNowPrice, startTime, expireTime, sellerId);
+
+			DateFormat dateFormat = new SimpleDateFormat("yyyy-mm-dd hh:mm:ss");
+			Date end_time = dateFormat.parse(expireTime);
+			Calendar calendar = Calendar.getInstance();
+			calendar.setTime(end_time);
+			int newHour = calendar.get(Calendar.HOUR) - 1;
+			calendar.set(Calendar.HOUR, newHour);
+			Date oneHourBefore = calendar.getTime();
+			if(!oneHourBefore.before(Calendar.getInstance().getTime())){
+				timer.schedule(new OneHourAlert(objectId.toString(), channel, db, rmiUser), oneHourBefore);
+			}
+			calendar.set(Calendar.DATE, calendar.get(Calendar.DATE) - 1);
+			calendar.set(Calendar.HOUR, calendar.get(Calendar.HOUR) + 1);
+			Date oneDayBefore = calendar.getTime();
+			if(!oneDayBefore.before(Calendar.getInstance().getTime())){
+				timer.schedule(new OneDayAlert(objectId.toString(), channel, db, rmiUser), oneDayBefore);
+			}
 			System.out.println("Successfully added item " + itemId + " to auction");
 			return true;
 		} catch (Exception e){
-			System.out.println("error in listForAuction"); 
+			e.printStackTrace();
 			return false;
 		}
 	}
@@ -86,7 +116,7 @@ public class AuctionManagement extends java.rmi.server.UnicastRemoteObject imple
 			return true;
 
 		} catch (Exception e){
-			System.out.println("error in placeBid"); 
+			e.printStackTrace();
 			return false;
 		}
 	}
@@ -96,7 +126,7 @@ public class AuctionManagement extends java.rmi.server.UnicastRemoteObject imple
 			List<AuctionDesc> listOfAuctions = this.db.getAuctions();
 			return listOfAuctions;
 		} catch (Exception e){
-			System.out.println("error in getAuctions"); 
+			e.printStackTrace();
 			return null;
 		}
 	}
@@ -107,7 +137,7 @@ public class AuctionManagement extends java.rmi.server.UnicastRemoteObject imple
 			System.out.println("Successfully ended auction on " + auctionId);
 			return true;
 		} catch (Exception e){
-			System.out.println("error in endAuction"); 
+			e.printStackTrace();
 			return false;
 		}
 	}
@@ -118,20 +148,18 @@ public class AuctionManagement extends java.rmi.server.UnicastRemoteObject imple
 			System.out.println("Succesfully updated auction item " + auctionId + " with " + param + " = " + newVal);
 			return true;
 		} catch (Exception e){
-			System.out.println(e);
-			System.out.println("error in updateAuction"); 
+			e.printStackTrace();
 			return false;
 		}
 	}
 	
-	public boolean addToWatchlist(String itemId, String userId) {
+	public boolean addToWatchlist(String auctionId, String userId) {
 		try {
-			this.db.addToWatchlist(itemId, userId);
-			System.out.println("Succesfully added userId " + userId + " to watchlist_" + itemId);
+			this.db.addToWatchlist(auctionId, userId);
+			System.out.println("Succesfully added userId " + userId + " to watchlist_" + auctionId);
 			return true;
 		}catch (Exception e){
-			System.out.println(e);
-			System.out.println("error in addToWatchlist"); 
+			e.printStackTrace();
 			return false;
 		}
 	}

@@ -28,7 +28,7 @@ public class MongoDB {
 	public MongoDB(String database_path) {
 		try {
 			mongoClient = MongoClients.create();
-			db = mongoClient.getDatabase("auctionSite");
+			db = mongoClient.getDatabase(database_path);
 			System.out.println("connection established to auctionSite database");
 			boolean auctionExists = db.listCollectionNames().into(new ArrayList()).contains("app/auction");
 			boolean watchlistExists = db.listCollectionNames().into(new ArrayList()).contains("watchlist");
@@ -51,10 +51,9 @@ public class MongoDB {
 		
 	}
 	
-	public void insertToAuction(String auctionId, String itemId, String itemName, Double startingPrice, Double buyNowPrice, String startTime, String expireTime, String sellerId) {
+	public ObjectId insertToAuction(String itemId, String itemName, Double startingPrice, Double buyNowPrice, String startTime, String expireTime, String sellerId) {
 		try {
 			Document doc = new Document();
-			doc.append("auctionId", auctionId);
 			doc.append("itemId", itemId);
 			doc.append("itemName", itemName);
 			doc.append("startingPrice", startingPrice);
@@ -65,8 +64,10 @@ public class MongoDB {
 			doc.append("active", true);
 			db.getCollection("app/auction").insertOne(doc);
 			System.out.println("added successfully");
+			return doc.getObjectId("_id");
 		} catch (Exception e) {
-	            System.out.println("error in insertToAuction"); 
+			e.printStackTrace();
+			return null;
 	    }
 	}
 	
@@ -130,34 +131,42 @@ public class MongoDB {
 	
 	}
 	
-	public void addToWatchlist(String itemId, String userId) {
+	public void addToWatchlist(String auctionId, String userId) {
 		try {
 			MongoCollection<Document> watchlist = db.getCollection("watchlist");
 			List<String> users = new ArrayList<String>();
-			if(!itemExistInWatchlist(itemId)) {
+			if(!itemExistInWatchlist(auctionId)) {
 				Document doc = new Document();
-				doc.append("itemId", itemId);
-				 
-		        users.add(userId);
+				users.add(userId);
+				doc.append("auctionId", auctionId);
+				doc.append("watchlist", users);
 		        watchlist.insertOne(doc);
-		        watchlist.findOneAndUpdate(eq("itemId", itemId), Updates.pushEach("watchlist", users));
-		       
-				System.out.println("added successfully");
+//		        watchlist.findOneAndUpdate(eq("auctionId", auctionId), Updates.pushEach("watchlist", users));
 			}else {
 				users.add(userId);
-				watchlist.findOneAndUpdate(eq("itemId", itemId), Updates.pushEach("watchlist", users));
+				watchlist.findOneAndUpdate(eq("auctionId", auctionId), Updates.pushEach("watchlist", users));
 			}
-			
-			
-			
 		} catch (Exception e) {
-			System.out.println("error in addToWatchlist");
+			e.printStackTrace();
+		}
+	}
+
+	public List<String> getWatchList(String auctionId){
+		try{
+			MongoCollection<Document> watchlist = db.getCollection("watchlist");
+			Document doc = watchlist.find(eq("_id", new ObjectId(auctionId))).first();
+			List<String> res = (List<String>) doc.get("watchlist");
+			return res;
+
+		}catch (Exception e){
+			e.printStackTrace();
+			return null;
 		}
 	}
 	
-	public boolean itemExistInWatchlist(String itemId) {
+	public boolean itemExistInWatchlist(String auctionId) {
 	    FindIterable<Document> iterable = db.getCollection("watchlist")
-	                                        .find(new Document("itemId", itemId));
+	                                        .find(new Document("auctionId", auctionId));
 	    return iterable.first() != null;
 	}
 

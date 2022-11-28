@@ -1,4 +1,5 @@
 import java.sql.SQLException;
+import java.util.List;
 
 public class CartManagement {
 
@@ -10,13 +11,11 @@ public class CartManagement {
         this.db.createTableIfNotExists();
     }
 
-    public boolean addCart(int user_id, int item_id, String item_name, int quantity, double buy_now_price){
+    public boolean addCart(int user_id, int auction_id, String item_name, double buy_now_price){
         try {
-            int count = this.db.checkIfItemExist(user_id, item_id);
-            if (count > 0) {
-                this.db.updateCartByQuantity(user_id, item_id, count, quantity);
-            } else {
-                this.db.insertIntoTable(user_id, item_id, item_name, quantity, buy_now_price);
+            boolean exist = this.db.checkIfItemExist(user_id, auction_id);
+            if (!exist) {   //prevent repeated adding to cart
+                this.db.insertIntoTable(user_id, auction_id, item_name, buy_now_price);
             }
             return true;
         } catch (SQLException throwables) {
@@ -25,7 +24,26 @@ public class CartManagement {
         }
     }
 
-    public boolean getCart(int user_id, String token) {
-        return true;
+    public List<cartItem> getCart(int user_id) {
+        try {
+            return this.db.getCartByUser(user_id);
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+            return null;
+        }
+    }
+
+    public boolean clearCart(int user_id){
+        try {
+            List<cartItem> items = this.db.getCartByUser(user_id);
+            for (cartItem item : items) {
+                this.db.clearItemCart(item.getAuction_id());
+            }
+            //this.db.clearUserCart(user_id);
+            return true;
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+            return false;
+        }
     }
 }

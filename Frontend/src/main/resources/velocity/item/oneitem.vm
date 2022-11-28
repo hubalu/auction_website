@@ -7,6 +7,12 @@
     <h1>$item.getItemName()</h1>
     <h2>$item.getDescription()</h2>
     <h2>$item.getCategory()</h2>
+    #if($userID eq $item.getUserID())
+        <form id="uploadAuctionForm" method="get" action="$WebPath.getUPLOAD_AUCTION()">
+            <input name="item_id" type="text" value = $item.getItemID() hidden>
+            <input type="submit" value="Create Auction">
+        </form>
+    #end
     #else
     <h1>Sorry, this item can no longer be found</h1>
     #end

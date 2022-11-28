@@ -1,9 +1,6 @@
 package app.user;
 
-import java.util.ArrayList;
 import java.util.Iterator;
-import java.util.List;
-import java.util.stream.Collectors;
 
 import com.mongodb.*;
 import com.mongodb.client.FindIterable;
@@ -11,8 +8,8 @@ import com.mongodb.client.MongoClients;
 import com.mongodb.client.MongoClient;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
-import com.mongodb.util.JSON;
-import org.bson.BSON;
+import com.mongodb.client.model.Filters;
+import com.mongodb.client.model.Updates;
 import org.bson.Document;
 import org.bson.codecs.configuration.CodecRegistry;
 import org.mindrot.jbcrypt.BCrypt;
@@ -45,7 +42,6 @@ public class UserDao {
 
     }
 
-
     public User getUserByUsername(String username) {
         try {
             Document userData = (Document) collection.find(eq("_id", username)).first();
@@ -55,9 +51,14 @@ public class UserDao {
             String fetchedUsername = userData.get("_id").toString();
             String salt =  userData.get("salt").toString();
             String hashedPassword = userData.get("hashedPassword").toString();
-            User user = new User(fetchedUsername, salt, hashedPassword );
+            UserType userType = UserType.valueOf(userData.get("userType").toString());
+            int userID = (int) userData.get("userId");
+            System.out.println(userID);
+            if (userID < 0){
+                return null;
+            }
+            User user = new User(fetchedUsername, salt, hashedPassword, userID, userType);
             //System.out.println("Success! Inserted document id: " + result.getInsertedId());
-            System.out.println("Insert success");
             return user;
         } catch (MongoException e) {
             System.err.println("Unable to insert due to an error: " + e);
@@ -66,13 +67,15 @@ public class UserDao {
         //return users.stream().filter(b -> b.getUsername().equals(username)).findFirst().orElse(null);
     }
 
-    public boolean addUser(String username, String password){
-        System.out.println("Building Object");
-        Document user = createDBUserObject(username, password);
+    public boolean addUser(String username, String password, UserType userType, int userID){
+        if (userID < 0) {
+            return false;
+        }
+        Document user = createDBUserObject(username, password, userType, userID);
         System.out.println(user);
+
         //System.out.println(user.getUsername() + user.getSalt() + user.getHashedPassword());
         try {
-            System.out.println("Trying to Write");
             collection.insertOne(user);
             //System.out.println("Success! Inserted document id: " + result.getInsertedId());
             System.out.println("Insert success");
@@ -91,6 +94,24 @@ public class UserDao {
 
         //users.add(new User("perwendel", "$2a$10$h.dl5J86rGH7I8bD9bZeZe", "$2a$10$h.dl5J86rGH7I8bD9bZeZeci0pDt0.VwFTGujlnEaZXPf/q7vM5wO"));
     }
+
+    public boolean updateUser(String username, String newPassword) {
+        User user = getUserByUsername(username);
+
+        //System.out.println(user.getUsername() + user.getSalt() + user.getHashedPassword());
+        try {
+            String newSalt = BCrypt.gensalt();
+            String newHashedPassword = BCrypt.hashpw(newPassword, newSalt);
+
+            collection.updateOne(Filters.eq("_id", username), Updates.set("salt", newSalt));
+            collection.updateOne(Filters.eq("_id", username), Updates.set("hashedPassword", newHashedPassword));
+            return true;
+        } catch (MongoException e) {
+            System.err.println("Unable to update due to an error: " + e);
+            return false;
+        }
+    }
+
     public void printCollection(){
         FindIterable<User> iterDoc = collection.find();
         Iterator it = iterDoc.iterator();
@@ -98,19 +119,19 @@ public class UserDao {
             System.out.println(it.next());
         }
     }
-    public static Document createDBUserObject(String username, String password) {
+    public static Document createDBUserObject(String username, String password, UserType userType, int userID) {
         Document userObj = new Document();
-        System.out.println("Ojbect Started");
         String newSalt = BCrypt.gensalt();
-        System.out.println(newSalt);
         String newHashedPassword = BCrypt.hashpw(password, newSalt);
-        System.out.println("Password Hashed");
+
 
         //User user = new User(username, newSalt, newHashedPassword);
         userObj.append("_id", username);
         userObj.append("salt", newSalt);
         userObj.append("hashedPassword", newHashedPassword);
-        System.out.println("Data Appeneded");
+        userObj.append("userType", userType.toString());
+        userObj.append("userId", userID);
+
         return userObj;
     }
 

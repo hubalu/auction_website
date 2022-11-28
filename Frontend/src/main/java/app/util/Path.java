@@ -19,6 +19,10 @@ public class Path {
         @Getter public static final String ALL_AUCTIONS = "/auctions/";
         @Getter public static final String ONE_AUCTION = "/auction/:AuctionID/";
         @Getter public static final String CREATE_USER = "/user/";
+        @Getter public static final String USER_INFO = "/user_info/";
+        @Getter public static final String ONE_USER_INFO = "/user_info/:userid/";
+        @Getter public static final String UPDATE_PASSWORD = "/update_password/";
+        @Getter public static final String UPDATE_USER_INFO = "/update_user_info/";
     }
 
     public static class Template {
@@ -27,6 +31,7 @@ public class Path {
         public final static String BOOKS_ALL = "/velocity/book/all.vm";
         public static final String BOOKS_ONE = "/velocity/book/one.vm";
         public static final String NOT_FOUND = "/velocity/notFound.vm";
+        public static final String UNAUTHORIZED = "/velocity/unauthorized.vm";
         public static final String ITEM = "/velocity/item/item.vm";
 
         public static final String ITEMS = "/velocity/item/allitems.vm";
@@ -34,8 +39,10 @@ public class Path {
         public static final String UPLOAD_AUCTION = "/velocity/auction/auction.vm";
         public static final String ALL_AUCTIONS = "/velocity/auction/allauctions.vm";
         public static final String ONE_AUCTION = "/velocity/auction/oneauction.vm";
-
         public static final String CREATE_USER = "/velocity/login/createuser.vm";
+
+        public static final String ALL_USER = "/velocity/user/allusers.vm";
+        public static final String ONE_USER = "/velocity/user/oneuser.vm";
     }
 
 }

@@ -34,6 +34,21 @@ public class RMIHelper {
         return remoteObj;
     }
 
+    public RemoteUserManagement getRemUserManagement(){
+        RemoteUserManagement remoteObj = null;
+        Registry registry;
+        try{
+            // get the registry
+            registry= LocateRegistry.getRegistry("localhost", 54321);
+            // look up the remote object in the RMI Registry
+            remoteObj= (RemoteUserManagement)(registry.lookup("userManagement"));
+        }
+        catch(Exception e){
+            e.printStackTrace();
+        }
+        return remoteObj;
+    }
+
     private Remote registryLookUp(String serverAddress, String port, String lookupName){
         Remote remoteObj = null;
         Registry registry;

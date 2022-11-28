@@ -7,7 +7,6 @@ import java.io.Serializable;
 @Value
 public class Item implements Serializable {
     String ItemID;
-
     String UserID;
     String ItemName;
     String Description;

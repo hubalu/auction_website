@@ -11,7 +11,11 @@
     <label>Item to auction</h1>
     <select name="item" id="item">
         #foreach($item in $itemList)
-            <option value="$item.getItemID()">$item.getItemName()</option>
+            #if($selected && $item.getItemID() eq $selected)
+                <option value="$item.getItemID()" selected>$item.getItemName()</option>
+            #else
+                <option value="$item.getItemID()">$item.getItemName()</option>
+            #end
         #end
     </select>
     <br>

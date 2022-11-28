@@ -40,6 +40,7 @@ public class ItemController {
 
     private static List<Item> cachedItems;
     public static RMIHelper rmiHelper = new RMIHelper();
+
     public static Route uploadItem = (Request request, Response response) -> {
         LoginController.ensureUserIsLoggedIn(request, response);
         Map<String, Object> model = new HashMap<>();
@@ -55,7 +56,7 @@ public class ItemController {
         String item_desc = request.queryParams("description");
         String category = request.queryParams("category");
         // RMI call Item microservice
-        rmItemManagement.upload_item("1", item_name, item_desc, category);
+        rmItemManagement.upload_item(request.session().attribute("userID").toString(), item_name, item_desc, category);
         Map<String, Object> model = new HashMap<>();
         ArrayList<Item> itemList = new ArrayList<>();
 //        itemList.add(new Item("30", "sdf", "sdf", "Sdf"));
@@ -68,7 +69,20 @@ public class ItemController {
     public static Route getAllItemsPlaceholder = (Request request, Response response) -> {
         LoginController.ensureUserIsLoggedIn(request, response);
         RemoteItemManagement rmItemManagement = rmiHelper.getRemItemManagement();
-        cachedItems = rmItemManagement.search_item(null, null, "UploadTime", true);
+        String search_value = request.queryParams("search_value");
+        String search_type = request.queryParams("search_type");
+        String order = request.queryParams("order");
+        boolean desc = true;
+        if (order == "ASC"){
+            desc = false;
+        }
+        if (search_type == null){
+            cachedItems = rmItemManagement.search_item(null, null, "UploadTime", desc);
+        } else if (search_type == "category") {
+            cachedItems = rmItemManagement.search_item(null, search_value, "UploadTime", desc);
+        } else {
+            cachedItems = rmItemManagement.search_item(search_value, null, "UploadTime", desc);
+        }
         Map<String, Object> model = new HashMap<>();
 //        ArrayList<Item> itemList = generateItemList();
         model.put("itemList", cachedItems);
@@ -85,6 +99,7 @@ public class ItemController {
                     model.put("item", item);
                 }
             }
+            model.put("userID", request.session().attribute("userID"));
             return ViewUtil.render(request, model, Path.Template.ONE_ITEM);
         }
         return ViewUtil.notAcceptable.handle(request, response);

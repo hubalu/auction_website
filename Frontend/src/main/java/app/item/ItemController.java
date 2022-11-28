@@ -92,9 +92,13 @@ public class ItemController {
 
     public static Route getOneItemPlaceholder = (Request request, Response response) -> {
         LoginController.ensureUserIsLoggedIn(request, response);
+        RemoteItemManagement rmItemManagement = rmiHelper.getRemItemManagement();
         if (clientAcceptsHtml(request)) {
             HashMap<String, Object> model = new HashMap<>();
             String itemId = request.params(":ItemID");
+            if (cachedItems == null){
+                cachedItems = rmItemManagement.search_item(null, null, "UploadTime", true);
+            }
             for (Item item : cachedItems){
                 if(item.getItemID().equals(itemId)){
                     model.put("item", item);

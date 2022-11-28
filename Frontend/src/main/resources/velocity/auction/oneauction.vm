@@ -4,19 +4,30 @@
         Back to All Auctions
     </a>
 
-    #if($item&&$auction)
-    <h1>$item.getItemName()</h1>
-    <h2>$item.getDescription()</h2>
-    <h2>$item.getCategory()</h2>
+    #if($auction)
+    <h1>$auction.getItemName()</h1>
     <div>
-    <h2>Current Price: $auction.getCurrentPrice()</h2>
-    #if($auction.BuyNowPrice > 0)
+    <h2>Current Price: $auction.getCurrentBid()</h2>
+    #if($auction.getBuyNowPrice() > 0)
         <h2>Buy Now: $auction.getBuyNowPrice()</h2>
+        #if($auction.getSellerId() != $userID)
+        <form id="buyNowForm" method="get" action="$WebPath.getALL_AUCTIONS()">
+            <input type="submit" value="TODO: Buy Now">
+        </form>
+        #end
     #end
-    <h2> Auction expires at: $auction.getEndTime()</h2>
+    <br>
+    #if($auction.getSellerId() != $userID)
+    <form id="placeBidForm" method="post">
+        <input type="number" step="0.01" min="$auction.getCurrentBid()">
+        <input type="submit" value="Place Bid">
+    </form>
+    #end
+
+    <h2> Auction expires at: $auction.getExpireTime()</h2>
 
     </div>
     #else
-    <h1>Sorry, this item can no longer be found</h1>
+    <h1>Sorry, this auction is no longer active</h1>
     #end
 #end

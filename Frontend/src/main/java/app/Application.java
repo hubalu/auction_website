@@ -1,9 +1,8 @@
 package app;
 
-import app.bidding.BidController;
+import app.auction.BidController;
 import app.item.ItemController;
 import app.login.LoginController;
-import app.user.User;
 import app.user.UserController;
 import app.user.UserDao;
 import app.util.Filters;

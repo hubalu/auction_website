@@ -4,6 +4,7 @@ import java.net.InetAddress;
 import java.rmi.RemoteException;
 import java.rmi.registry.*;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 
 import app.rmiManagement.RemoteUserManagement;
@@ -102,5 +103,17 @@ public class UserManagement extends java.rmi.server.UnicastRemoteObject implemen
         } catch (SQLException throwables) {
             return null;
         }
+    }
+
+    public List<String> getEmailList(List<String> ids) throws RemoteException{
+        List<String> emails = new ArrayList<>();
+        for (String id : ids) {
+            try {
+                emails.add(this.db.getOneUser(Integer.parseInt(id)).getEmail());
+            } catch (SQLException throwables) {
+                throwables.printStackTrace();
+            }
+        }
+        return emails;
     }
 }

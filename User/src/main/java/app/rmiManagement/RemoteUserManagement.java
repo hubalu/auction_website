@@ -19,4 +19,6 @@ public interface RemoteUserManagement extends Remote {
     List<UserInfo> getAllUser() throws RemoteException;
 
     UserInfo getOneUser(Integer id) throws RemoteException;
+
+    List<String> getEmailList(List<String> ids) throws RemoteException;
 }

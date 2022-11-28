@@ -1,24 +1,32 @@
 package app.auction;
 
+import app.rmiManagement.RemoteAuctionManagement;
 import com.google.gson.JsonObject;
 import com.rabbitmq.client.Channel;
 import com.rabbitmq.client.Connection;
 import com.rabbitmq.client.ConnectionFactory;
 import org.bson.types.ObjectId;
 
+import java.net.InetAddress;
 import java.nio.charset.StandardCharsets;
 import java.rmi.RemoteException;
+import java.rmi.registry.LocateRegistry;
+import java.rmi.registry.Registry;
 import java.util.List;
 import java.util.Timer;
 
-public class AuctionManagement {
+public class AuctionManagement extends java.rmi.server.UnicastRemoteObject implements RemoteAuctionManagement {
 
 	private MongoDB db;
 
 	public final static String QUEUE_NAME = "app/auction";
 
 	private Channel channel;
-	public AuctionManagement() {
+	int port;
+	String address;
+	Registry registry;
+
+	public AuctionManagement() throws RemoteException{
 		try {
 			db = new MongoDB("");
 			Timer timer = new Timer();
@@ -27,6 +35,18 @@ public class AuctionManagement {
 			Connection conn = factory.newConnection();
 			channel = conn.createChannel();
 			channel.queueDeclare(QUEUE_NAME, false, false, false, null);
+
+			try {
+				// get the address of this host.
+				address = (InetAddress.getLocalHost()).toString();
+			} catch (Exception e) {
+				throw new RemoteException("can't get inet address.");
+			}
+			port = 55555;  // our port
+			System.out.println("using address=" + address + ",port=" + port);
+			// create the registry and bind the name and object.
+			registry = LocateRegistry.createRegistry(port);
+			registry.rebind("itemManagement", this);
 
 
 		} catch (Exception e){

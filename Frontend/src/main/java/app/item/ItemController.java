@@ -71,6 +71,7 @@ public class ItemController {
         RemoteItemManagement rmItemManagement = rmiHelper.getRemItemManagement();
         String search_value = request.queryParams("search_value");
         String search_type = request.queryParams("search_type");
+        System.out.println(search_type);
         String order = request.queryParams("order");
         boolean desc = true;
         if (order == "ASC"){
@@ -78,7 +79,7 @@ public class ItemController {
         }
         if (search_type == null){
             cachedItems = rmItemManagement.search_item(null, null, "UploadTime", desc);
-        } else if (search_type == "category") {
+        } else if (search_type.equals("category")) {
             cachedItems = rmItemManagement.search_item(null, search_value, "UploadTime", desc);
         } else {
             cachedItems = rmItemManagement.search_item(search_value, null, "UploadTime", desc);

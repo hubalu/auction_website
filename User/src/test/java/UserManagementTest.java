@@ -1,3 +1,5 @@
+/*import app.usermanagement.UserManagement;
+import app.usermanagement.UserType;
 import org.junit.Test;
 
 public class UserManagementTest {
@@ -18,3 +20,5 @@ public class UserManagementTest {
         um.deleteUser(2, 2, UserType.User);
     }
 }
+
+ */

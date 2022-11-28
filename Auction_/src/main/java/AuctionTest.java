@@ -1,9 +1,4 @@
-import java.util.Iterator;
-import java.util.List;
-
-import org.bson.Document;
-
-import com.mongodb.client.FindIterable;
+import app.auction.AuctionManagement;
 
 public class AuctionTest {
 
@@ -11,15 +6,15 @@ public class AuctionTest {
 		
 		AuctionManagement auc = new AuctionManagement();
 	
-		auc.listForAuction("1002", "107", 200.0, 460.5, 211, "1", "11/23/2022", "12/06/2022", "2");
+//		auc.listForAuction("1002", "107", "200", "600.5", "300", "1", "11/23/2022", "12/06/2022", "2");
 		//auc.placeBid("1006", "6", 300);
 		//auctionId, userId, param, newVal
 		//auc.updateAuction("1007", "2", "expireTime", "12/11/2022");
-		auc.addToWatchlist("107", "1");
-		auc.addToWatchlist("107", "2");
-		auc.addToWatchlist("107", "3");
-		auc.addToWatchlist("107", "4");
-		auc.addToWatchlist("107", "5");
+//		auc.addToWatchlist("107", "1");
+//		auc.addToWatchlist("107", "2");
+//		auc.addToWatchlist("107", "3");
+//		auc.addToWatchlist("107", "4");
+//		auc.addToWatchlist("107", "5");
 		
 	}
 }

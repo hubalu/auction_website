@@ -49,6 +49,21 @@ public class RMIHelper {
         return remoteObj;
     }
 
+    public RemoteAuctionManagement getRemAuctionManagement(){
+        RemoteAuctionManagement remoteObj = null;
+        Registry registry;
+        try{
+            // get the registry
+            registry= LocateRegistry.getRegistry("localhost",  11111);
+            // look up the remote object in the RMI Registry
+            remoteObj= (RemoteAuctionManagement)(registry.lookup("auctionManagement"));
+        }
+        catch(Exception e){
+            e.printStackTrace();
+        }
+        return remoteObj;
+    }
+
     private Remote registryLookUp(String serverAddress, String port, String lookupName){
         Remote remoteObj = null;
         Registry registry;

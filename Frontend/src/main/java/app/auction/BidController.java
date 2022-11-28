@@ -1,15 +1,15 @@
-package app.bidding;
+package app.auction;
 
 import app.item.Item;
 import app.login.LoginController;
 import app.rmiManagement.RMIHelper;
+import app.rmiManagement.RemoteAuctionManagement;
 import app.rmiManagement.RemoteItemManagement;
 import app.util.Path;
 import app.util.ViewUtil;
 import spark.Request;
 import spark.Response;
 import spark.Route;
-import app.item.ItemController;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -41,6 +41,7 @@ public class BidController {
 //    }
 
     public static RMIHelper rmiHelper = new RMIHelper();
+    private static List<AuctionDesc> cachedAuctions;
 
     public static Route uploadAuctionPlaceholder = (Request request, Response response) -> {
         LoginController.ensureUserIsLoggedIn(request, response);
@@ -58,7 +59,7 @@ public class BidController {
 
     public static Route handleUploadAuctionPostPlaceholder = (Request request, Response response) -> {
         LoginController.ensureUserIsLoggedIn(request, response);
-        //RemoteItemManagement rmItemManagement = rmiHelper.getRemItemManagement();
+        RemoteAuctionManagement rmAuctionManagement = rmiHelper.getRemAuctionManagement();
 
         // database processing
         //String item_name = request.queryParams("item_name");
@@ -75,23 +76,30 @@ public class BidController {
         String endTime = dateFormat.format(et);
 
         auctionList.add(new Auction(40, 100, 110, 150, startTime, endTime)); */
-        String n = request.queryParams("item");
-        String a = request.queryParams("start_price");
-        String b = request.queryParams("buy_now_price");
-        String c = request.queryParams("start_time");
-        String d = request.queryParams("end_time");
+        String itemId = request.queryParams("item").split("@")[0];
+        String itemName = request.queryParams("item").split("@")[1];
+        Double startingPrice = Double.parseDouble(request.queryParams("start_price"));
+        Double buyNowPrice;
+        if (!request.queryParams("buy_now_price").isEmpty()){
+            buyNowPrice = Double.parseDouble(request.queryParams("buy_now_price"));
+        } else {
+            buyNowPrice = null;
+        }
+        String startTime = request.queryParams("start_time");
+        String expireTime = request.queryParams("end_time");
+        String sellerId = request.session().attribute("userID").toString();
 
-        //return n + " / " + a + " / " + b + " / " + c + " / " + d;
-        Map<String, Object> model = new HashMap<>();
-        ArrayList<Auction> auctionList = generateItemList();
-        model.put("auctionList", auctionList);
-        return ViewUtil.render(request, model, Path.Template.ALL_AUCTIONS);
+        rmAuctionManagement.listForAuction(itemId, itemName, startingPrice, buyNowPrice,
+                startTime, expireTime, sellerId);
+        response.redirect(Path.Template.ALL_AUCTIONS);
+        return null;
     };
 
     public static Route getAllAuctionPlaceholder = (Request request, Response response) -> {
         LoginController.ensureUserIsLoggedIn(request, response);
         Map<String, Object> model = new HashMap<>();
-        ArrayList<Auction> auctionList = generateItemList();
+        List<AuctionDesc> auctionList = generateItemList();
+        cachedAuctions = auctionList;
         model.put("auctionList", auctionList);
         return ViewUtil.render(request, model, Path.Template.ALL_AUCTIONS);
     };
@@ -100,14 +108,16 @@ public class BidController {
         LoginController.ensureUserIsLoggedIn(request, response);
         if (clientAcceptsHtml(request)) {
             HashMap<String, Object> model = new HashMap<>();
-            String startTime = new Date().toString();
-            long et = new Date().getTime() + (1000 * 60 * 60);
-            DateFormat dateFormat = new SimpleDateFormat("yyyy-mm-dd hh:mm:ss");
-            String endTime = dateFormat.format(et);
-            Auction auction = new Auction(40, "Sunscreen", 30, 60, 70, 100, startTime, endTime );
-            model.put("auction", auction);
-//            Item item = new Item("4399", "Sunscreen", "A bottle of new Sunscreen", "Suncare");
-//            model.put("item", item);
+            if (cachedAuctions == null){
+                cachedAuctions = generateItemList();
+            }
+            String auctionId = request.params(":AuctionID");
+            for (AuctionDesc auction : cachedAuctions){
+                if(auction.getAuctionId().equals(auctionId)){
+                    model.put("auction", auction);
+                }
+            }
+            model.put("userID", request.session().attribute("userID"));
             return ViewUtil.render(request, model, Path.Template.ONE_AUCTION);
         }
         return ViewUtil.notAcceptable.handle(request, response);
@@ -118,37 +128,36 @@ public class BidController {
         if (clientAcceptsHtml(request)) {
             //Some RMI Function Call to Submit Bid
             HashMap<String, Object> model = new HashMap<>();
-            ArrayList<Auction> auctions = generateItemList();
+            ArrayList<AuctionDesc> auctions = generateItemList();
             model.put("auction", auctions);
             return ViewUtil.render(request, model, Path.Template.ALL_AUCTIONS);
         }
         return ViewUtil.notAcceptable.handle(request, response);
     };
 
-    private static ArrayList<Auction> generateItemList(){
+    private static ArrayList<AuctionDesc> generateItemList(){
 
-        List<Integer> startPrice = Arrays.asList(20, 30, 40);
-        List<Integer> currentPrice = Arrays.asList(50, 60, 70);
-        List<Integer> buyNowPrice = Arrays.asList(80, 90, 100);
+        List<Double> startPrice = Arrays.asList(20.0, 30.0, 40.0);
+        List<Double> currentPrice = Arrays.asList(50.0, 60.0, 70.0);
+        List<Double> buyNowPrice = Arrays.asList(80.0, 90.0, 100.0);
         String startTime = new Date().toString();
         long et = new Date().getTime() + (1000 * 60 * 60);
         DateFormat dateFormat = new SimpleDateFormat("yyyy-mm-dd hh:mm:ss");
 
         int id = 0;
-        ArrayList<Auction> itemList = new ArrayList<Auction>();
+        ArrayList<AuctionDesc> itemList = new ArrayList<AuctionDesc>();
         String category = "Skincare";
         String itemName = "Sunscreen";
-        List<String> description = Arrays.asList("A bottle of Sunscreen", "A mechanical keyboard", "A good mouse", "Hello", "World");
         for (int i = 0; i < 3; i++){
             for (int j = 0; j < 3; j++){
                 for (int k = 0; k < 3; k++){
-                    itemList.add(new Auction(i * 9 + j * 3 + k, itemName, i * 9 + j * 3 + k, startPrice.get(i), currentPrice.get(j),buyNowPrice.get(k),
-                            startTime, dateFormat.format(et)));
+                    itemList.add(new AuctionDesc(String.valueOf(i * 9 + j * 3 + k), String.valueOf(i * 9 + j * 3 + k), itemName, startPrice.get(i),
+                            buyNowPrice.get(k), currentPrice.get(i), "1",
+                            startTime, dateFormat.format(et), "6"));
                     et += (1000*60 * 60);
                 }
             }
         }
-
         return itemList;
     }
 }

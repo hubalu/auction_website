@@ -1,4 +1,4 @@
-package app.bidding;
+package app.auction;
 
 import lombok.Value;
 

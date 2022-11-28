@@ -7,7 +7,7 @@
 <div class="row row-3">
     #foreach($auction in $auctionList)
         <div class="col">
-            <a class="book" href="$WebPath.getUPLOAD_AUCTION()$auction.getAuctionID()">
+            <a class="book" href="$WebPath.getUPLOAD_AUCTION()$auction.getAuctionId()">
                 $auction.getItemName()
             </a>
         </div>

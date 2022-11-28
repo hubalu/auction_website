@@ -12,25 +12,48 @@
     <select name="item" id="item">
         #foreach($item in $itemList)
             #if($selected && $item.getItemID() eq $selected)
-                <option value="$item.getItemID()" selected>$item.getItemName()</option>
+                <option value="$item.getItemID()@$item.getItemName()" selected>$item.getItemName()</option>
             #else
-                <option value="$item.getItemID()">$item.getItemName()</option>
+                <option value="$item.getItemID()@$item.getItemName()">$item.getItemName()</option>
             #end
         #end
     </select>
     <br>
     <label>Starting Price</label>
-    <input type="number" name="start_price" placeholder="Start Price" value="" required>
+    <input type="number" step="0.01" min="0.0" name="start_price" placeholder="Start Price" value="" required>
     <br>
     <label>Buy Now Price (Leave empty if you don't want this option)</label>
     <input type="number" name="buy_now_price" placeholder="Buy Now Price" value="">
     <br>
     <label> Start Time </label>
-    <input type="datetime-local" name="start_time" placeholder="Start Time" value="" required>
+    <input type="datetime-local" id="txtStartTime" name="start_time" placeholder="Start Time" value="" required>
     <br>
-    <label> Start Time </label>
-    <input type="datetime-local" name="end_time" placeholder="End Time" value="" required>
+    <label> End Time </label>
+    <input type="datetime-local" id="txtEndTime" name="end_time" placeholder="End Time" value="" required>
     <br>
-    <input type="submit" value="Upload Auction">
+    <input type="button" value="Upload Auction" onclick="Compare()">
+    <input type="submit" hidden>
 </form>
+<script type="text/javascript">
+function Compare() {
+
+    var strStartTime = document.getElementById("txtStartTime").value;
+    var strEndTime = document.getElementById("txtEndTime").value;
+    console.log(document.getElementById("auctionForm"));
+    var d1 = Date.parse(strStartTime);
+    var d2 = Date.parse(strEndTime);
+    var now = Date.now();
+    if (d1 < now){
+        alert("Start time cannot be in the past!");
+    } else if (d1 > d2 ){
+        alert("Start time cannot be after end time!");
+    } else if (d1 == d2){
+        alert("Start time cannot be equal end time!");
+    } else if (!document.forms["auctionForm"].checkValidity()){
+        alert("Please enter all required fields");
+    } else {
+        document.getElementById("auctionForm").submit();
+    }
+}
+</script>
 #end

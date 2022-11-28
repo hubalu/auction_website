@@ -1,13 +1,38 @@
 package app.user;
 
+import app.rmiManagement.RemoteUserManagement;
+
+import java.net.InetAddress;
+import java.rmi.RemoteException;
+import java.rmi.registry.LocateRegistry;
+import java.rmi.registry.Registry;
 import java.sql.SQLException;
 import java.util.List;
 
-public class CartManagement {
+public class CartManagement extends java.rmi.server.UnicastRemoteObject implements RemoteUserManagement {
 
     private Database db;
+    int port;
+    String address;
+    Registry registry;
 
-    public CartManagement() {
+    public CartManagement() throws RemoteException {
+        try {
+            // get the address of this host.
+            address = (InetAddress.getLocalHost()).toString();
+        } catch (Exception e) {
+            throw new RemoteException("can't get inet address.");
+        }
+        port = 54321;  // our port
+        System.out.println("using address=" + address + ",port=" + port);
+        try {
+            // create the registry and bind the name and object.
+            registry = LocateRegistry.createRegistry(port);
+            registry.rebind("userManagement", this);
+        } catch (RemoteException e) {
+            throw e;
+        }
+
         this.db = new Database();
         this.db.createDatabase();
         this.db.createTableIfNotExists();

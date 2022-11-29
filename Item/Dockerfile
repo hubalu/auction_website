@@ -21,4 +21,4 @@ RUN ["mvn", "verify"]
 RUN ["mvn", "package"]
 
 
-#CMD ["java", "-cp", "target/frontend-1.0-SNAPSHOT.jar", "app.Application"]
+#CMD ["java", "-cp", "target/Item-1.0-SNAPSHOT.jar", "app.Application"]

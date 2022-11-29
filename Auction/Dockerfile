@@ -18,4 +18,4 @@ RUN ["mvn", "verify"]
 RUN ["mvn", "package"]
 
 EXPOSE 4567
-CMD ["java", "-cp", "target/frontend-1.0-SNAPSHOT.jar", "app.Application"]
+#CMD ["java", "-cp", "target/Auction-1.0-SNAPSHOT.jar", "app.Application"]

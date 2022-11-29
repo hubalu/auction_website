@@ -52,7 +52,7 @@ public class BidController {
 
         RemoteItemManagement rmItemManagement = rmiHelper.getRemItemManagement();
         List<Item> itemList = rmItemManagement.search_item(null, null, "UploadTime", true);
-
+        model.put("userID", request.session().attribute("userID"));
         model.put("itemList", itemList);
         return ViewUtil.render(request, model, Path.Template.UPLOAD_AUCTION);
     };
@@ -91,14 +91,15 @@ public class BidController {
 
         rmAuctionManagement.listForAuction(itemId, itemName, startingPrice, buyNowPrice,
                 startTime, expireTime, sellerId);
-        response.redirect(Path.Template.ALL_AUCTIONS);
+        response.redirect(Path.Web.ALL_AUCTIONS);
         return null;
     };
 
     public static Route getAllAuctionPlaceholder = (Request request, Response response) -> {
         LoginController.ensureUserIsLoggedIn(request, response);
+        RemoteAuctionManagement rmAuctionManagement = rmiHelper.getRemAuctionManagement();
         Map<String, Object> model = new HashMap<>();
-        List<AuctionDesc> auctionList = generateItemList();
+        List<AuctionDesc> auctionList = rmAuctionManagement.getAuctions();
         cachedAuctions = auctionList;
         model.put("auctionList", auctionList);
         return ViewUtil.render(request, model, Path.Template.ALL_AUCTIONS);
@@ -106,10 +107,11 @@ public class BidController {
 
     public static Route getOneAuctionPlaceholder = (Request request, Response response) -> {
         LoginController.ensureUserIsLoggedIn(request, response);
+        RemoteAuctionManagement rmAuctionManagement = rmiHelper.getRemAuctionManagement();
         if (clientAcceptsHtml(request)) {
             HashMap<String, Object> model = new HashMap<>();
             if (cachedAuctions == null){
-                cachedAuctions = generateItemList();
+                cachedAuctions = rmAuctionManagement.getAuctions();;
             }
             String auctionId = request.params(":AuctionID");
             for (AuctionDesc auction : cachedAuctions){
@@ -125,12 +127,17 @@ public class BidController {
 
     public static Route submitBidPlaceholder = (Request request, Response response) -> {
         LoginController.ensureUserIsLoggedIn(request, response);
+        RemoteAuctionManagement rmAuctionManagement = rmiHelper.getRemAuctionManagement();
         if (clientAcceptsHtml(request)) {
             //Some RMI Function Call to Submit Bid
+            String auctionId = request.params(":AuctionID");
+            String userID = request.session().attribute("userID");
+            Double bidPrice = Double.parseDouble(request.queryParams("bidPrice"));
+            rmAuctionManagement.placeBid(auctionId, userID, bidPrice);
             HashMap<String, Object> model = new HashMap<>();
             ArrayList<AuctionDesc> auctions = generateItemList();
             model.put("auction", auctions);
-            return ViewUtil.render(request, model, Path.Template.ALL_AUCTIONS);
+            response.redirect(Path.Web.ALL_AUCTIONS);
         }
         return ViewUtil.notAcceptable.handle(request, response);
     };

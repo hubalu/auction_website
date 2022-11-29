@@ -11,11 +11,11 @@ WORKDIR /code
 # Prepare by downloading dependencies
 ADD src /code/src
 ADD pom.xml /code/pom.xml
-RUN ["mvn", "dependency:resolve"]
-RUN ["mvn", "verify"]
+RUN mvn dependency:resolve
+RUN mvn verify clean --fail-never
 
 # Adding source, compile and package into a fat jar
-RUN ["mvn", "package"]
+RUN mvn clean package
 
 EXPOSE 4567
-#CMD ["java", "-cp", "target/Auction-1.0-SNAPSHOT.jar", "app.Application"]
+CMD ["java", "-cp", "target/Auction-1.0-SNAPSHOT.jar", "app.Application"]

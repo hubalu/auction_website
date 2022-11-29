@@ -12,10 +12,11 @@ WORKDIR /code
 # Prepare by downloading dependencies
 ADD src /code/src
 ADD pom.xml /code/pom.xml
-RUN ["mvn", "dependency:resolve"]
+RUN mvn dependency:resolve
+RUN mvn verify clean --fail-never
 
 # Adding source, compile and package into a fat jar
-RUN ["mvn", "package"]
+RUN mvn clean package
 
 
-#CMD ["java", "-cp", "target/User-1.0-SNAPSHOT.jar", "app.Application"]
+CMD ["java", "-cp", "target/User-1.0-SNAPSHOT.jar", "app.Application"]

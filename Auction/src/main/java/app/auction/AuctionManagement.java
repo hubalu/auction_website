@@ -43,7 +43,7 @@ public class AuctionManagement extends java.rmi.server.UnicastRemoteObject imple
 			timer = new Timer();
 			rmiUser = new RMIHelper().getRemUserManagement();
 			ConnectionFactory factory = new ConnectionFactory();
-			factory.setHost("localhost");
+			factory.setHost("messenger");
 			Connection conn = factory.newConnection();
 			channel = conn.createChannel();
 			channel.queueDeclare(QUEUE_NAME, false, false, false, null);
@@ -54,7 +54,7 @@ public class AuctionManagement extends java.rmi.server.UnicastRemoteObject imple
 			} catch (Exception e) {
 				throw new RemoteException("can't get inet address.");
 			}
-			port = 23456;  // our port
+			port = 12345;  // our port
 			System.out.println("using address=" + address + ",port=" + port);
 			// create the registry and bind the name and object.
 			registry = LocateRegistry.createRegistry(port);

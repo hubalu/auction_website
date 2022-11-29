@@ -1,10 +1,31 @@
 version: "3.9"
 services:
+
+  messenger:
+    build: Messenger/.
+    ports:
+      - "465:465"
+    volumes:
+      - ./Messenger:/code
+  user:
+    build: User/.
+    volumes:
+      - ./User:/code
+
+  auction:
+    build: Auction/.
+    volumes:
+      - ./Auction:/code
+
+  item:
+    build: Item/.
+    volumes:
+      - ./Item:/code
+
   frontend:
     build: Frontend/.
     ports:
       - "4567:4567"
-  db:
-    image: postgres
-    ports:
-      - "8001:5432"
+    volumes:
+      - ./Frontend:/code
+

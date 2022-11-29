@@ -24,7 +24,7 @@ public class RMIHelper {
         Registry registry;
         try{
             // get the registry
-            registry= LocateRegistry.getRegistry("localhost", 12345);
+            registry= LocateRegistry.getRegistry("item",12345);
             // look up the remote object in the RMI Registry
             remoteObj= (RemoteItemManagement)(registry.lookup("itemManagement"));
         }
@@ -39,7 +39,7 @@ public class RMIHelper {
         Registry registry;
         try{
             // get the registry
-            registry= LocateRegistry.getRegistry("localhost", 54321);
+            registry= LocateRegistry.getRegistry("user", 12345);
             // look up the remote object in the RMI Registry
             remoteObj= (RemoteUserManagement)(registry.lookup("userManagement"));
         }
@@ -54,7 +54,7 @@ public class RMIHelper {
         Registry registry;
         try{
             // get the registry
-            registry= LocateRegistry.getRegistry("localhost",  23456);
+            registry= LocateRegistry.getRegistry("auction",  12345);
             // look up the remote object in the RMI Registry
             remoteObj= (RemoteAuctionManagement)(registry.lookup("auctionManagement"));
         }

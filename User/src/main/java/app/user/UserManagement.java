@@ -23,7 +23,7 @@ public class UserManagement extends java.rmi.server.UnicastRemoteObject implemen
         } catch (Exception e) {
             throw new RemoteException("can't get inet address.");
         }
-        port = 54321;  // our port
+        port = 12345;  // our port
         System.out.println("using address=" + address + ",port=" + port);
         try {
             // create the registry and bind the name and object.

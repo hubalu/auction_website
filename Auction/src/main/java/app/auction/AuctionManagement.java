@@ -19,10 +19,7 @@ import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.List;
-import java.util.Timer;
+import java.util.*;
 
 public class AuctionManagement extends java.rmi.server.UnicastRemoteObject implements RemoteAuctionManagement {
 
@@ -99,7 +96,7 @@ public class AuctionManagement extends java.rmi.server.UnicastRemoteObject imple
 		}
 	}
 	
-	public boolean placeBid(String auctionId, String userId, double bidPrice, String prev_bidder_email) throws RemoteException{
+	public boolean placeBid(String auctionId, String userId, double bidPrice) throws RemoteException{
 		try {
 			AuctionDesc auctionDesc = db.getAuctionDesc(new ObjectId(auctionId));
 			this.db.placeBid(auctionId, userId, bidPrice);
@@ -107,11 +104,14 @@ public class AuctionManagement extends java.rmi.server.UnicastRemoteObject imple
 			jsonObj.addProperty("type", "new bid");
 			jsonObj.addProperty("auction_id", auctionId);
 			String prev_bidder_id = auctionDesc.getBidderId();
-			if(prev_bidder_id == null || prev_bidder_email == null){
+			if(prev_bidder_id == null){
 				return true;
 			}
 			jsonObj.addProperty("user_id", prev_bidder_id);
-			jsonObj.addProperty("email", prev_bidder_email);
+			List<String> user = new ArrayList<>();
+			user.add(prev_bidder_id);
+			List<String> email_list = rmiUser.getEmailList(user);
+			jsonObj.addProperty("email", email_list.get(0));
 			channel.basicPublish("", AuctionManagement.QUEUE_NAME, null, jsonObj.toString().getBytes(StandardCharsets.UTF_8));
 			System.out.println("Successfully placed bid on " + auctionId);
 			return true;

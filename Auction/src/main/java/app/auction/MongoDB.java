@@ -185,4 +185,17 @@ public class MongoDB {
 		}
 		return auctionDesc;
 	}
+
+	public void setInActive(String auctionId){
+		try{
+			Document doc = auctionDocs.find(eq("_id", new ObjectId(auctionId))).first();
+			if(doc == null){
+				throw new RuntimeException("auction id doesn't exist");
+			}else{
+				doc.append("active", false);
+			}
+		}catch (Exception e){
+			e.printStackTrace();
+		}
+	}
 }

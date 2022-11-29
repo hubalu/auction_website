@@ -3,6 +3,7 @@ package app.auction;
 import app.rmiManagement.RMIHelper;
 import app.rmiManagement.RemoteAuctionManagement;
 import app.rmiManagement.RemoteUserManagement;
+import app.timertasks.Expiration;
 import app.timertasks.OneDayAlert;
 import app.timertasks.OneHourAlert;
 import com.google.gson.JsonObject;
@@ -61,7 +62,6 @@ public class AuctionManagement extends java.rmi.server.UnicastRemoteObject imple
 			registry = LocateRegistry.createRegistry(port);
 			registry.rebind("auctionManagemen", this);
 
-
 		} catch (Exception e){
 			e.printStackTrace();
 		}
@@ -76,6 +76,7 @@ public class AuctionManagement extends java.rmi.server.UnicastRemoteObject imple
 
 			DateFormat dateFormat = new SimpleDateFormat("yyyy-mm-dd hh:mm:ss");
 			Date end_time = dateFormat.parse(expireTime);
+			timer.schedule(new Expiration(objectId.toString(), db), end_time);
 			Calendar calendar = Calendar.getInstance();
 			calendar.setTime(end_time);
 			int newHour = calendar.get(Calendar.HOUR) - 1;

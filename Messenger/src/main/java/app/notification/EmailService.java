@@ -1,4 +1,4 @@
-package org.example.notification;
+package app.notification;
 
 import javax.mail.Message;
 import javax.mail.PasswordAuthentication;

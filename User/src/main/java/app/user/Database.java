@@ -20,7 +20,7 @@ public class Database {
         try (Statement stmt = conn.createStatement()) {
             // create a new table
             stmt.execute(sql);
-            System.out.println("Users Datbase Created");
+            System.out.println("Users Database Created");
         } catch (SQLException e) {
             System.out.println(e.getMessage());
         }

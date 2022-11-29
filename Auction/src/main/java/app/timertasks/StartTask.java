@@ -4,17 +4,18 @@ import app.auction.MongoDB;
 
 import java.util.TimerTask;
 
-public class Expiration extends TimerTask {
+public class StartTask extends TimerTask {
 
     String auctionId;
     MongoDB db;
 
-    public Expiration(String auctionId, MongoDB db){
+    public StartTask(String auctionId, MongoDB db){
         this.auctionId = auctionId;
         this.db = db;
     }
 
     public void run(){
-        db.changeActiveStatus(auctionId, false);
+        System.out.println("auction start!: " + auctionId);
+        db.changeActiveStatus(auctionId, true);
     }
 }

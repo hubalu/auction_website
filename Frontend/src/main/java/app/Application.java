@@ -50,7 +50,7 @@ public class Application {
         post(Path.Web.UPLOAD_AUCTION,   BidController.handleUploadAuctionPostPlaceholder);
         get(Path.Web.ALL_AUCTIONS,      BidController.getAllAuctionPlaceholder);
         get(Path.Web.ONE_AUCTION,       BidController.getOneAuctionPlaceholder);
-        post(Path.Web.ONE_AUCTION,      BidController.submitBidPlaceholder);
+        post(Path.Web.UPLOAD_BID,       BidController.submitBidPlaceholder);
 
         get("*",                     ViewUtil.notFound);
 

@@ -2,7 +2,6 @@ package app.auction;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 import org.bson.Document;
 import org.bson.types.ObjectId;
@@ -12,7 +11,6 @@ import com.mongodb.client.MongoClient;
 import com.mongodb.client.MongoClients;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
-import com.mongodb.client.model.Filters;
 import com.mongodb.client.model.Updates;
 
 import static com.mongodb.client.model.Filters.eq;
@@ -21,7 +19,6 @@ import static com.mongodb.client.model.Filters.eq;
 public class MongoDB {
 	private MongoClient mongoClient;
 	private MongoDatabase db;
-	MongoCollection<Document> auctionDocs;
 
 
 	
@@ -30,14 +27,13 @@ public class MongoDB {
 			mongoClient = MongoClients.create();
 			db = mongoClient.getDatabase(database_path);
 			System.out.println("connection established to auctionSite database");
-			boolean auctionExists = db.listCollectionNames().into(new ArrayList()).contains("app/auction");
+			boolean auctionExists = db.listCollectionNames().into(new ArrayList()).contains("auction");
 			boolean watchlistExists = db.listCollectionNames().into(new ArrayList()).contains("watchlist");
 			
 			if (auctionExists == false) {
-				db.createCollection("app/auction");
+				db.createCollection("auction");
 				System.out.println("auction collection created successfully");
 			}
-			auctionDocs = db.getCollection("app/auction");
 
 			if (watchlistExists == false) {
 				db.createCollection("watchlist");
@@ -61,8 +57,8 @@ public class MongoDB {
 			doc.append("startTime", startTime);
 			doc.append("expireTime", expireTime);
 			doc.append("sellerId", sellerId);
-			doc.append("active", true);
-			db.getCollection("app/auction").insertOne(doc);
+			doc.append("active", false);
+			db.getCollection("auction").insertOne(doc);
 			System.out.println("added successfully");
 			return doc.getObjectId("_id");
 		} catch (Exception e) {
@@ -73,9 +69,9 @@ public class MongoDB {
 	
 	public void placeBid(String auctionId, String userId, double bidPrice) {
 		try {
-			MongoCollection<Document> auction = db.getCollection("app/auction");
-			auction.updateOne(eq("auctionId", auctionId), Updates.set("currentBid", bidPrice));
-			auction.updateOne(eq("auctionId", auctionId), Updates.set("bidderId", userId));
+			MongoCollection<Document> auction = db.getCollection("auction");
+			auction.updateOne(eq("_id", new ObjectId(auctionId)), Updates.set("currentBid", bidPrice));
+			auction.updateOne(eq("_id", new ObjectId(auctionId)), Updates.set("bidderId", userId));
 		} catch (Exception e) {
 			System.out.println("error in placeBid"); 
 		}
@@ -83,7 +79,7 @@ public class MongoDB {
 	
 	public List<AuctionDesc> getAuctions() {
 		try {
-			MongoCollection<Document> auction = db.getCollection("app/auction");
+			MongoCollection<Document> auction = db.getCollection("auction");
 			//FindIterable<Document> iterDoc = auction.find();
 			//return iterDoc;
 			List<AuctionDesc> results = new ArrayList<>();
@@ -100,8 +96,8 @@ public class MongoDB {
 	
 	public void endAuction(String auctionId) {
 		try {
-			MongoCollection<Document> auction = db.getCollection("app/auction");
-			Document query = new Document("auctionId", auctionId);
+			MongoCollection<Document> auction = db.getCollection("auction");
+			Document query = new Document("_id", new ObjectId(auctionId));
 			auction.deleteOne(query);
 		} catch (Exception e) {
 			System.out.println("error in endAuction");
@@ -111,7 +107,7 @@ public class MongoDB {
 	
 	public void updateAuction(String auctionId, String userId, String param, String newVal) {
 		
-		MongoCollection<Document> auction = db.getCollection("app/auction");
+		MongoCollection<Document> auction = db.getCollection("auction");
 		Document query = new Document("auctionId", auctionId);
 		
 		if(auction.find(query).first().getString("sellerId").equals(userId)){
@@ -173,7 +169,7 @@ public class MongoDB {
 	public AuctionDesc getAuctionDesc(ObjectId objectId){
 		AuctionDesc auctionDesc = null;
 		try{
-			Document doc = auctionDocs.find(eq("_id", objectId)).first();
+			Document doc = db.getCollection("auction").find(eq("_id", objectId)).first();
 			if(doc == null){
 				throw new RuntimeException("Auction id couldn't be found");
 			}
@@ -186,16 +182,12 @@ public class MongoDB {
 		return auctionDesc;
 	}
 
-	public void setInActive(String auctionId){
+	public void changeActiveStatus(String auctionId, boolean isActive){
 		try{
-			Document doc = auctionDocs.find(eq("_id", new ObjectId(auctionId))).first();
-			if(doc == null){
-				throw new RuntimeException("auction id doesn't exist");
-			}else{
-				doc.append("active", false);
-			}
+			db.getCollection("auction").updateOne(eq("_id", new ObjectId(auctionId)), Updates.set("active", isActive));
 		}catch (Exception e){
 			e.printStackTrace();
 		}
 	}
+
 }

@@ -22,11 +22,13 @@
     #end
     <br>
     #if($auction.getSellerId() != $userID)
-    <form id="placeBidForm" method="post">
+    <p> $WebPath.getUPLOAD_AUCTION()$auction.getAuctionId()</p>
+    <form id="placeBidForm" method="post" action="$WebPath.getUPLOAD_BID()">
+        <input name="auctionID" value="$auction.getAuctionId()" hidden>
         #if($auction.getCurrentBid())
-            <input type="bidPrice" step="0.01" min="$auction.getCurrentBid()">
+            <input name="bidPrice" type="number" step="0.01" min="$auction.getCurrentBid()">
         #else
-            <input type="bidPrice" step="0.01" min="$auction.getStartingPrice()">
+            <input name="bidPrice" type="number" step="0.01" min="$auction.getStartingPrice()">
         #end
         <input type="submit" value="Place Bid">
     </form>

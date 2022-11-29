@@ -23,6 +23,7 @@ public class Path {
         @Getter public static final String ONE_USER_INFO = "/user_info/:userid/";
         @Getter public static final String UPDATE_PASSWORD = "/update_password/";
         @Getter public static final String UPDATE_USER_INFO = "/update_user_info/";
+        @Getter public static final String UPLOAD_BID = "/upload_bid/";
     }
 
     public static class Template {

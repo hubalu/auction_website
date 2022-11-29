@@ -6,6 +6,7 @@ import app.rmiManagement.RemoteUserManagement;
 import app.timertasks.Expiration;
 import app.timertasks.OneDayAlert;
 import app.timertasks.OneHourAlert;
+import app.timertasks.StartTask;
 import com.google.gson.JsonObject;
 import com.rabbitmq.client.Channel;
 import com.rabbitmq.client.Connection;
@@ -57,7 +58,7 @@ public class AuctionManagement extends java.rmi.server.UnicastRemoteObject imple
 			System.out.println("using address=" + address + ",port=" + port);
 			// create the registry and bind the name and object.
 			registry = LocateRegistry.createRegistry(port);
-			registry.rebind("auctionManagemen", this);
+			registry.rebind("auctionManagement", this);
 
 		} catch (Exception e){
 			e.printStackTrace();
@@ -71,8 +72,13 @@ public class AuctionManagement extends java.rmi.server.UnicastRemoteObject imple
 		try {
 			ObjectId objectId = this.db.insertToAuction(itemId, itemName, startingPrice, buyNowPrice, startTime, expireTime, sellerId);
 
-			DateFormat dateFormat = new SimpleDateFormat("yyyy-mm-dd hh:mm:ss");
-			Date end_time = dateFormat.parse(expireTime);
+			String time_to_end = expireTime.replace("T", " ");
+			String time_to_start = startTime.replace("T", " ");
+			DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+			Date start_time = dateFormat.parse(time_to_start);
+			System.out.println(start_time.toString());
+			Date end_time = dateFormat.parse(time_to_end);
+			timer.schedule(new StartTask(objectId.toString(), db), start_time);
 			timer.schedule(new Expiration(objectId.toString(), db), end_time);
 			Calendar calendar = Calendar.getInstance();
 			calendar.setTime(end_time);

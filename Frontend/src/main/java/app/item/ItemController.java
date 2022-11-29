@@ -74,7 +74,7 @@ public class ItemController {
         System.out.println(search_type);
         String order = request.queryParams("order");
         boolean desc = true;
-        if (order == "ASC"){
+        if (order != null && order.equals("ASC")){
             desc = false;
         }
         if (search_type == null){

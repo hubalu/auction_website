@@ -6,6 +6,7 @@ RUN apt-get install -y maven
 RUN apt-get install -y net-tools
 RUN apt-get install -y procps
 
+ENV MONGO_INITDB_DATABASE="LoginService"
 WORKDIR /code
 
 # Prepare by downloading dependencies

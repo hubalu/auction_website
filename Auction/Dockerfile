@@ -1,5 +1,6 @@
 FROM mongo:latest
 
+ENV MONGO_INITDB_DATABASE="LoginService"
 # Install maven
 RUN apt-get update
 RUN apt-get install -y maven

@@ -51,6 +51,7 @@ public class AuctionManagement extends java.rmi.server.UnicastRemoteObject imple
 			try {
 				// get the address of this host.
 				address = (InetAddress.getLocalHost()).toString();
+//				address = "auction";
 			} catch (Exception e) {
 				throw new RemoteException("can't get inet address.");
 			}

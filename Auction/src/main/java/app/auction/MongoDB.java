@@ -24,7 +24,7 @@ public class MongoDB {
 	
 	public MongoDB(String database_path) {
 		try {
-			mongoClient = MongoClients.create();
+			mongoClient = MongoClients.create("mongodb://localhost:27017");
 			db = mongoClient.getDatabase(database_path);
 			System.out.println("connection established to auctionSite database");
 			boolean auctionExists = db.listCollectionNames().into(new ArrayList()).contains("auction");

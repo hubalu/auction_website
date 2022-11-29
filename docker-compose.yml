@@ -1,31 +1,39 @@
 version: "3.9"
 services:
 
+  frontend:
+    build: Frontend/.
+    ports:
+      - "4567:4567"
+    depends_on:
+      - item
+      - user
+      - auction
+    volumes:
+      - ./Frontend:/code
+
+  auction:
+    build: Auction/.
+    depends_on:
+      - user
+      - messenger
+    volumes:
+      - ./Auction:/code
+
   messenger:
     build: Messenger/.
     ports:
       - "465:465"
     volumes:
       - ./Messenger:/code
+
   user:
     build: User/.
     volumes:
       - ./User:/code
 
-  auction:
-    build: Auction/.
-    volumes:
-      - ./Auction:/code
-
   item:
     build: Item/.
     volumes:
       - ./Item:/code
-
-  frontend:
-    build: Frontend/.
-    ports:
-      - "4567:4567"
-    volumes:
-      - ./Frontend:/code
 

@@ -20,6 +20,7 @@ public class UserManagement extends java.rmi.server.UnicastRemoteObject implemen
         try {
             // get the address of this host.
             address = (InetAddress.getLocalHost()).toString();
+//            address = "user";
         } catch (Exception e) {
             throw new RemoteException("can't get inet address.");
         }

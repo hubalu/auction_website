@@ -17,4 +17,4 @@ RUN mvn verify clean --fail-never
 RUN mvn clean package
 
 
-CMD ["java", "-cp", "target/target/Messenger-1.0-SNAPSHOT.jar", "app.Application"]
+CMD ["java", "-cp", "target/Messenger-1.0-SNAPSHOT.jar", "app.Application"]

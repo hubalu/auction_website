@@ -6,10 +6,8 @@ import java.sql.*;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
+import org.postgresql.*;
 
-/**
- * @author skr
- */
 public class Database {
 
     private Connection conn;

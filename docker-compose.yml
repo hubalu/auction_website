@@ -1,0 +1,10 @@
+version: "3.9"
+services:
+  frontend:
+    build: Frontend/.
+    ports:
+      - "4567:4567"
+  db:
+    image: postgres
+    ports:
+      - "8001:5432"

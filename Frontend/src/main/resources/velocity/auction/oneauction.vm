@@ -7,8 +7,12 @@
     #if($auction)
     <h1>$auction.getItemName()</h1>
     <div>
-    <h2>Current Price: $auction.getCurrentBid()</h2>
-    #if($auction.getBuyNowPrice() > 0)
+    #if($auction.getCurrentBid())
+        <h2>Current Price: $auction.getCurrentBid()</h2>
+    #else
+        <h2>Current Bid: $auction.getStartingPrice()</h2>
+    #end
+    #if($auction.getBuyNowPrice() && $auction.getBuyNowPrice() > 0)
         <h2>Buy Now: $auction.getBuyNowPrice()</h2>
         #if($auction.getSellerId() != $userID)
         <form id="buyNowForm" method="get" action="$WebPath.getALL_AUCTIONS()">
@@ -19,7 +23,11 @@
     <br>
     #if($auction.getSellerId() != $userID)
     <form id="placeBidForm" method="post">
-        <input type="number" step="0.01" min="$auction.getCurrentBid()">
+        #if($auction.getCurrentBid())
+            <input type="bidPrice" step="0.01" min="$auction.getCurrentBid()">
+        #else
+            <input type="bidPrice" step="0.01" min="$auction.getStartingPrice()">
+        #end
         <input type="submit" value="Place Bid">
     </form>
     #end

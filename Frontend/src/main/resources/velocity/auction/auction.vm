@@ -11,10 +11,12 @@
     <label>Item to auction</h1>
     <select name="item" id="item">
         #foreach($item in $itemList)
-            #if($selected && $item.getItemID() eq $selected)
-                <option value="$item.getItemID()@$item.getItemName()" selected>$item.getItemName()</option>
-            #else
-                <option value="$item.getItemID()@$item.getItemName()">$item.getItemName()</option>
+            #if($item.getUserID() == $userID)
+                #if($selected && $item.getItemID() eq $selected)
+                    <option value="$item.getItemID()@$item.getItemName()" selected>$item.getItemName()</option>
+                #else
+                    <option value="$item.getItemID()@$item.getItemName()">$item.getItemName()</option>
+                #end
             #end
         #end
     </select>
@@ -52,7 +54,7 @@ function Compare() {
     } else if (!document.forms["auctionForm"].checkValidity()){
         alert("Please enter all required fields");
     } else {
-        document.getElementById("auctionForm").submit();
+        document.forms["auctionForm"].submit();
     }
 }
 </script>

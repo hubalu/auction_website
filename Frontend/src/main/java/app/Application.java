@@ -51,6 +51,7 @@ public class Application {
         get(Path.Web.ALL_AUCTIONS,      BidController.getAllAuctionPlaceholder);
         get(Path.Web.ONE_AUCTION,       BidController.getOneAuctionPlaceholder);
         post(Path.Web.UPLOAD_BID,       BidController.submitBidPlaceholder);
+        post(Path.Web.ADD_TO_WATCHLIST, BidController.addToWatchlist);
 
         get("*",                     ViewUtil.notFound);
 

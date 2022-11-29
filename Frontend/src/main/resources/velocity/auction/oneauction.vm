@@ -22,7 +22,11 @@
     #end
     <br>
     #if($auction.getSellerId() != $userID)
-    <p> $WebPath.getUPLOAD_AUCTION()$auction.getAuctionId()</p>
+    <form id="addToWatchlistForm" method="post" action= "$WebPath.getADD_TO_WATCHLIST()">
+        <input type="text" name="auctionID" hidden value = "$auction.getAuctionId()">
+        <input type="submit" value="Add auction to watchlist">
+    </form>
+
     <form id="placeBidForm" method="post" action="$WebPath.getUPLOAD_BID()">
         <input name="auctionID" value="$auction.getAuctionId()" hidden>
         #if($auction.getCurrentBid())

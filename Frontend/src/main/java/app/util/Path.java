@@ -24,6 +24,7 @@ public class Path {
         @Getter public static final String UPDATE_PASSWORD = "/update_password/";
         @Getter public static final String UPDATE_USER_INFO = "/update_user_info/";
         @Getter public static final String UPLOAD_BID = "/upload_bid/";
+        @Getter public static final String ADD_TO_WATCHLIST = "/add_to_watchlist/";
     }
 
     public static class Template {

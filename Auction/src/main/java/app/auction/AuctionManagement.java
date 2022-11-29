@@ -160,7 +160,7 @@ public class AuctionManagement extends java.rmi.server.UnicastRemoteObject imple
 		}
 	}
 	
-	public boolean addToWatchlist(String auctionId, String userId) {
+	public boolean addToWatchlist(String auctionId, String userId) throws RemoteException{
 		try {
 			this.db.addToWatchlist(auctionId, userId);
 			System.out.println("Succesfully added userId " + userId + " to watchlist_" + auctionId);

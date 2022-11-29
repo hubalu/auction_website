@@ -77,16 +77,18 @@ public class ItemController {
         if (order != null && order.equals("ASC")){
             desc = false;
         }
+        List<Item> currentItems;
         if (search_type == null){
             cachedItems = rmItemManagement.search_item(null, null, "UploadTime", desc);
+            currentItems = cachedItems;
         } else if (search_type.equals("category")) {
-            cachedItems = rmItemManagement.search_item(null, search_value, "UploadTime", desc);
+            currentItems = rmItemManagement.search_item(null, search_value, "UploadTime", desc);
         } else {
-            cachedItems = rmItemManagement.search_item(search_value, null, "UploadTime", desc);
+            currentItems = rmItemManagement.search_item(search_value, null, "UploadTime", desc);
         }
         Map<String, Object> model = new HashMap<>();
 //        ArrayList<Item> itemList = generateItemList();
-        model.put("itemList", cachedItems);
+        model.put("itemList", currentItems);
         return ViewUtil.render(request, model, Path.Template.ITEMS);
     };
 

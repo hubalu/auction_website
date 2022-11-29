@@ -130,7 +130,7 @@ public class MongoDB {
 	public void addToWatchlist(String auctionId, String userId) {
 		try {
 			MongoCollection<Document> watchlist = db.getCollection("watchlist");
-			List<String> users = new ArrayList<String>();
+			ArrayList<String> users = new ArrayList<String>();
 			if(!itemExistInWatchlist(auctionId)) {
 				Document doc = new Document();
 				users.add(userId);
@@ -150,7 +150,7 @@ public class MongoDB {
 	public List<String> getWatchList(String auctionId){
 		try{
 			MongoCollection<Document> watchlist = db.getCollection("watchlist");
-			Document doc = watchlist.find(eq("_id", new ObjectId(auctionId))).first();
+			Document doc = watchlist.find(eq("auctionId", auctionId)).first();
 			List<String> res = (List<String>) doc.get("watchlist");
 			return res;
 

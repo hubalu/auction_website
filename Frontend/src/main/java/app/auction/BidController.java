@@ -18,28 +18,6 @@ import static app.util.RequestUtil.*;
 
 
 public class BidController {
-
-//    private Remote registryLookUp(){
-//        Remote itemManagement = null;
-//        Registry registry;
-//        try{
-//            String serverAddress=(InetAddress.getLocalHost()).toString();
-//            String serverPort="12345";
-//            // get the registry
-//            registry=LocateRegistry.getRegistry(
-//                    serverAddress,
-//                    (new Integer(serverPort)).intValue()
-//            );
-//            // look up the remote object in the RMI Registry
-//            itemManagement= (registry.lookup("rmiServer"));
-//            // call the remote method
-//        }
-//        catch(Exception e){
-//            e.printStackTrace();
-//        }
-//        return itemManagement;
-//    }
-
     public static RMIHelper rmiHelper = new RMIHelper();
     private static List<AuctionDesc> cachedAuctions;
 
@@ -61,21 +39,6 @@ public class BidController {
         LoginController.ensureUserIsLoggedIn(request, response);
         RemoteAuctionManagement rmAuctionManagement = rmiHelper.getRemAuctionManagement();
 
-        // database processing
-        //String item_name = request.queryParams("item_name");
-        //String item_desc = request.queryParams("description");
-        //String category = request.queryParams("category");
-        // RMI call Item microservice
-        //rmItemManagement.upload_item("1", item_name, item_desc, category);
-        /*
-
-
-        String startTime = new Date().toString();
-        long et = new Date().getTime() + (1000 * 60 * 60);
-        DateFormat dateFormat = new SimpleDateFormat("yyyy-mm-dd hh:mm:ss");
-        String endTime = dateFormat.format(et);
-
-        auctionList.add(new Auction(40, 100, 110, 150, startTime, endTime)); */
         String itemId = request.queryParams("item").split("@")[0];
         String itemName = request.queryParams("item").split("@")[1];
         Double startingPrice = Double.parseDouble(request.queryParams("start_price"));
@@ -95,6 +58,17 @@ public class BidController {
         return null;
     };
 
+    public static Route addToWatchlist = (Request request, Response response) -> {
+        LoginController.ensureUserIsLoggedIn(request, response);
+        RemoteAuctionManagement rmAuctionManagement = rmiHelper.getRemAuctionManagement();
+
+        String auctionId = request.queryParams("auctionID");
+        String userID = request.session().attribute("userID").toString();
+        rmAuctionManagement.addToWatchlist(auctionId, userID);
+        response.redirect(Path.Web.UPLOAD_AUCTION+auctionId);
+        return null;
+    };
+
     public static Route getAllAuctionPlaceholder = (Request request, Response response) -> {
         LoginController.ensureUserIsLoggedIn(request, response);
         RemoteAuctionManagement rmAuctionManagement = rmiHelper.getRemAuctionManagement();
@@ -110,9 +84,6 @@ public class BidController {
         RemoteAuctionManagement rmAuctionManagement = rmiHelper.getRemAuctionManagement();
         if (clientAcceptsHtml(request)) {
             HashMap<String, Object> model = new HashMap<>();
-//            if (cachedAuctions == null){
-//                cachedAuctions = rmAuctionManagement.getAuctions();;
-//            }
             cachedAuctions = rmAuctionManagement.getAuctions();;
             String auctionId = request.params(":AuctionID");
             for (AuctionDesc auction : cachedAuctions){
@@ -141,30 +112,4 @@ public class BidController {
         }
         return ViewUtil.notAcceptable.handle(request, response);
     };
-
-    private static ArrayList<AuctionDesc> generateItemList(){
-
-        List<Double> startPrice = Arrays.asList(20.0, 30.0, 40.0);
-        List<Double> currentPrice = Arrays.asList(50.0, 60.0, 70.0);
-        List<Double> buyNowPrice = Arrays.asList(80.0, 90.0, 100.0);
-        String startTime = new Date().toString();
-        long et = new Date().getTime() + (1000 * 60 * 60);
-        DateFormat dateFormat = new SimpleDateFormat("yyyy-mm-dd hh:mm:ss");
-
-        int id = 0;
-        ArrayList<AuctionDesc> itemList = new ArrayList<AuctionDesc>();
-        String category = "Skincare";
-        String itemName = "Sunscreen";
-        for (int i = 0; i < 3; i++){
-            for (int j = 0; j < 3; j++){
-                for (int k = 0; k < 3; k++){
-                    itemList.add(new AuctionDesc(String.valueOf(i * 9 + j * 3 + k), String.valueOf(i * 9 + j * 3 + k), itemName, startPrice.get(i),
-                            buyNowPrice.get(k), currentPrice.get(i), "1",
-                            startTime, dateFormat.format(et), "6"));
-                    et += (1000*60 * 60);
-                }
-            }
-        }
-        return itemList;
-    }
 }

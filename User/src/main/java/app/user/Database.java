@@ -8,7 +8,7 @@ public class Database {
     private Connection conn;
     public Database(String database_path) {
         try {
-            conn = DriverManager.getConnection("jdbc:mysql://localhost/", "root", "secretpass");
+            conn = DriverManager.getConnection("jdbc:mysql://mysql-db/", "root", "secretpass");
             System.out.println("Connection Established");
         } catch (SQLException throwables) {
             throwables.printStackTrace();

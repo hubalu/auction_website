@@ -6,11 +6,10 @@ services:
     restart: always
     ports:
       - "4567:4567"
-    # depends_on:
-      # - mongo
-      # - item
-      # - user
-      # - auction
+    depends_on:
+      - item
+      - user
+      - auction
     links:
       - mongo
     environment:
@@ -24,30 +23,63 @@ services:
     environment:
       MONGO_INITDB_DATABASE: LoginService
 
-  # auction:
-  #   build: Auction/.
-  #   restart: always
-  #   depends_on:
-  #     - user
-  #     - messenger
-  #   volumes:
-  #     - ./Auction:/code
+  postgresql-db:
+    image: postgres:alpine
+    restart: always
+    environment:
+      POSTGRES_PASSWORD: password
+      POSTGRES_USER: root
+      POSTGRES_DB: test
 
-  # messenger:
-  #   build: Messenger/.
-  #   ports:
-  #     - "465:465"
-  #   volumes:
-  #     - ./Messenger:/code
+  rabbit-mq:
+    image: rabbitmq:3-alpine
+    restart: always
 
-  # user:
-  #   build: User/.
-  #   volumes:
-  #     - ./User:/code
+  mysql-db:
+    image: ubuntu/mysql
+    restart: always
+    environment:
+      MYSQL_USER: root
+      MYSQL_ROOT_PASSWORD: secretpass
+      MYSQL_DATABASE: userData
 
-  # item:
-  #   build: Item/.
-  #   restart: always
-  #   volumes:
-  #     - ./Item:/code
+  auction:
+    build: Auction/.
+    restart: always
+    depends_on:
+      - user
+      - messenger
+      - mongo
+    environment:
+      - WAIT_HOSTS: mongo:27017
+    volumes:
+      - ./Auction:/code
+
+  messenger:
+    build: Messenger/.
+    ports:
+      - "465:465"
+    environment:
+      - WAIT_HOSTS: rabbit-mq:5672
+    volumes:
+      - ./Messenger:/code
+
+  user:
+    build: User/.
+    volumes:
+      - ./User:/code
+    environment:
+      - WAIT_HOSTS: mysql-db:3006
+    depends_on:
+      - mysql-db
+
+  item:
+    build: Item/.
+    restart: always
+    volumes:
+      - ./Item:/code
+    environment:
+      - WAIT_HOSTS: postgresql:5432
+    depends_on:
+      - postgresql-db
 

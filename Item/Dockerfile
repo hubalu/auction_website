@@ -1,8 +1,8 @@
 FROM postgres:alpine
 
-ENV POSTGRES_PASSWORD="password"
-ENV POSTGRES_USER root
-ENV POSTGRES_DB test
+#ENV POSTGRES_PASSWORD="password"
+#ENV POSTGRES_USER root
+#ENV POSTGRES_DB test
 # Install maven
 RUN apk update
 RUN apk add maven
@@ -14,11 +14,12 @@ WORKDIR /code
 # Prepare by downloading dependencies
 ADD src /code/src
 ADD pom.xml /code/pom.xml
+ADD https://github.com/ufoscout/docker-compose-wait/releases/download/2.2.1/wait /wait
 RUN mvn dependency:resolve
 RUN mvn verify clean --fail-never
+RUN chmod +x /wait
 
 # Adding source, compile and package into a fat jar
 RUN mvn clean package
 
-
-CMD ["java", "-cp", "target/Item-1.0-SNAPSHOT.jar", "app.Application"]
+CMD /wait && java -cp target/Item-1.0-SNAPSHOT.jar app.Application

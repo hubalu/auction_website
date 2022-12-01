@@ -18,7 +18,7 @@ public class Application {
         EmailService emailService = new EmailService();
 
         ConnectionFactory factory = new ConnectionFactory();
-        factory.setHost("localhost");
+        factory.setHost("rabbit-mq");
         try{
             Connection connection = factory.newConnection();
             Channel channel = connection.createChannel();

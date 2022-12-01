@@ -26,6 +26,11 @@ public class OneHourAlert extends TimerTask {
     public void run(){
         try {
             List<String> user_ids = db.getWatchList(auction_id);
+            if(user_ids == null){
+                System.out.println("No users on the watchlist for: " + auction_id);
+                return;
+            }
+            System.out.println("Start one hour alert for: " + auction_id);
             List<String> emails = rmiUser.getEmailList(user_ids);
             for(int i = 0; i < user_ids.size(); i++){
                 JsonObject jsonObj = new JsonObject();

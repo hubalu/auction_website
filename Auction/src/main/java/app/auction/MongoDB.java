@@ -161,9 +161,11 @@ public class MongoDB {
 		try{
 			MongoCollection<Document> watchlist = db.getCollection("watchlist");
 			Document doc = watchlist.find(eq("auctionId", auctionId)).first();
+			if(doc == null){
+				return null;
+			}
 			List<String> res = (List<String>) doc.get("watchlist");
 			return res;
-
 		}catch (Exception e){
 			e.printStackTrace();
 			return null;

@@ -51,7 +51,7 @@ services:
       - messenger
       - mongo
     environment:
-      - WAIT_HOSTS: mongo:27017
+      WAIT_HOSTS: mongo:27017
     volumes:
       - ./Auction:/code
 
@@ -59,8 +59,10 @@ services:
     build: Messenger/.
     ports:
       - "465:465"
+    links:
+      - rabbit-mq
     environment:
-      - WAIT_HOSTS: rabbit-mq:5672
+      WAIT_HOSTS: rabbit-mq:5672
     volumes:
       - ./Messenger:/code
 
@@ -69,7 +71,7 @@ services:
     volumes:
       - ./User:/code
     environment:
-      - WAIT_HOSTS: mysql-db:3006
+      WAIT_HOSTS: mysql-db:3306
     depends_on:
       - mysql-db
 
@@ -79,7 +81,7 @@ services:
     volumes:
       - ./Item:/code
     environment:
-      - WAIT_HOSTS: postgresql:5432
+      WAIT_HOSTS: postgresql-db:5432
     depends_on:
       - postgresql-db
 

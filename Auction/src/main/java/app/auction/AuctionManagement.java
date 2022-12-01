@@ -43,8 +43,9 @@ public class AuctionManagement extends java.rmi.server.UnicastRemoteObject imple
 			timer = new Timer();
 			rmiUser = new RMIHelper().getRemUserManagement();
 			ConnectionFactory factory = new ConnectionFactory();
-			factory.setHost("messenger");
-			Connection conn = factory.newConnection();
+			Connection conn;
+			factory.setHost("rabbit-mq");
+			conn = factory.newConnection();
 			channel = conn.createChannel();
 			channel.queueDeclare(QUEUE_NAME, false, false, false, null);
 

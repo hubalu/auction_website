@@ -1,8 +1,8 @@
+app/user/UserDao.class
 app/item/ItemController.class
 app/rmiManagement/RemoteUserManagement.class
-app/user/UserDao.class
-app/user/UserType.class
 app/util/Path$Template.class
+app/user/UserType.class
 app/auction/BidController.class
 app/rmiManagement/RemoteItemManagement.class
 app/util/MessageBundle.class

@@ -1,0 +1,5 @@
+app/rmiManagement/RemoteItemManagement.class
+app/Application.class
+app/database/Database.class
+app/item/Item.class
+app/rmiManagement/ItemManagement.class

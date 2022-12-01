@@ -16,7 +16,7 @@ public class Database {
     public Database(String database_path){
         try{
             Class.forName("org.postgresql.Driver");
-            conn = DriverManager.getConnection("jdbc:postgresql://postgresql-db:5432/" + database_path);
+            conn = DriverManager.getConnection("jdbc:postgresql://postgresql-db:5432/" + database_path, "root", "password");
         } catch (Exception e){
             e.printStackTrace();
             System.exit(0);

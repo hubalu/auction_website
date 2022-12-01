@@ -1,0 +1,6 @@
+app/user/UserType.class
+app/Application.class
+app/user/Database.class
+app/rmiManagement/RemoteUserManagement.class
+app/user/UserManagement.class
+app/user/UserInfo.class

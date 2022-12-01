@@ -1,21 +1,5 @@
 version: "3.9"
 services:
-
-  frontend:
-    build: Frontend/.
-    restart: always
-    ports:
-      - "4567:4567"
-    depends_on:
-      - item
-      - user
-      - auction
-    links:
-      - mongo
-    environment:
-      WAIT_HOSTS: mongo:27017
-    volumes:
-      - ./Frontend:/code
   
   mongo:
     image: mongo
@@ -43,12 +27,49 @@ services:
       MYSQL_ROOT_PASSWORD: secretpass
       MYSQL_DATABASE: userData
 
+  user:
+    build: User/.
+    volumes:
+      - ./User:/code
+    environment:
+      WAIT_HOSTS: mysql-db:3306
+    links:
+      - mysql-db
+
+  item:
+    build: Item/.
+    restart: always
+    volumes:
+      - ./Item:/code
+    environment:
+      WAIT_HOSTS: postgresql-db:5432
+    links:
+      - postgresql-db
+
+  frontend:
+    build: Frontend/.
+    restart: always
+    ports:
+      - "4567:4567"
+    depends_on:
+      - item
+      - user
+      - auction
+    links:
+      - mongo
+    environment:
+      WAIT_HOSTS: mongo:27017
+    volumes:
+      - ./Frontend:/code
+
   auction:
     build: Auction/.
     restart: always
     depends_on:
       - user
       - messenger
+    command: ["./wait-for-it.sh", "db:5432", "--", "python", "app.py"]
+    links:
       - mongo
     environment:
       WAIT_HOSTS: mongo:27017
@@ -65,23 +86,3 @@ services:
       WAIT_HOSTS: rabbit-mq:5672
     volumes:
       - ./Messenger:/code
-
-  user:
-    build: User/.
-    volumes:
-      - ./User:/code
-    environment:
-      WAIT_HOSTS: mysql-db:3306
-    depends_on:
-      - mysql-db
-
-  item:
-    build: Item/.
-    restart: always
-    volumes:
-      - ./Item:/code
-    environment:
-      WAIT_HOSTS: postgresql-db:5432
-    depends_on:
-      - postgresql-db
-

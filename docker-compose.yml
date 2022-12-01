@@ -3,37 +3,51 @@ services:
 
   frontend:
     build: Frontend/.
+    restart: always
     ports:
       - "4567:4567"
-    depends_on:
-      - item
-      - user
-      - auction
+    # depends_on:
+      # - mongo
+      # - item
+      # - user
+      # - auction
+    links:
+      - mongo
+    environment:
+      WAIT_HOSTS: mongo:27017
     volumes:
       - ./Frontend:/code
+  
+  mongo:
+    image: mongo
+    restart: always
+    environment:
+      MONGO_INITDB_DATABASE: LoginService
 
-  auction:
-    build: Auction/.
-    depends_on:
-      - user
-      - messenger
-    volumes:
-      - ./Auction:/code
+  # auction:
+  #   build: Auction/.
+  #   restart: always
+  #   depends_on:
+  #     - user
+  #     - messenger
+  #   volumes:
+  #     - ./Auction:/code
 
-  messenger:
-    build: Messenger/.
-    ports:
-      - "465:465"
-    volumes:
-      - ./Messenger:/code
+  # messenger:
+  #   build: Messenger/.
+  #   ports:
+  #     - "465:465"
+  #   volumes:
+  #     - ./Messenger:/code
 
-  user:
-    build: User/.
-    volumes:
-      - ./User:/code
+  # user:
+  #   build: User/.
+  #   volumes:
+  #     - ./User:/code
 
-  item:
-    build: Item/.
-    volumes:
-      - ./Item:/code
+  # item:
+  #   build: Item/.
+  #   restart: always
+  #   volumes:
+  #     - ./Item:/code
 

@@ -30,7 +30,7 @@ public class UserDao {
     private CodecRegistry pojoCodecRegistry;
 
     public UserDao(){
-        mongoClient = MongoClients.create("mongodb://localhost:27017");
+        mongoClient = MongoClients.create("mongodb://mongo:27017");
         database = mongoClient.getDatabase("LoginService");
         //database.createCollection("userData");
         /*this.pojoCodecRegistry =

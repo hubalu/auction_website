@@ -86,8 +86,14 @@ public class ItemManagement extends java.rmi.server.UnicastRemoteObject implemen
         return db.querySQL(sql);
     }
 
-    public boolean delete_category(String action, String category) throws RemoteException{
-        String sql = "UPDATE item SET Category = \"null\" where Category = '" + category + "'";
+    public boolean update_category(String prevName, String newName){
+        String sql = "UPDATE item SET category = '" + newName + "' WHERE category = '" + prevName + "'";
+        return db.modifySQL(sql);
+
+    }
+
+    public boolean delete_category(String deleteCategory){
+        String sql = "UPDATE item SET category = NULL WHERE category = '" + deleteCategory + "'";
         return db.modifySQL(sql);
     }
 

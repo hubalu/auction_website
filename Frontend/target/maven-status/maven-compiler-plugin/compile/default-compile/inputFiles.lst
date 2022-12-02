@@ -1,24 +1,24 @@
-/Users/hanzehu/Documents/UChicago/Topics in SE/auction_website/Frontend/src/main/java/app/item/Item.java
-/Users/hanzehu/Documents/UChicago/Topics in SE/auction_website/Frontend/src/main/java/app/category/CategoryDao.java
-/Users/hanzehu/Documents/UChicago/Topics in SE/auction_website/Frontend/src/main/java/app/util/RequestUtil.java
-/Users/hanzehu/Documents/UChicago/Topics in SE/auction_website/Frontend/src/main/java/app/rmiManagement/RemoteItemManagement.java
-/Users/hanzehu/Documents/UChicago/Topics in SE/auction_website/Frontend/src/main/java/app/util/Path.java
-/Users/hanzehu/Documents/UChicago/Topics in SE/auction_website/Frontend/src/main/java/app/item/ItemController.java
-/Users/hanzehu/Documents/UChicago/Topics in SE/auction_website/Frontend/src/main/java/app/user/UserController.java
-/Users/hanzehu/Documents/UChicago/Topics in SE/auction_website/Frontend/src/main/java/app/rmiManagement/RemoteUserManagement.java
-/Users/hanzehu/Documents/UChicago/Topics in SE/auction_website/Frontend/src/main/java/app/category/CategoryController.java
-/Users/hanzehu/Documents/UChicago/Topics in SE/auction_website/Frontend/src/main/java/app/user/User.java
-/Users/hanzehu/Documents/UChicago/Topics in SE/auction_website/Frontend/src/main/java/app/login/LoginController.java
-/Users/hanzehu/Documents/UChicago/Topics in SE/auction_website/Frontend/src/main/java/app/category/Category.java
-/Users/hanzehu/Documents/UChicago/Topics in SE/auction_website/Frontend/src/main/java/app/util/MessageBundle.java
-/Users/hanzehu/Documents/UChicago/Topics in SE/auction_website/Frontend/src/main/java/app/user/UserInfo.java
-/Users/hanzehu/Documents/UChicago/Topics in SE/auction_website/Frontend/src/main/java/app/user/UserType.java
-/Users/hanzehu/Documents/UChicago/Topics in SE/auction_website/Frontend/src/main/java/app/util/ViewUtil.java
-/Users/hanzehu/Documents/UChicago/Topics in SE/auction_website/Frontend/src/main/java/app/rmiManagement/RemoteAuctionManagement.java
-/Users/hanzehu/Documents/UChicago/Topics in SE/auction_website/Frontend/src/main/java/app/auction/Auction.java
-/Users/hanzehu/Documents/UChicago/Topics in SE/auction_website/Frontend/src/main/java/app/auction/AuctionDesc.java
-/Users/hanzehu/Documents/UChicago/Topics in SE/auction_website/Frontend/src/main/java/app/Application.java
-/Users/hanzehu/Documents/UChicago/Topics in SE/auction_website/Frontend/src/main/java/app/auction/BidController.java
-/Users/hanzehu/Documents/UChicago/Topics in SE/auction_website/Frontend/src/main/java/app/util/Filters.java
-/Users/hanzehu/Documents/UChicago/Topics in SE/auction_website/Frontend/src/main/java/app/user/UserDao.java
-/Users/hanzehu/Documents/UChicago/Topics in SE/auction_website/Frontend/src/main/java/app/rmiManagement/RMIHelper.java
+/Users/rge/Desktop/auction_website/Frontend/src/main/java/app/util/RequestUtil.java
+/Users/rge/Desktop/auction_website/Frontend/src/main/java/app/Application.java
+/Users/rge/Desktop/auction_website/Frontend/src/main/java/app/util/MessageBundle.java
+/Users/rge/Desktop/auction_website/Frontend/src/main/java/app/user/UserInfo.java
+/Users/rge/Desktop/auction_website/Frontend/src/main/java/app/category/Category.java
+/Users/rge/Desktop/auction_website/Frontend/src/main/java/app/login/LoginController.java
+/Users/rge/Desktop/auction_website/Frontend/src/main/java/app/user/User.java
+/Users/rge/Desktop/auction_website/Frontend/src/main/java/app/util/ViewUtil.java
+/Users/rge/Desktop/auction_website/Frontend/src/main/java/app/user/UserType.java
+/Users/rge/Desktop/auction_website/Frontend/src/main/java/app/item/Item.java
+/Users/rge/Desktop/auction_website/Frontend/src/main/java/app/rmiManagement/RemoteAuctionManagement.java
+/Users/rge/Desktop/auction_website/Frontend/src/main/java/app/auction/BidController.java
+/Users/rge/Desktop/auction_website/Frontend/src/main/java/app/category/CategoryDao.java
+/Users/rge/Desktop/auction_website/Frontend/src/main/java/app/user/UserDao.java
+/Users/rge/Desktop/auction_website/Frontend/src/main/java/app/rmiManagement/RemoteUserManagement.java
+/Users/rge/Desktop/auction_website/Frontend/src/main/java/app/util/Path.java
+/Users/rge/Desktop/auction_website/Frontend/src/main/java/app/rmiManagement/RemoteItemManagement.java
+/Users/rge/Desktop/auction_website/Frontend/src/main/java/app/rmiManagement/RMIHelper.java
+/Users/rge/Desktop/auction_website/Frontend/src/main/java/app/auction/AuctionDesc.java
+/Users/rge/Desktop/auction_website/Frontend/src/main/java/app/item/ItemController.java
+/Users/rge/Desktop/auction_website/Frontend/src/main/java/app/util/Filters.java
+/Users/rge/Desktop/auction_website/Frontend/src/main/java/app/auction/Auction.java
+/Users/rge/Desktop/auction_website/Frontend/src/main/java/app/category/CategoryController.java
+/Users/rge/Desktop/auction_website/Frontend/src/main/java/app/user/UserController.java

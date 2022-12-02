@@ -14,8 +14,8 @@ public interface RemoteItemManagement extends Remote {
 
     boolean flag_item(int item_id);
 
-    List<Item> search_item(String key_word, String Category, String sort_key, boolean desc);
+    List<Item> search_item(String key_word, String Category, String sort_key, boolean desc) throws RemoteException;
 
-    boolean update_category(String prevName, String newName);
-    boolean delete_category(String deleteCategory);
+    boolean update_category(String prevName, String newName) throws RemoteException;
+    boolean delete_category(String deleteCategory) throws RemoteException;
 }

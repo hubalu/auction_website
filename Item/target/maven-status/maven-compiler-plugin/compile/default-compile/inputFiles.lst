@@ -1,5 +1,5 @@
-/Users/hanzehu/Documents/UChicago/Topics in SE/auction_website/Item/src/main/java/app/database/Database.java
-/Users/hanzehu/Documents/UChicago/Topics in SE/auction_website/Item/src/main/java/app/item/Item.java
-/Users/hanzehu/Documents/UChicago/Topics in SE/auction_website/Item/src/main/java/app/Application.java
-/Users/hanzehu/Documents/UChicago/Topics in SE/auction_website/Item/src/main/java/app/rmiManagement/ItemManagement.java
-/Users/hanzehu/Documents/UChicago/Topics in SE/auction_website/Item/src/main/java/app/rmiManagement/RemoteItemManagement.java
+/Users/rge/Desktop/auction_website/Item/src/main/java/app/rmiManagement/RemoteItemManagement.java
+/Users/rge/Desktop/auction_website/Item/src/main/java/app/item/Item.java
+/Users/rge/Desktop/auction_website/Item/src/main/java/app/rmiManagement/ItemManagement.java
+/Users/rge/Desktop/auction_website/Item/src/main/java/app/database/Database.java
+/Users/rge/Desktop/auction_website/Item/src/main/java/app/Application.java

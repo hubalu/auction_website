@@ -83,6 +83,7 @@ services:
       - ./Item:/code
     environment:
       WAIT_HOSTS: postgresql-db:5432
+      TZ: "America/Chicago"
     depends_on:
       - postgresql-db
 

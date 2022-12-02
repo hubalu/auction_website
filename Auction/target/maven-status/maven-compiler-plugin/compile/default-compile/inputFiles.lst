@@ -1,11 +1,11 @@
-/Users/hanzehu/Documents/UChicago/Topics in SE/auction_website/Auction/src/main/java/app/auction/AuctionManagement.java
-/Users/hanzehu/Documents/UChicago/Topics in SE/auction_website/Auction/src/main/java/app/timertasks/StartTask.java
-/Users/hanzehu/Documents/UChicago/Topics in SE/auction_website/Auction/src/main/java/app/auction/AuctionDesc.java
-/Users/hanzehu/Documents/UChicago/Topics in SE/auction_website/Auction/src/main/java/app/timertasks/Expiration.java
-/Users/hanzehu/Documents/UChicago/Topics in SE/auction_website/Auction/src/main/java/app/timertasks/OneDayAlert.java
-/Users/hanzehu/Documents/UChicago/Topics in SE/auction_website/Auction/src/main/java/app/rmiManagement/RemoteAuctionManagement.java
-/Users/hanzehu/Documents/UChicago/Topics in SE/auction_website/Auction/src/main/java/app/rmiManagement/RemoteUserManagement.java
-/Users/hanzehu/Documents/UChicago/Topics in SE/auction_website/Auction/src/main/java/app/auction/MongoDB.java
-/Users/hanzehu/Documents/UChicago/Topics in SE/auction_website/Auction/src/main/java/app/Application.java
-/Users/hanzehu/Documents/UChicago/Topics in SE/auction_website/Auction/src/main/java/app/timertasks/OneHourAlert.java
-/Users/hanzehu/Documents/UChicago/Topics in SE/auction_website/Auction/src/main/java/app/rmiManagement/RMIHelper.java
+/Users/rge/Desktop/auction_website/Auction/src/main/java/app/timertasks/OneDayAlert.java
+/Users/rge/Desktop/auction_website/Auction/src/main/java/app/auction/AuctionManagement.java
+/Users/rge/Desktop/auction_website/Auction/src/main/java/app/rmiManagement/RemoteAuctionManagement.java
+/Users/rge/Desktop/auction_website/Auction/src/main/java/app/timertasks/StartTask.java
+/Users/rge/Desktop/auction_website/Auction/src/main/java/app/auction/MongoDB.java
+/Users/rge/Desktop/auction_website/Auction/src/main/java/app/timertasks/OneHourAlert.java
+/Users/rge/Desktop/auction_website/Auction/src/main/java/app/auction/AuctionDesc.java
+/Users/rge/Desktop/auction_website/Auction/src/main/java/app/timertasks/Expiration.java
+/Users/rge/Desktop/auction_website/Auction/src/main/java/app/rmiManagement/RemoteUserManagement.java
+/Users/rge/Desktop/auction_website/Auction/src/main/java/app/rmiManagement/RMIHelper.java
+/Users/rge/Desktop/auction_website/Auction/src/main/java/app/Application.java

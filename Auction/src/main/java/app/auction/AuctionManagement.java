@@ -78,8 +78,10 @@ public class AuctionManagement extends java.rmi.server.UnicastRemoteObject imple
 			String time_to_start = startTime.replace("T", " ");
 			DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm");
 			Date start_time = dateFormat.parse(time_to_start);
+			System.out.println("current time: " + Calendar.getInstance().getTime());
 			System.out.println(start_time.toString());
 			Date end_time = dateFormat.parse(time_to_end);
+			System.out.println(end_time.toString());
 			timer.schedule(new StartTask(objectId.toString(), db), start_time);
 			timer.schedule(new Expiration(objectId.toString(), db), end_time);
 			Calendar calendar = Calendar.getInstance();

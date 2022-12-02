@@ -6,7 +6,11 @@
     #if($item)
     <h1>$item.getItemName()</h1>
     <h2>$item.getDescription()</h2>
-    <h2>$item.getCategory()</h2>
+    #if($item.getCategory())
+        <h2>$item.getCategory()</h2>
+    #else
+        <h2>Item Category no longer exists</2>
+    #end
     #if($userID eq $item.getUserID())
         <form id="uploadAuctionForm" method="get" action="$WebPath.getUPLOAD_AUCTION()">
             <input name="item_id" type="text" value = $item.getItemID() hidden>

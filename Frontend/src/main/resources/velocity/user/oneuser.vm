@@ -47,5 +47,23 @@
     <label>Email: $userInfo.getEmail()</label>
     <br>
     <label>Phone Number: $userInfo.getPhoneNumber()</label>
+    #if($user.getDeactivate())
+        <form id="unsuspendUserForm" method="post" action="$WebPath.getUNSUSPEND_USER()">
+            <input type="number" name="userid" value="$userInfo.getUserId()" required hidden>
+            <input type="text" name="username" value="$userInfo.getUsername()" required hidden>
+            <input type="submit" value="Reactivate User">
+        </form>
+    #else
+        <form id="suspendUserForm" method="post" action="$WebPath.getSUSPEND_USER()">
+            <input type="number" name="userid" value="$userInfo.getUserId()" required hidden>
+            <input type="text" name="username" value="$userInfo.getUsername()" required hidden>
+            <input type="submit" value="Suspend User">
+        </form>
+    #end
+    <form id="deleteUserForm" method="post" action="$WebPath.getDELETE_USER()">
+        <input type="number" name="userid" value="$userInfo.getUserId()" required hidden>
+        <input type="text" name="username" value="$userInfo.getUsername()" required hidden>
+        <input type="submit" value="Delete User">
+    </form>
 #end
 #end

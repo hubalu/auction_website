@@ -1,8 +1,10 @@
 package app;
 
 import app.auction.BidController;
+import app.category.CategoryController;
 import app.item.ItemController;
 import app.login.LoginController;
+import app.user.CategoryDao;
 import app.user.UserController;
 import app.user.UserDao;
 import app.util.Filters;
@@ -15,10 +17,12 @@ import static spark.debug.DebugScreen.*;
 public class Application {
 
     public static UserDao userDao;
+    public static CategoryDao categoryDao;
 
     public static void main(String[] args) {
 
         userDao = new UserDao();
+        categoryDao = new CategoryDao();
 
         // Configure Spark
         port(4567);
@@ -45,6 +49,9 @@ public class Application {
 
         get(Path.Web.CREATE_USER,       UserController.getCreateUserPage);
         post(Path.Web.CREATE_USER,      UserController.createUser);
+        post(Path.Web.SUSPEND_USER,      UserController.deactivateUser);
+        post(Path.Web.UNSUSPEND_USER,    UserController.activateUser);
+        post(Path.Web.DELETE_USER,      UserController.deleteUser);
 
         get(Path.Web.UPLOAD_AUCTION,    BidController.uploadAuctionPlaceholder);
         post(Path.Web.UPLOAD_AUCTION,   BidController.handleUploadAuctionPostPlaceholder);
@@ -52,6 +59,11 @@ public class Application {
         get(Path.Web.ONE_AUCTION,       BidController.getOneAuctionPlaceholder);
         post(Path.Web.UPLOAD_BID,       BidController.submitBidPlaceholder);
         post(Path.Web.ADD_TO_WATCHLIST, BidController.addToWatchlist);
+
+        get(Path.Web.CATEGORY,          CategoryController.loadCategory);
+        post(Path.Web.CATEGORY,         CategoryController.addCategory);
+        post(Path.Web.DELETE_CATEGORY,         CategoryController.deleteCategory);
+        post(Path.Web.UPDATE_CATEGORY,          CategoryController.updateCategory);
 
         get("*",                     ViewUtil.notFound);
 

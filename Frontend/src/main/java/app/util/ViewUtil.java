@@ -8,8 +8,7 @@ import spark.template.velocity.*;
 import java.util.HashMap;
 import java.util.Map;
 
-import static app.util.RequestUtil.getSessionCurrentUser;
-import static app.util.RequestUtil.getSessionLocale;
+import static app.util.RequestUtil.*;
 
 public class ViewUtil {
 
@@ -19,6 +18,9 @@ public class ViewUtil {
     public static String render(Request request, Map<String, Object> model, String templatePath) {
         model.put("msg", new MessageBundle(getSessionLocale(request)));
         model.put("currentUser", getSessionCurrentUser(request));
+        if (request.session().attribute("userRole") != null){
+            model.put("userRole", request.session().attribute("userRole").toString());
+        }
         model.put("WebPath", Path.Web.class); // Access application URLs from templates
         return strictVelocityEngine().render(new ModelAndView(model, templatePath));
     }

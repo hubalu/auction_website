@@ -8,19 +8,21 @@
 </head>
 <body>
 <header>
-
     <nav style="height:10%">
         <ul id="menu">
             #if($currentUser)
-            <li> <a href=$WebPath.getUSER_INFO()>User</a> </li>
-            <li> <a href=$WebPath.getALL_AUCTIONS()>Auctions</a> </li>
-            <li> <a href=$WebPath.getITEMS()>Items</a> </li>
-            <li> <a href=$WebPath.getITEMS()>Shopping Cart</a> </li>
-            <li>
-                <form method="post" action="$WebPath.getLOGOUT()">
-                    <button id="logout">$msg.get("COMMON_NAV_LOGOUT")</button>
-                </form>
-            </li>
+                #if($userRole eq "Admin")
+                    <li> <a href=$WebPath.getCATEGORY()>Category</a> </li>
+                #end
+                <li> <a href=$WebPath.getUSER_INFO()>User</a> </li>
+                <li> <a href=$WebPath.getALL_AUCTIONS()>Auctions</a> </li>
+                <li> <a href=$WebPath.getITEMS()>Items</a> </li>
+                <li> <a href=$WebPath.getITEMS()>Shopping Cart</a> </li>
+                <li>
+                    <form method="post" action="$WebPath.getLOGOUT()">
+                        <button id="logout">$msg.get("COMMON_NAV_LOGOUT")</button>
+                    </form>
+                </li>
             #else
                 <li><a href="$WebPath.getLOGIN()"">$msg.get("COMMON_NAV_LOGIN")</a></li>
             #end

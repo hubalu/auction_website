@@ -23,8 +23,14 @@ public class Path {
         @Getter public static final String ONE_USER_INFO = "/user_info/:userid/";
         @Getter public static final String UPDATE_PASSWORD = "/update_password/";
         @Getter public static final String UPDATE_USER_INFO = "/update_user_info/";
+        @Getter public static final String SUSPEND_USER = "/suspend_user/";
+        @Getter public static final String UNSUSPEND_USER = "/unsuspend_user/";
+        @Getter public static final String DELETE_USER = "/delete_user/";
         @Getter public static final String UPLOAD_BID = "/upload_bid/";
         @Getter public static final String ADD_TO_WATCHLIST = "/add_to_watchlist/";
+        @Getter public static final String CATEGORY = "/category/";
+        @Getter public static final String DELETE_CATEGORY = "/delete_category/";
+        @Getter public static final String UPDATE_CATEGORY = "/update_category/";
     }
 
     public static class Template {
@@ -45,6 +51,8 @@ public class Path {
 
         public static final String ALL_USER = "/velocity/user/allusers.vm";
         public static final String ONE_USER = "/velocity/user/oneuser.vm";
+
+        public static final String CATEGORY = "/velocity/category/category.vm";
     }
 
 }

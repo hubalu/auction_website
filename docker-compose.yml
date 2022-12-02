@@ -52,6 +52,7 @@ services:
       - mongo
     environment:
       WAIT_HOSTS: rabbit-mq:5672
+      TZ: "America/Chicago"
     volumes:
       - ./Auction:/code
 

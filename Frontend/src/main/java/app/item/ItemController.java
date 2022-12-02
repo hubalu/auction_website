@@ -3,6 +3,7 @@ package app.item;
 import app.login.LoginController;
 import app.rmiManagement.RMIHelper;
 import app.rmiManagement.RemoteItemManagement;
+import app.user.CategoryDao;
 import app.util.Path;
 import app.util.ViewUtil;
 import spark.Request;
@@ -13,6 +14,7 @@ import java.lang.reflect.Array;
 import java.util.*;
 import static app.util.RequestUtil.*;
 import static spark.Spark.redirect;
+import static app.Application.categoryDao;
 
 
 public class ItemController {
@@ -44,6 +46,8 @@ public class ItemController {
     public static Route uploadItem = (Request request, Response response) -> {
         LoginController.ensureUserIsLoggedIn(request, response);
         Map<String, Object> model = new HashMap<>();
+        ArrayList<String> categories = categoryDao.getCategories();
+        model.put("categories", categories);
         return ViewUtil.render(request, model, Path.Template.ITEM);
     };
 
@@ -69,6 +73,9 @@ public class ItemController {
     public static Route getAllItemsPlaceholder = (Request request, Response response) -> {
         LoginController.ensureUserIsLoggedIn(request, response);
         RemoteItemManagement rmItemManagement = rmiHelper.getRemItemManagement();
+        ArrayList<String> categories = categoryDao.getCategories();
+
+
         String search_value = request.queryParams("search_value");
         String search_type = request.queryParams("search_type");
         System.out.println(search_type);
@@ -89,6 +96,7 @@ public class ItemController {
         Map<String, Object> model = new HashMap<>();
 //        ArrayList<Item> itemList = generateItemList();
         model.put("itemList", currentItems);
+        model.put("categories", categories);
         return ViewUtil.render(request, model, Path.Template.ITEMS);
     };
 

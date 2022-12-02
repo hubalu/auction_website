@@ -1,0 +1,50 @@
+#parse("/velocity/layout.vm")
+#@mainLayout()
+    #if($AddCategorySuccess)
+        <p class="good notification">Category Successfully Added</p>
+    #elseif($AddCategoryFailed)
+        <p class="bad notification">Category was not Added Successfully</p>
+    #elseif($UpdateCategorySuccess)
+        <p class="good notification">Category Successfully Updated</p>
+    #elseif($UpdateCategoryFailed)
+        <p class="bad notification">Category was not Updated Successfully</p>
+    #elseif($DeleteCategorySuccess)
+        <p class="good notification">Category Successfully Deleted</p>
+    #elseif($DeleteCategoryFailed)
+        <p class="bad notification">Category was not Deleted Successfully</p>
+    #end
+
+    <h2 style="display: inline"> Create new Category: </h2>
+    <form style="display: inline" id="createCategoryForm" method="post">
+        <input type="text" name="newCategory" placeholder="New Category" value="" required>
+        <input type="submit" value="Add Category">
+    </form>
+    <div> </div>
+
+    <h2> All Categories: </h2>
+    <table>
+        <tr>
+        <th colspan="30" style="text-align:left">Category Name</th>
+        <th colspan="120" style="text-align:left">Update Category</th>
+        <th colspan="30" style="text-align:left">Delete Category</th>
+        </tr>
+        #foreach($category in $categories)
+            <tr>
+            <td colspan="30" >$category </td>
+            <td colspan="120">
+                <form id="updateCategoryForm" method="post" action="$WebPath.getUPDATE_CATEGORY()">
+                    <input type="text" name="newCategory" value="$category">
+                    <input type="text" name="oldCategory" value="$category" hidden>
+                    <input type="submit" value="Update Category">
+                </form>
+            </td>
+            <td colspan="30">
+                <form id="deleteCategoryForm" method="post" action="$WebPath.getDELETE_CATEGORY()">
+                    <input type="text" name="categoryName" value="$category" hidden>
+                    <input type="submit" value="Delete Category">
+                </form>
+            </td>
+            </tr>
+        #end
+    </table>
+#end

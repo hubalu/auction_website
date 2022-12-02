@@ -33,7 +33,6 @@ public class UserController {
             return false;
         }
         String hashedPassword = BCrypt.hashpw(password, user.getSalt());
-        System.out.println(user);
         return hashedPassword.equals(user.getHashedPassword());
     }
 
@@ -78,6 +77,82 @@ public class UserController {
         return null;
     };
 
+    public static Route deactivateUser = (Request request, Response response) -> {
+        LoginController.ensureUserIsLoggedIn(request, response);
+        Map<String, Object> model = new HashMap<>();
+
+        if(request.session().attribute("userRole").toString().equals("Admin")){
+            // database processing
+            RemoteUserManagement rmiUserManagement = rmiHelper.getRemUserManagement();
+            int userid = Integer.parseInt(request.queryParams("userid"));
+            String username = request.queryParams("username");
+            boolean success = rmiUserManagement.suspendUser(userid, UserType.Admin);
+            if (!success){
+                response.redirect(Path.Web.USER_INFO);
+                return null;
+            }
+            success = userDao.deactivateUser(username, true);
+            if (!success){
+                userDao.deactivateUser(username, false);
+            }
+            response.redirect(Path.Web.USER_INFO);
+            return null;
+        } else {
+            return ViewUtil.render(request, model, Path.Template.UNAUTHORIZED);
+        }
+    };
+
+    public static Route activateUser = (Request request, Response response) -> {
+        LoginController.ensureUserIsLoggedIn(request, response);
+        Map<String, Object> model = new HashMap<>();
+
+        if(request.session().attribute("userRole").toString().equals("Admin")){
+            // database processing
+            RemoteUserManagement rmiUserManagement = rmiHelper.getRemUserManagement();
+            int userid = Integer.parseInt(request.queryParams("userid"));
+            String username = request.queryParams("username");
+            boolean success = rmiUserManagement.suspendUser(userid, UserType.Admin);
+            if (!success){
+                response.redirect(Path.Web.USER_INFO);
+                return null;
+            }
+
+            success = userDao.deactivateUser(username, false);
+            if (!success){
+                userDao.deactivateUser(username, true);
+            }
+            response.redirect(Path.Web.USER_INFO);
+            return null;
+        } else {
+            return ViewUtil.render(request, model, Path.Template.UNAUTHORIZED);
+        }
+    };
+
+    public static Route deleteUser = (Request request, Response response) -> {
+        LoginController.ensureUserIsLoggedIn(request, response);
+        Map<String, Object> model = new HashMap<>();
+
+        if(request.session().attribute("userRole").toString().equals("Admin")){
+            // database processing
+            RemoteUserManagement rmiUserManagement = rmiHelper.getRemUserManagement();
+            int userid = Integer.parseInt(request.queryParams("userid"));
+            String username = request.queryParams("username");
+            int operatorId = request.session().attribute("userID");
+
+            boolean success = rmiUserManagement.deleteUser(userid, operatorId, UserType.Admin);
+            if (!success){
+                response.redirect(Path.Web.USER_INFO);
+                return null;
+            }
+
+            userDao.deleteUser(username);
+            response.redirect(Path.Web.USER_INFO);
+            return null;
+        } else {
+            return ViewUtil.render(request, model, Path.Template.UNAUTHORIZED);
+        }
+    };
+
     public static Route getCreateUserPage = (Request request, Response response) -> {
         Map<String, Object> model = new HashMap<>();
         return ViewUtil.render(request, model, Path.Template.CREATE_USER);
@@ -94,10 +169,11 @@ public class UserController {
         String requestid = request.params(":userid");
         if (userType == UserType.Admin || userid.toString().equals(requestid)) {
             UserInfo userInfo = rmiUserManagement.getOneUser(Integer.parseInt(requestid));
-            User user = userDao.getUserByUsername(request.session().attribute("currentUser"));
+            User user = userDao.getUserByUsername(userInfo.getUsername());
             model.put("userInfo", userInfo);
             model.put("user", user);
             model.put("admin", true);
+            model.put("userList", user);
             return ViewUtil.render(request, model, Path.Template.ONE_USER);
         } else {
             return ViewUtil.render(request, model, Path.Template.UNAUTHORIZED);

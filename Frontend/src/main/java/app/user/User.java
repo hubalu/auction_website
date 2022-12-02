@@ -9,12 +9,17 @@ public class User {
     String hashedPassword;
     int userId;
     UserType userType;
-
-    public User(String username, String salt, String hashedPassword, int userId, UserType userType) {
+    boolean deactivate;
+    public User(String username, String salt, String hashedPassword, int userId, UserType userType, boolean deactivate) {
         this.username = username;
         this.salt = salt;
         this.hashedPassword = hashedPassword;
         this.userId = userId;
         this.userType = userType;
+        this.deactivate = deactivate;
+    }
+
+    public boolean getDeactivate(){
+        return this.deactivate;
     }
 }

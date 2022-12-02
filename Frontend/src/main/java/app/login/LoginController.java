@@ -35,9 +35,7 @@ public class LoginController {
         if (getQueryLoginRedirect(request) != null) {
             response.redirect(getQueryLoginRedirect(request));
         }
-        response.redirect(Path.Web.ITEMS);
-        return null;
-        //return ViewUtil.render(request, model, Path.Template.LOGIN);
+        return ViewUtil.render(request, model, Path.Template.LOGIN);
     };
 
     public static Route handleLogoutPost = (Request request, Response response) -> {
@@ -56,7 +54,5 @@ public class LoginController {
             request.session().attribute("loginRedirect", request.pathInfo());
             response.redirect(Path.Web.LOGIN);
         }
-        Integer userid = (Integer)request.session().attribute("userID");
-        System.out.printf("User Id in getUserInfo: %d\n", userid);
     };
 }

@@ -1,4 +1,5 @@
 app/user/UserDao.class
+app/user/CategoryDao.class
 app/item/ItemController.class
 app/rmiManagement/RemoteUserManagement.class
 app/util/Path$Template.class
@@ -16,6 +17,7 @@ app/auction/Auction.class
 app/util/Filters.class
 app/util/Path.class
 app/item/Item.class
+app/category/CategoryController.class
 app/user/UserInfo.class
 app/user/User.class
 app/util/ViewUtil.class

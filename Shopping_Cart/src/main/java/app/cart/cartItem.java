@@ -1,4 +1,4 @@
-package app.user;
+package app.cart;
 
 import lombok.Value;
 

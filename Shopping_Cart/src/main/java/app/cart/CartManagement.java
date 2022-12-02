@@ -1,6 +1,6 @@
-package app.user;
+package app.cart;
 
-import app.rmiManagement.RemoteUserManagement;
+import app.rmiManagement.RemoteCartManagement;
 
 import java.net.InetAddress;
 import java.rmi.RemoteException;
@@ -9,7 +9,7 @@ import java.rmi.registry.Registry;
 import java.sql.SQLException;
 import java.util.List;
 
-public class CartManagement extends java.rmi.server.UnicastRemoteObject implements RemoteUserManagement {
+public class CartManagement extends java.rmi.server.UnicastRemoteObject implements RemoteCartManagement {
 
     private Database db;
     int port;

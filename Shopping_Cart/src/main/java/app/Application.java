@@ -1,6 +1,6 @@
 package app;
 
-import app.user.CartManagement;
+import app.cart.CartManagement;
 
 public class Application {
     public static void main(String args[]) {

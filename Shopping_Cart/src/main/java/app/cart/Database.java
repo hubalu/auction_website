@@ -1,4 +1,4 @@
-package app.user;
+package app.cart;
 
 import java.sql.*;
 import java.util.ArrayList;

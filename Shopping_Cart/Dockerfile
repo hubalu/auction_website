@@ -21,4 +21,4 @@ RUN chmod +x /wait
 # Adding source, compile and package into a fat jar
 # RUN mvn clean package
 
-CMD /wait && java -cp target/Cart-1.0-SNAPSHOT.jar app.Application
+CMD /wait && java -cp target/Shopping_Cart-1.0-SNAPSHOT.jar app.Application

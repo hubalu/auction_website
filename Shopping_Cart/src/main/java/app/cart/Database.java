@@ -10,7 +10,7 @@ public class Database {
 
     public Database() {
         try {
-            conn = DriverManager.getConnection("jdbc:mysql://localhost/", "root", "123qweASD-");
+            conn = DriverManager.getConnection("jdbc:mysql://mysql-db/", "root", "secretpass");
         } catch (SQLException throwables) {
             throwables.printStackTrace();
         }

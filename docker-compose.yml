@@ -77,9 +77,9 @@ services:
       - mysql-db
 
   cart:
-    build: Cart/.
+    build: Shopping_Cart/.
     volumes:
-      - ./Cart:/code
+      - ./Shopping_Cart:/code
     environment:
       WAIT_HOSTS: mysql-db:3306
     depends_on:

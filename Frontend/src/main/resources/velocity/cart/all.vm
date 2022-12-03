@@ -1,0 +1,19 @@
+#parse("/velocity/layout.vm")
+#@mainLayout()
+<h1>All Item in Cart</h1>
+
+<form id="addToWatchlistForm" method="post" action= "$WebPath.getADD_TO_WATCHLIST()">
+    <input type="text" name="auctionID" hidden value = "$auction.getAuctionId()">
+    <input type="submit" value="Add auction to watchlist">
+</form>
+
+<div class="row row-3">
+    #foreach($item in $cartItems)
+        <div class="col">
+            <a class="book" href="$WebPath.getUPLOAD_AUCTION()$auction.getAuctionId()">
+                $item.getitem_name()
+            </a>
+        </div>
+    #end
+</div>
+#end

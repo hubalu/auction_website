@@ -31,6 +31,7 @@ public class Path {
         @Getter public static final String CATEGORY = "/category/";
         @Getter public static final String DELETE_CATEGORY = "/delete_category/";
         @Getter public static final String UPDATE_CATEGORY = "/update_category/";
+        @Getter public static final String CART = "/cart/";
     }
 
     public static class Template {
@@ -53,6 +54,8 @@ public class Path {
         public static final String ONE_USER = "/velocity/user/oneuser.vm";
 
         public static final String CATEGORY = "/velocity/category/category.vm";
+
+        public static final String GET_CART = "/velocity/cart/all.vm";
     }
 
 }

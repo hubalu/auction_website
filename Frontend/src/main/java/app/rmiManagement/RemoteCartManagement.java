@@ -1,0 +1,13 @@
+package app.rmiManagement;
+
+import java.rmi.Remote;
+import java.rmi.RemoteException;
+import java.util.List;
+
+import app.cart.cartItem;
+
+public interface RemoteCartManagement extends Remote {
+    boolean addCart(int user_id, int auction_id, String item_name, double buy_now_price) throws RemoteException;
+    List<cartItem> getCart(int user_id) throws RemoteException;
+    boolean clearCart(int user_id) throws RemoteException;
+}

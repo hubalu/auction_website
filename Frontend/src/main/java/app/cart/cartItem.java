@@ -3,6 +3,8 @@ package app.cart;
 import lombok.Value;
 
 import java.io.Serializable;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 
 @Value
 public class cartItem implements Serializable {
@@ -18,5 +20,9 @@ public class cartItem implements Serializable {
         this.auction_id = auction_id;
         this.item_name = item_name;
         this.buy_now_price = buy_now_price;
+    }
+
+    public static cartItem createCart(ResultSet rs) throws SQLException {
+        return new cartItem(rs.getInt("id"), rs.getInt("user_id"), rs.getString("auction_id"), rs.getString("item_name"), rs.getDouble("buy_now_price"));
     }
 }

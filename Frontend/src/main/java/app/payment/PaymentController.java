@@ -13,6 +13,7 @@ import spark.Response;
 import spark.Route;
 
 import java.text.DateFormat;
+import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.*;
 import static app.util.RequestUtil.*;
@@ -20,6 +21,7 @@ import static app.util.RequestUtil.*;
 // TODO EVERYTHING BELOW
 public class PaymentController {
     public static RMIHelper rmiHelper = new RMIHelper();
+    private static final DecimalFormat df = new DecimalFormat("0.00");
 
     public static Route makePayment = (Request request, Response response) -> {
         LoginController.ensureUserIsLoggedIn(request, response);
@@ -28,7 +30,7 @@ public class PaymentController {
         double amount = Double.parseDouble(request.queryParams("amount"));
         String userID = request.session().attribute("userID").toString();
         rmPaymentManagement.makePayment(userID, amount);
-        response.redirect(Path.Web.VIEW_BALANCE);
+        response.redirect(Path.Web.BALANCE);
         return null;
     };
 
@@ -39,7 +41,7 @@ public class PaymentController {
         double amount = Double.parseDouble(request.queryParams("amount"));
         String userID = request.session().attribute("userID").toString();
         rmPaymentManagement.insertToBankBalance(userID, amount);
-        response.redirect(Path.Web.VIEW_BALANCE);
+        response.redirect(Path.Web.BALANCE);
         return null;
     };
     
@@ -55,7 +57,7 @@ public class PaymentController {
         return ViewUtil.render(request, model, Path.Template.INSERT_BANK_BALANCE);
     };
 
-    public static Route getViewBalancePlaceholder = (Request request, Response response) -> {
+    public static Route getBankBalance = (Request request, Response response) -> {
         LoginController.ensureUserIsLoggedIn(request, response);
         RemotePaymentManagement rmPaymentManagement = rmiHelper.getRemPaymentManagement();
 
@@ -63,11 +65,9 @@ public class PaymentController {
 
         String userID = request.session().attribute("userID").toString();
 
-        // TODO uncomment line 67
-        double balance = 123;
-        // double balance = rmPaymentManagement.viewBalance(userID);
+        double balance = rmPaymentManagement.viewBalance(userID);
 
-        model.put("balance", balance);
+        model.put("balance", df.format(balance));
         return ViewUtil.render(request, model, Path.Template.VIEW_BALANCE);
     };
 }

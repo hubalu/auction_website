@@ -1,13 +1,13 @@
 #parse("/velocity/layout.vm")
 #@mainLayout()
 
-<a href="$WebPath.getMAKE_PAYMENT()">
-    Make payment
-</a>
+<h1>Add Balance to your account</h1>
+<form id="insertBalanceForm" method="post">
+    <label>Amount to add to balance:</label>
+    <input type="number" step="0.01" min="0.0" name="amount" placeholder="Amount" value = "" required>
+    <input type="submit" value="Add to Balance">
+</form>
 
-<a href="$WebPath.getINSERT_BANK_BALANCE()">
-    Insert balance
-</a>
-
+<br>
 Current balance: $balance
 #end

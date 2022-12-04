@@ -64,10 +64,11 @@ public class Application {
 
         get(Path.Web.MAKE_PAYMENT,       PaymentController.makePayment);
         get(Path.Web.INSERT_BANK_BALANCE, PaymentController.insertBankBalance);
-        get(Path.Web.VIEW_BALANCE, PaymentController.insertBankBalance);
+        get(Path.Web.BALANCE,               PaymentController.getBankBalance);
         post(Path.Web.MAKE_PAYMENT,       PaymentController.makePayment);
         post(Path.Web.INSERT_BANK_BALANCE, PaymentController.insertBankBalance);
-        post(Path.Web.VIEW_BALANCE, PaymentController.insertBankBalance);
+        post(Path.Web.BALANCE,              PaymentController.insertBankBalance);
+        post(Path.Web.CHECKOUT,              CartController.checkOut);
 
         get(Path.Web.CATEGORY,          CategoryController.loadCategory);
         post(Path.Web.CATEGORY,         CategoryController.addCategory);
@@ -77,7 +78,7 @@ public class Application {
         get(Path.Web.CART, CartController.getCart);
         post(Path.Web.ADD_CART, CartController.addCart);
         post(Path.Web.CLEAR_CART, CartController.clearCart);
-
+        post(Path.Web.REMOVE_CART, CartController.removeItem);
 
         get("*",                     ViewUtil.notFound);
 

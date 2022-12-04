@@ -4,6 +4,7 @@ import app.item.Item;
 import app.login.LoginController;
 import app.rmiManagement.RMIHelper;
 import app.rmiManagement.RemoteItemManagement;
+import app.rmiManagement.RemotePaymentManagement;
 import app.rmiManagement.RemoteUserManagement;
 import app.util.Path;
 import app.util.ViewUtil;
@@ -29,7 +30,7 @@ public class UserController {
             return false;
         }
         User user = userDao.getUserByUsername(username);
-        if (user == null){
+        if (user == null || user.getDeactivate()){
             return false;
         }
         String hashedPassword = BCrypt.hashpw(password, user.getSalt());
@@ -201,6 +202,7 @@ public class UserController {
     public static Route createUser = (Request request, Response response) -> {
         LoginController.ensureUserIsLoggedIn(request, response);
         RemoteUserManagement rmiUserManagement = rmiHelper.getRemUserManagement();
+        RemotePaymentManagement rmiPaymentManagement = rmiHelper.getRemPaymentManagement();
 
         // database processing
         String name = request.queryParams("name");
@@ -211,6 +213,8 @@ public class UserController {
 
         int userId = rmiUserManagement.createUser(username, UserType.User, email, phone_number);
         System.out.println(userId);
+
+        rmiPaymentManagement.insertToBankBalance(String.format("%d", userId), 0.0);
 
         Map<String, Object> model = new HashMap<>();
         boolean success = userDao.addUser(username, password, UserType.User, userId);

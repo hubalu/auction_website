@@ -1,17 +1,37 @@
 #parse("/velocity/layout.vm")
 #@mainLayout()
-<h1>All Item in Cart</h1>
+<h1>Shopping Cart</h1>
 <form id="clearCart" method="post" action= "$WebPath.getCLEAR_CART()">
     <input type="submit" value="Clear Cart">
 </form>
 
-<div class="row row-3">
+<table>
+    <tr>
+    <th width="20%" style="text-align:left">Item Name</th>
+    <th width="20%" style="text-align:left">Cost</th>
+    <th width="600%" style="text-align:left">Remove from Cart</th>
+    </tr>
     #foreach($item in $cartItems)
-        <div class="col">
-            <a class="book" href="$WebPath.getUPLOAD_AUCTION()$item.getAuction_id()">
-                $item.getItem_name()
-            </a>
-        </div>
+        <tr>
+        <td style="text-align:left">
+            <a class="book" href="$WebPath.getUPLOAD_AUCTION()$item.getAuction_id()">$item.getItem_name()<a>
+        </td>
+        <td style="text-align:left">
+            <a> $item.getBuy_now_price() </a>
+        </td>
+        <td style="text-align:left">
+            <form style="float:centre" id="deleteItemForm" method="post" action="$WebPath.getREMOVE_CART()">
+                <input type="text" name="auctionID" value="$item.getAuction_id()" hidden>
+                <input type="submit" value="Remove">
+            </form>
+        </td>
+        </tr>
     #end
-</div>
+</table>
+
+<h2> Total cost: $totalCost </h2>
+<form id="CheckoutCart" method="post" action= "$WebPath.getCHECKOUT()">
+    <input type="number" name = "totalCost" value="$totalCost" hidden>
+    <input type="submit" value="Checkout">
+</form>
 #end

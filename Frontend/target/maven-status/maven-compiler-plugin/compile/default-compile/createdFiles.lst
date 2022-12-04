@@ -15,8 +15,11 @@ app/util/Path$Web.class
 app/category/Category.class
 app/rmiManagement/RMIHelper.class
 app/util/RequestUtil.class
+app/cart/CartController.class
 app/auction/Auction.class
+app/rmiManagement/RemoteCartManagement.class
 app/util/Filters.class
+app/cart/cartItem.class
 app/util/Path.class
 app/item/Item.class
 app/category/CategoryController.class

@@ -69,10 +69,24 @@ public class RMIHelper {
         Registry registry;
         try{
             // get the registry
-            // TODO CHANGE HOST!!!!!!!!!!!!!!!! AND PORT
             registry= LocateRegistry.getRegistry("payment",  12345);
             // look up the remote object in the RMI Registry
             remoteObj= (RemotePaymentManagement)(registry.lookup("paymentManagement"));
+        }
+        catch(Exception e){
+            e.printStackTrace();
+        }
+        return remoteObj;
+    }
+
+    public RemoteCartManagement getRemCartManagement(){
+        RemoteCartManagement remoteObj = null;
+        Registry registry;
+        try{
+            // get the registry
+            registry= LocateRegistry.getRegistry("cart",  12345);
+            // look up the remote object in the RMI Registry
+            remoteObj= (RemoteCartManagement) (registry.lookup("cartManagement"));
         }
         catch(Exception e){
             e.printStackTrace();

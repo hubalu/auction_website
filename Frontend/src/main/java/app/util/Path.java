@@ -33,7 +33,12 @@ public class Path {
         @Getter public static final String UPDATE_CATEGORY = "/update_category/";
         @Getter public static final String MAKE_PAYMENT = "/make_payment/";
         @Getter public static final String INSERT_BANK_BALANCE = "/insert_bank_balance/";
-        @Getter public static final String VIEW_BALANCE = "/view_balance/";
+        @Getter public static final String BALANCE = "/balance/";
+        @Getter public static final String CHECKOUT = "/checkout/";
+        @Getter public static final String CART = "/cart/";
+        @Getter public static final String REMOVE_CART = "/remove_cart/";
+        @Getter public static final String ADD_CART = "/add_cart/";
+        @Getter public static final String CLEAR_CART = "/clear_cart/";
     }
 
     public static class Template {
@@ -54,12 +59,12 @@ public class Path {
 
         public static final String MAKE_PAYMENT = "/velocity/auction/makePayment.vm";
         public static final String INSERT_BANK_BALANCE = "/velocity/auction/insertBalance.vm";
-        public static final String VIEW_BALANCE = "/velocity/login/viewBalance.vm";
-
+        public static final String VIEW_BALANCE = "/velocity/payment/viewBalance.vm";
         public static final String ALL_USER = "/velocity/user/allusers.vm";
         public static final String ONE_USER = "/velocity/user/oneuser.vm";
 
         public static final String CATEGORY = "/velocity/category/category.vm";
+        public static final String GET_CART = "/velocity/cart/all.vm";
     }
 
 }

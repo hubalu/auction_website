@@ -158,6 +158,10 @@ public class AuctionManagement extends java.rmi.server.UnicastRemoteObject imple
 		this.db.changeActiveStatus(auctionId, false);
 	}
 
+	public boolean checkOnAuction(String itemId) throws RemoteException{
+		return this.db.checkAuctionExists(itemId);
+	}
+
 	public boolean updateAuction(String auctionId, String userId, String param, String newVal) {
 		try {
 			this.db.updateAuction(auctionId, userId, param, newVal);

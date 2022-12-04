@@ -148,6 +148,17 @@ public class MongoDB {
 			return 0;
 		}
 	}
+
+	public boolean checkAuctionExists(String itemId){
+		try{
+			MongoCollection<Document> auction = db.getCollection("auction");
+			Document doc = auction.find(eq("itemId", itemId)).first();
+			return doc != null;
+		}catch (Exception e){
+			e.printStackTrace();
+			return false;
+		}
+	}
 	
 
 	public void updateAuction(String auctionId, String userId, String param, String newVal) {

@@ -16,4 +16,6 @@ public interface RemoteAuctionManagement extends Remote {
     boolean addToWatchlist(String auctionId, String userId) throws RemoteException;
 
     void endAuction(String auctionId) throws RemoteException;
+
+    boolean checkOnAuction(String itemId) throws RemoteException;
 }

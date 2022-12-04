@@ -1,0 +1,13 @@
+#parse("/velocity/layout.vm")
+#@mainLayout()
+
+<a href="$WebPath.getMAKE_PAYMENT()">
+    Make payment
+</a>
+
+<a href="$WebPath.getINSERT_BANK_BALANCE()">
+    Insert balance
+</a>
+
+Current balance: $balance
+#end

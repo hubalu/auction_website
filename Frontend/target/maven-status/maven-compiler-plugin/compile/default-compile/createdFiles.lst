@@ -1,3 +1,5 @@
+app/payment/PaymentController.class
+app/rmiManagement/RemotePaymentManagement.class
 app/user/UserDao.class
 app/user/CategoryDao.class
 app/item/ItemController.class

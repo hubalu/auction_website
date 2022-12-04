@@ -42,7 +42,7 @@ public class PaymentManagement extends java.rmi.server.UnicastRemoteObject imple
        
     }
 	
-	public boolean insertToBankBalance(String userId, int initialAmount) {
+	public boolean insertToBankBalance(String userId, double initialAmount) {
 		try {
 			this.db.insertToBankBalance(userId, initialAmount);
 			System.out.println("Successfully insert into bank account of userId " + userId + " with $" +initialAmount);
@@ -64,5 +64,17 @@ public class PaymentManagement extends java.rmi.server.UnicastRemoteObject imple
 			System.out.println("error in makePayment"); 
 			return false;
 		}
+	}
+	
+	public double viewBalance(String userId) {
+		double amount = 0;
+		try {
+			amount = this.db.viewBalance(userId);
+			System.out.println("Current balance $" + amount);
+		} catch (Exception e){
+			System.out.println(e);
+			System.out.println("error in viewBalance"); 
+		}
+		return amount;
 	}
 }

@@ -18,6 +18,7 @@
                 <li> <a href=$WebPath.getALL_AUCTIONS()>Auctions</a> </li>
                 <li> <a href=$WebPath.getITEMS()>Items</a> </li>
                 <li> <a href=$WebPath.getITEMS()>Shopping Cart</a> </li>
+                <li> <a href=$WebPath.getVIEW_BALANCE()>Account Balance</a> </li>
                 <li>
                     <form method="post" action="$WebPath.getLOGOUT()">
                         <button id="logout">$msg.get("COMMON_NAV_LOGOUT")</button>

@@ -2,6 +2,7 @@ package app.auction;
 
 import app.rmiManagement.RMIHelper;
 import app.rmiManagement.RemoteAuctionManagement;
+import app.rmiManagement.RemotePaymentManagement;
 import app.rmiManagement.RemoteUserManagement;
 import app.timertasks.Expiration;
 import app.timertasks.OneDayAlert;
@@ -36,12 +37,14 @@ public class AuctionManagement extends java.rmi.server.UnicastRemoteObject imple
 	Timer timer;
 
 	RemoteUserManagement rmiUser;
+	RemotePaymentManagement rmiPayment;
 
 	public AuctionManagement() throws RemoteException{
 		try {
 			db = new MongoDB("auctionSite");
 			timer = new Timer();
-			rmiUser = new RMIHelper().getRemUserManagement();
+			rmiUser =RMIHelper.getRemUserManagement();
+			rmiPayment = RMIHelper.getRemPaymentManagement();
 			ConnectionFactory factory = new ConnectionFactory();
 			Connection conn;
 			factory.setHost("rabbit-mq");
@@ -83,7 +86,7 @@ public class AuctionManagement extends java.rmi.server.UnicastRemoteObject imple
 			Date end_time = dateFormat.parse(time_to_end);
 			System.out.println(end_time.toString());
 			timer.schedule(new StartTask(objectId.toString(), db), start_time);
-			timer.schedule(new Expiration(objectId.toString(), db), end_time);
+			timer.schedule(new Expiration(objectId.toString(), channel, db, rmiUser, rmiPayment), end_time);
 			Calendar calendar = Calendar.getInstance();
 			calendar.setTime(end_time);
 			int newHour = calendar.get(Calendar.HOUR) - 1;
@@ -132,27 +135,29 @@ public class AuctionManagement extends java.rmi.server.UnicastRemoteObject imple
 		}
 	}
 	
-	public List<AuctionDesc> getAuctions() throws RemoteException{
+	public List<AuctionDesc> getAuctions(boolean soonest_first) throws RemoteException{
 		try {
 			List<AuctionDesc> listOfAuctions = this.db.getAuctions();
+			Collections.sort(listOfAuctions);
+			if (!soonest_first){
+				Collections.reverse(listOfAuctions);
+			}
 			return listOfAuctions;
 		} catch (Exception e){
 			e.printStackTrace();
 			return null;
 		}
 	}
-	
-	public boolean endAuction(String auctionId) {
-		try {
-			this.db.endAuction(auctionId);
-			System.out.println("Successfully ended auction on " + auctionId);
-			return true;
-		} catch (Exception e){
-			e.printStackTrace();
-			return false;
-		}
+
+	public List<AuctionDesc> getAuctionsByUser(String userId) throws RemoteException{
+		return this.db.getUserAuctions(userId);
+
 	}
-	
+
+	public void endAuction(String auctionId) throws RemoteException{
+		this.db.changeActiveStatus(auctionId, false);
+	}
+
 	public boolean updateAuction(String auctionId, String userId, String param, String newVal) {
 		try {
 			this.db.updateAuction(auctionId, userId, param, newVal);

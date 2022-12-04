@@ -28,7 +28,7 @@ services:
     image: mongo
     restart: always
     environment:
-      MONGO_INITDB_DATABASE: bankBalance # TODO
+      MONGO_INITDB_DATABASE: Bank # TODO
 
   postgresql-db:
     image: postgres:alpine
@@ -110,7 +110,6 @@ services:
       - user
       - mongo_payment
     environment:
-      WAIT_HOSTS: rabbit-mq:54321 # TODO replace with something about mongo db
-      TZ: "America/Chicago" # TODO
+      TZ: "America/Chicago" 
     volumes:
       - ./Payment:/code

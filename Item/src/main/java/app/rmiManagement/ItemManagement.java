@@ -62,6 +62,11 @@ public class ItemManagement extends java.rmi.server.UnicastRemoteObject implemen
         return db.modifySQL(sql);
     }
 
+    public List<Item> get_flag_items() throws RemoteException{
+        String sql = "SELECT * FROM item where Flag = TRUE";
+        return db.querySQL(sql);
+    }
+
     public List<Item> search_item(String key_word, String Category, String sort_key, boolean desc) throws RemoteException {
         String sql;
         if(key_word != null){

@@ -65,13 +65,6 @@ public class Database {
             stmt = conn.createStatement();
             ResultSet queryResult = stmt.executeQuery(sql);
             while (queryResult.next()){
-//                String temp = "";
-//                temp = temp + "Item ID:" + queryResult.getInt("ItemId") + " ";
-//                temp = temp + "Owner ID" + queryResult.getInt("UserId") + " ";
-//                temp = temp + "Name" + queryResult.getString("ItemName") + " ";
-//                temp = temp + "Description" + queryResult.getString("Description") + " ";
-//                temp = temp + "is inappropriate? " + queryResult.getBoolean("Flag");
-//                res.add(temp);
                 Item item = new Item(
                         Integer.toString(queryResult.getInt("ItemId")),
                         Integer.toString(queryResult.getInt("UserId")),

@@ -3,6 +3,7 @@ package app.auction;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.mongodb.client.model.Filters;
 import org.bson.Document;
 import org.bson.types.ObjectId;
 
@@ -12,6 +13,8 @@ import com.mongodb.client.MongoClients;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
 import com.mongodb.client.model.Updates;
+
+import javax.print.Doc;
 
 import static com.mongodb.client.model.Filters.eq;
 
@@ -90,31 +93,63 @@ public class MongoDB {
 	public List<AuctionDesc> getAuctions() {
 		try {
 			MongoCollection<Document> auction = db.getCollection("auction");
-			//FindIterable<Document> iterDoc = auction.find();
-			//return iterDoc;
 			List<AuctionDesc> results = new ArrayList<>();
 			for(Document doc : auction.find(eq("active", true))){
 				results.add(getAuctionDesc(doc.getObjectId("_id")));
 			};
 			return results;
 		} catch (Exception e) {
-			System.out.println("error in getAuctions");
+			e.printStackTrace();
 			return null;
 		}
 		
 	}
-	
-	public void endAuction(String auctionId) {
-		try {
+
+	public List<AuctionDesc> getUserAuctions(String userId){
+		try{
 			MongoCollection<Document> auction = db.getCollection("auction");
-			Document query = new Document("_id", new ObjectId(auctionId));
-			auction.deleteOne(query);
-		} catch (Exception e) {
-			System.out.println("error in endAuction");
+			List<AuctionDesc> results = new ArrayList<>();
+			for(Document doc : auction.find(Filters.and(eq("active", true), eq("bidderId", userId)))){
+				results.add(getAuctionDesc(doc.getObjectId("_id")));
+			};
+			return results;
+		}catch (Exception e){
+			e.printStackTrace();
+			return null;
 		}
-		
+	}
+
+	public String getWinner(String auctionId){
+		try{
+			MongoCollection<Document> auction = db.getCollection("auction");
+			Document doc = auction.find(eq("_id", new ObjectId(auctionId))).first();
+			if(doc == null){
+				return null;
+			}
+			return doc.getString("bidderId");
+		}catch (Exception e){
+			e.printStackTrace();
+			return null;
+		}
+	}
+
+	public double getPrice(String auctionId){
+		try{
+			MongoCollection<Document> auction = db.getCollection("auction");
+			Document doc = auction.find(eq("_id", new ObjectId(auctionId))).first();
+			if(doc == null){
+				return 0;
+			}else{
+				return doc.getDouble("currentBid");
+
+			}
+		}catch (Exception e){
+			e.printStackTrace();
+			return 0;
+		}
 	}
 	
+
 	public void updateAuction(String auctionId, String userId, String param, String newVal) {
 		
 		MongoCollection<Document> auction = db.getCollection("auction");
@@ -199,6 +234,18 @@ public class MongoDB {
 			db.getCollection("auction").updateOne(eq("_id", new ObjectId(auctionId)), Updates.set("active", isActive));
 		}catch (Exception e){
 			e.printStackTrace();
+		}
+	}
+
+	public boolean checkAuctionValid(String auctionId){
+		try{
+			Document doc = db.getCollection("auction").find(eq("_id", new ObjectId(auctionId))).first();
+			if(doc == null){
+				return false;
+			}
+			return doc.getBoolean("active");
+		}catch (Exception e){
+			return false;
 		}
 	}
 

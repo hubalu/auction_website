@@ -73,4 +73,14 @@ public class CartManagement extends java.rmi.server.UnicastRemoteObject implemen
             return false;
         }
     }
+
+    public boolean removeItem(String auctionID) throws RemoteException{
+        try {
+            this.db.clearItemCart(auctionID);
+            return true;
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+            return false;
+        }
+    }
 }

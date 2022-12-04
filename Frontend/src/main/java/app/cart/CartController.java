@@ -50,7 +50,7 @@ public class CartController {
         try {
             LoginController.ensureUserIsLoggedIn(request, response);
             RemoteCartManagement rmCartManagement = rmiHelper.getRemCartManagement();
-            rmCartManagement.clearCart(Integer.parseInt(request.session().attribute("userID")));
+            rmCartManagement.clearCart(request.session().attribute("userID"));
             response.redirect(Path.Web.CART);
         } catch (Exception e) {
             e.printStackTrace();

@@ -68,6 +68,7 @@ public class Application {
 
         get(Path.Web.CART, CartController.getCart);
         post(Path.Web.ADD_CART, CartController.addCart);
+        post(Path.Web.CLEAR_CART, CartController.clearCart);
 
 
         get("*",                     ViewUtil.notFound);

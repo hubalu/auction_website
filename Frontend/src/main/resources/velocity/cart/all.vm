@@ -1,7 +1,9 @@
 #parse("/velocity/layout.vm")
 #@mainLayout()
 <h1>All Item in Cart</h1>
-
+<form id="clearCart" method="post" action= "$WebPath.getCLEAR_CART()">
+    <input type="submit" value="Clear Cart">
+</form>
 
 <div class="row row-3">
     #foreach($item in $cartItems)

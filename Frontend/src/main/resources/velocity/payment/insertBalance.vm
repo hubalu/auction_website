@@ -1,0 +1,24 @@
+#parse("/velocity/layout.vm")
+#@mainLayout()
+<a class="book" href="$WebPath.getVIEW_BALANCE()">
+    Back to View Balance
+</a>
+
+<form id="insertBalanceForm" method="post">
+    <h1>Insert Balance</h1>
+    <p>Fill in the following form</p>
+    <br>
+    <label>Amount</label>
+    <input type="text" name="amount" placeholder="Amount" required>
+    <br>
+    <input type="button" value="Insert Balance" onclick="submit()">
+    <input type="submit" hidden>
+</form>
+<script type="text/javascript">
+function submit() {
+    // validate form in needed here
+
+    document.forms["insertBalanceForm"].submit();
+}
+</script>
+#end

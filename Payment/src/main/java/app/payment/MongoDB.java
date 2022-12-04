@@ -63,4 +63,16 @@ public class MongoDB {
 			System.out.println("error in makePayment"); 
 		}
 	}
+	
+	public double viewBalance(String userId) {
+		try {
+			MongoCollection<Document> balance = db.getCollection("bankBalance");
+			Document query = new Document("userId", userId);
+			
+			double currentAmount = balance.find(query).first().getDouble("amount");
+			return currentAmount;
+		} catch (Exception e) {
+			System.out.println("error in viewBalance"); 
+		}
+	}
 }

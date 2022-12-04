@@ -1,0 +1,24 @@
+#parse("/velocity/layout.vm")
+#@mainLayout()
+<a class="book" href="$WebPath.getVIEW_BALANCE()">
+    Back to View Balance
+</a>
+
+<form id="makePaymentForm" method="post">
+    <h1>Make Payment</h1>
+    <p>Fill in the following form</p>
+    <br>
+    <label>Amount</label>
+    <input type="text" name="amount" placeholder="Amount" required>
+    <br>
+    <input type="button" value="Make Payment" onclick="makePayment()">
+    <input type="submit" hidden>
+</form>
+<script type="text/javascript">
+function makePayment() {
+    // validate form in needed here
+
+    document.forms["makePaymentForm"].submit();
+}
+</script>
+#end

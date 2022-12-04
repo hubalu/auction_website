@@ -5,6 +5,7 @@ import app.cart.CartController;
 import app.category.CategoryController;
 import app.item.ItemController;
 import app.login.LoginController;
+import app.payment.PaymentController;
 import app.user.CategoryDao;
 import app.user.UserController;
 import app.user.UserDao;
@@ -60,6 +61,13 @@ public class Application {
         get(Path.Web.ONE_AUCTION,       BidController.getOneAuctionPlaceholder);
         post(Path.Web.UPLOAD_BID,       BidController.submitBidPlaceholder);
         post(Path.Web.ADD_TO_WATCHLIST, BidController.addToWatchlist);
+
+        get(Path.Web.MAKE_PAYMENT,       PaymentController.makePayment);
+        get(Path.Web.INSERT_BANK_BALANCE, PaymentController.insertBankBalance);
+        get(Path.Web.VIEW_BALANCE, PaymentController.insertBankBalance);
+        post(Path.Web.MAKE_PAYMENT,       PaymentController.makePayment);
+        post(Path.Web.INSERT_BANK_BALANCE, PaymentController.insertBankBalance);
+        post(Path.Web.VIEW_BALANCE, PaymentController.insertBankBalance);
 
         get(Path.Web.CATEGORY,          CategoryController.loadCategory);
         post(Path.Web.CATEGORY,         CategoryController.addCategory);

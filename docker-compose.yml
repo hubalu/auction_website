@@ -11,6 +11,7 @@ services:
       - user
       - auction
       - payment
+      - cart
     links:
       - mongo # TODO
     environment:
@@ -28,7 +29,7 @@ services:
     image: mongo
     restart: always
     environment:
-      MONGO_INITDB_DATABASE: bankBalance # TODO
+      MONGO_INITDB_DATABASE: Bank
 
   postgresql-db:
     image: postgres:alpine
@@ -108,9 +109,7 @@ services:
     # restart: always
     depends_on:
       - user
+    links:
       - mongo_payment
-    environment:
-      WAIT_HOSTS: rabbit-mq:54321 # TODO replace with something about mongo db
-      TZ: "America/Chicago" # TODO
     volumes:
       - ./Payment:/code

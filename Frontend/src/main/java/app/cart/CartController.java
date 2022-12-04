@@ -35,14 +35,20 @@ public class CartController {
     };
 
     public static Route getCart = (Request request, Response response) -> {
-        LoginController.ensureUserIsLoggedIn(request, response);
-        RemoteCartManagement rmCartManagement = rmiHelper.getRemCartManagement();
-        Map<String, Object> model = new HashMap<>();
-        cachedCartItems = rmCartManagement.getCart(request.session().attribute("userID"));
-        model.put("cartItems", cachedCartItems);
-        System.out.println("everything in the cart");
-        System.out.println(cachedCartItems);
-        return ViewUtil.render(request, model, Path.Template.GET_CART);
+        try {
+            LoginController.ensureUserIsLoggedIn(request, response);
+            RemoteCartManagement rmCartManagement = rmiHelper.getRemCartManagement();
+            Map<String, Object> model = new HashMap<>();
+            cachedCartItems = rmCartManagement.getCart(request.session().attribute("userID"));
+            model.put("cartItems", cachedCartItems);
+            System.out.println("everything in the cart");
+            System.out.println(cachedCartItems);
+            return ViewUtil.render(request, model, Path.Template.GET_CART);
+        } catch (Exception e) {
+            e.printStackTrace();
+            System.out.println(e);
+            return null;
+        }
     };
 
 

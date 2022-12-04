@@ -2,11 +2,12 @@ package app.cart;
 
 import lombok.Value;
 
+import java.io.Serializable;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
 @Value
-public class cartItem {
+public class cartItem implements Serializable {
     int id;
     int user_id;
     String auction_id;

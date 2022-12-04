@@ -38,7 +38,7 @@ public class CartManagement extends java.rmi.server.UnicastRemoteObject implemen
         this.db.createTableIfNotExists();
     }
 
-    public boolean addCart(int user_id, String auction_id, String item_name, double buy_now_price){
+    public boolean addCart(int user_id, String auction_id, String item_name, double buy_now_price) throws RemoteException{
         try {
             boolean exist = this.db.checkIfItemExist(user_id, auction_id);
             if (!exist) {   //prevent repeated adding to cart
@@ -51,7 +51,7 @@ public class CartManagement extends java.rmi.server.UnicastRemoteObject implemen
         }
     }
 
-    public List<cartItem> getCart(int user_id) {
+    public List<cartItem> getCart(int user_id) throws RemoteException{
         try {
             return this.db.getCartByUser(user_id);
         } catch (SQLException throwables) {
@@ -60,7 +60,7 @@ public class CartManagement extends java.rmi.server.UnicastRemoteObject implemen
         }
     }
 
-    public boolean clearCart(int user_id){
+    public boolean clearCart(int user_id) throws RemoteException{
         try {
             List<cartItem> items = this.db.getCartByUser(user_id);
             for (cartItem item : items) {

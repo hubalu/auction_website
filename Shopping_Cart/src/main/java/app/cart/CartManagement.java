@@ -23,12 +23,12 @@ public class CartManagement extends java.rmi.server.UnicastRemoteObject implemen
         } catch (Exception e) {
             throw new RemoteException("can't get inet address.");
         }
-        port = 54321;  // our port
+        port = 12345;  // our port
         System.out.println("using address=" + address + ",port=" + port);
         try {
             // create the registry and bind the name and object.
             registry = LocateRegistry.createRegistry(port);
-            registry.rebind("userManagement", this);
+            registry.rebind("cartManagement", this);
         } catch (RemoteException e) {
             throw e;
         }
@@ -38,7 +38,7 @@ public class CartManagement extends java.rmi.server.UnicastRemoteObject implemen
         this.db.createTableIfNotExists();
     }
 
-    public boolean addCart(int user_id, int auction_id, String item_name, double buy_now_price){
+    public boolean addCart(int user_id, String auction_id, String item_name, double buy_now_price){
         try {
             boolean exist = this.db.checkIfItemExist(user_id, auction_id);
             if (!exist) {   //prevent repeated adding to cart

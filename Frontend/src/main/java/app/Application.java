@@ -66,7 +66,9 @@ public class Application {
         post(Path.Web.DELETE_CATEGORY,         CategoryController.deleteCategory);
         post(Path.Web.UPDATE_CATEGORY,          CategoryController.updateCategory);
 
-        get(Path.Web.CART, CartController.clearCart);
+        get(Path.Web.CART, CartController.getCart);
+        post(Path.Web.ADD_CART, CartController.addCart);
+
 
         get("*",                     ViewUtil.notFound);
 

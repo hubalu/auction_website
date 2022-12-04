@@ -10,7 +10,7 @@ public class Database {
 
     public Database() {
         try {
-            conn = DriverManager.getConnection("jdbc:mysql://localhost/", "root", "123qweASD-");
+            conn = DriverManager.getConnection("jdbc:mysql://mysql-db/", "root", "secretpass");
         } catch (SQLException throwables) {
             throwables.printStackTrace();
         }
@@ -30,7 +30,7 @@ public class Database {
         String sql = "CREATE TABLE IF NOT EXISTS Cart.Cart (\n"
                 + "	id INT AUTO_INCREMENT PRIMARY KEY,\n"
                 + "	user_id INT NOT NULL,\n"
-                + "	auction_id INT NOT NULL,\n"
+                + "	auction_id VARCHAR(3000) NOT NULL,\n"
                 + "	item_name VARCHAR(255) NOT NULL,\n"
                 + "	buy_now_price DOUBLE NOT NULL\n"
                 + ");";
@@ -42,11 +42,13 @@ public class Database {
         }
     }
 
-    public void insertIntoTable(int user_id, int auction_id, String item_name, double buy_now_price) throws SQLException {
+    public void insertIntoTable(int user_id, String auction_id, String item_name, double buy_now_price) throws SQLException {
+        System.out.println("let's see auction id");
+        System.out.println(auction_id);
         String sql = "INSERT INTO Cart.Cart (user_id, auction_id, item_name, buy_now_price) VALUES(?,?,?,?)";
         PreparedStatement pstmt = conn.prepareStatement(sql);
         pstmt.setInt(1, user_id);
-        pstmt.setInt(2, auction_id);
+        pstmt.setString(2, auction_id);
         pstmt.setString(3, item_name);
         pstmt.setDouble(4, buy_now_price);
 
@@ -54,8 +56,8 @@ public class Database {
 
     }
 
-    public boolean checkIfItemExist(int user_id, int auction_id) {
-        String sql = String.format("SELECT count(*) FROM Cart.Cart WHERE user_id = %s AND auction_id = %s", user_id, auction_id);
+    public boolean checkIfItemExist(int user_id, String auction_id) {
+        String sql = String.format("SELECT count(*) FROM Cart.Cart WHERE user_id = %s AND auction_id = '%s'", user_id, auction_id);
         Statement stmt = null;
         try {
             stmt = conn.createStatement();
@@ -86,8 +88,8 @@ public class Database {
     }
 
 
-    public void clearItemCart(int auction_id) throws SQLException {
-        String sql = String.format("DELETE FROM Cart.Cart WHERE auction_id = %s", auction_id);
+    public void clearItemCart(String auction_id) throws SQLException {
+        String sql = String.format("DELETE FROM Cart.Cart WHERE auction_id = '%s'", auction_id);
         PreparedStatement pstmt = conn.prepareStatement(sql);
         pstmt.execute();
     }

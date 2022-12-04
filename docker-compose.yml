@@ -76,6 +76,15 @@ services:
     depends_on:
       - mysql-db
 
+  cart:
+    build: Shopping_Cart/.
+    volumes:
+      - ./Shopping_Cart:/code
+    environment:
+      WAIT_HOSTS: mysql-db:3306
+    depends_on:
+      - mysql-db
+
   item:
     build: Item/.
     # restart: always

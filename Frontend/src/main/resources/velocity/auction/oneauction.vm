@@ -15,8 +15,11 @@
     #if($auction.getBuyNowPrice() && $auction.getBuyNowPrice() > 0)
         <h2>Buy Now: $auction.getBuyNowPrice()</h2>
         #if($auction.getSellerId() != $userID)
-        <form id="buyNowForm" method="get" action="$WebPath.getALL_AUCTIONS()">
-            <input type="submit" value="TODO: Buy Now">
+        <form id="buyNowForm" method="post" action="$WebPath.getADD_CART()">
+            <input type="text" name="auctionId" value="$auction.getAuctionId()" hidden>
+            <input type="text" name="itemName" value="$auction.getItemName()" hidden>
+            <input type="text" name="buyNowPrice" value="$auction.getBuyNowPrice()" hidden>
+            <input type="submit" value="Buy Now">
         </form>
         #end
     #end

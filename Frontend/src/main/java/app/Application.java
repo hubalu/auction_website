@@ -1,6 +1,7 @@
 package app;
 
 import app.auction.BidController;
+import app.cart.CartController;
 import app.category.CategoryController;
 import app.item.ItemController;
 import app.login.LoginController;
@@ -64,6 +65,11 @@ public class Application {
         post(Path.Web.CATEGORY,         CategoryController.addCategory);
         post(Path.Web.DELETE_CATEGORY,         CategoryController.deleteCategory);
         post(Path.Web.UPDATE_CATEGORY,          CategoryController.updateCategory);
+
+        get(Path.Web.CART, CartController.getCart);
+        post(Path.Web.ADD_CART, CartController.addCart);
+        post(Path.Web.CLEAR_CART, CartController.clearCart);
+
 
         get("*",                     ViewUtil.notFound);
 

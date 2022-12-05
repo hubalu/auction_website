@@ -15,8 +15,11 @@ public class Path {
         @Getter public static final String ITEM = "/items/";
         @Getter public static final String ITEMS = "/allitems/";
         @Getter public static final String ONE_ITEM = "/items/:ItemID/";
+        @Getter public static final String FLAG_ITEM = "/flag_item/";
+        @Getter public static final String DELETE_ITEM = "/delete_item/";
         @Getter public static final String UPLOAD_AUCTION = "/auction/";
         @Getter public static final String ALL_AUCTIONS = "/auctions/";
+        @Getter public static final String PERSONAL_AUCTIONS = "/personal_auctions/";
         @Getter public static final String ONE_AUCTION = "/auction/:AuctionID/";
         @Getter public static final String CREATE_USER = "/user/";
         @Getter public static final String USER_INFO = "/user_info/";
@@ -49,11 +52,12 @@ public class Path {
         public static final String NOT_FOUND = "/velocity/notFound.vm";
         public static final String UNAUTHORIZED = "/velocity/unauthorized.vm";
         public static final String ITEM = "/velocity/item/item.vm";
-
+        public static final String FLAGGED_ITEMS = "/velocity/item/flagItems.vm";
         public static final String ITEMS = "/velocity/item/allitems.vm";
         public static final String ONE_ITEM = "/velocity/item/oneitem.vm";
         public static final String UPLOAD_AUCTION = "/velocity/auction/auction.vm";
         public static final String ALL_AUCTIONS = "/velocity/auction/allauctions.vm";
+        public static final String PERSONAL_AUCTIONS = "/velocity/auction/personalBid.vm";
         public static final String ONE_AUCTION = "/velocity/auction/oneauction.vm";
         public static final String CREATE_USER = "/velocity/login/createuser.vm";
 

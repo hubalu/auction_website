@@ -11,7 +11,7 @@ public interface RemoteItemManagement extends Remote {
 
     boolean remove_item(String item_id) throws RemoteException;
 
-    boolean flag_item(int item_id) throws RemoteException;
+    boolean flag_item(String item_id) throws RemoteException;
 
     List<Item> get_flag_items() throws RemoteException;
 

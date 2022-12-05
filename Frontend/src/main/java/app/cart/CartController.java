@@ -2,6 +2,7 @@ package app.cart;
 
 import app.login.LoginController;
 import app.rmiManagement.RMIHelper;
+import app.rmiManagement.RemoteAuctionManagement;
 import app.rmiManagement.RemoteCartManagement;
 import app.rmiManagement.RemotePaymentManagement;
 import app.util.Path;
@@ -90,6 +91,7 @@ public class CartController {
         LoginController.ensureUserIsLoggedIn(request, response);
         Map<String, Object> model = new HashMap<>();
         RemotePaymentManagement rmPaymentManagement = rmiHelper.getRemPaymentManagement();
+        RemoteAuctionManagement rmAuctionManagement = rmiHelper.getRemAuctionManagement();
 
         String userid = request.session().attribute("userID").toString();
         double totalCost = Double.parseDouble(request.queryParams("totalCost"));
@@ -97,9 +99,12 @@ public class CartController {
         if (rmPaymentManagement.viewBalance(userid) < totalCost){
             model.put("cartItems", cachedCartItems);
             model.put("BalanceTooLow", true);
+            model.put("totalCost", totalCost);
             return ViewUtil.render(request, model, Path.Template.GET_CART);
         } else {
-            // TODO: Remove active auction
+            for (cartItem item : cachedCartItems) {
+                rmAuctionManagement.endAuction(item.getAuction_id());
+            }
             rmPaymentManagement.makePayment(userid, totalCost);
             RemoteCartManagement rmCartManagement = rmiHelper.getRemCartManagement();
             rmCartManagement.clearCart(request.session().attribute("userID"));

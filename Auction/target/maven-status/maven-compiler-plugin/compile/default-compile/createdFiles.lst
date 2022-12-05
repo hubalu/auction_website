@@ -6,6 +6,7 @@ app/auction/AuctionManagement.class
 app/auction/AuctionDesc.class
 app/timertasks/OneHourAlert.class
 app/timertasks/OneDayAlert.class
+app/rmiManagement/RemotePaymentManagement.class
 app/auction/MongoDB.class
 app/timertasks/StartTask.class
 app/rmiManagement/RemoteUserManagement.class

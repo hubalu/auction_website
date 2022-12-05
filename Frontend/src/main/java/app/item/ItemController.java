@@ -4,6 +4,7 @@ import app.login.LoginController;
 import app.rmiManagement.RMIHelper;
 import app.rmiManagement.RemoteItemManagement;
 import app.user.CategoryDao;
+import app.user.UserType;
 import app.util.Path;
 import app.util.ViewUtil;
 import spark.Request;
@@ -18,27 +19,6 @@ import static app.Application.categoryDao;
 
 
 public class ItemController {
-
-//    private Remote registryLookUp(){
-//        Remote itemManagement = null;
-//        Registry registry;
-//        try{
-//            String serverAddress=(InetAddress.getLocalHost()).toString();
-//            String serverPort="12345";
-//            // get the registry
-//            registry=LocateRegistry.getRegistry(
-//                    serverAddress,
-//                    (new Integer(serverPort)).intValue()
-//            );
-//            // look up the remote object in the RMI Registry
-//            itemManagement= (registry.lookup("rmiServer"));
-//            // call the remote method
-//        }
-//        catch(Exception e){
-//            e.printStackTrace();
-//        }
-//        return itemManagement;
-//    }
 
     private static List<Item> cachedItems;
     public static RMIHelper rmiHelper = new RMIHelper();
@@ -98,6 +78,57 @@ public class ItemController {
         model.put("itemList", currentItems);
         model.put("categories", categories);
         return ViewUtil.render(request, model, Path.Template.ITEMS);
+    };
+
+    public static Route flagItemPost = (Request request, Response response) -> {
+        LoginController.ensureUserIsLoggedIn(request, response);
+        RemoteItemManagement rmItemManagement = rmiHelper.getRemItemManagement();
+        String itemID = request.queryParams("item_id");
+        boolean success = rmItemManagement.flag_item(itemID);
+        System.out.println(success);
+        response.redirect(Path.Web.ITEMS);
+        return null;
+    };
+
+    public static Route getFlagedItems = (Request request, Response response) -> {
+        LoginController.ensureUserIsLoggedIn(request, response);
+        RemoteItemManagement rmItemManagement = rmiHelper.getRemItemManagement();
+
+        List<Item> flaggedItems = rmItemManagement.get_flag_items();
+        Map<String, Object> model = new HashMap<>();
+        model.put("flaggedItems", flaggedItems);
+
+        return ViewUtil.render(request, model, Path.Template.FLAGGED_ITEMS);
+    };
+
+    public static Route postDeleteItems = (Request request, Response response) -> {
+        LoginController.ensureUserIsLoggedIn(request, response);
+
+        RemoteItemManagement rmItemManagement = rmiHelper.getRemItemManagement();
+        String itemID = request.queryParams("item_id");
+
+        boolean success = rmItemManagement.remove_item(itemID);
+        if (!success) {
+            Map<String, Object> model = new HashMap<>();
+            model.put("activeAuction", true);
+
+            if (cachedItems == null){
+                cachedItems = rmItemManagement.search_item(null, null, "UploadTime", true);
+            }
+            for (Item item : cachedItems){
+                if(item.getItemID().equals(itemID)){
+                    model.put("item", item);
+                }
+            }
+            model.put("userID", request.session().attribute("userID"));
+            return ViewUtil.render(request, model, Path.Template.ONE_ITEM);
+        } else if(request.session().attribute("userRole").toString().equals("Admin")) {
+            response.redirect(Path.Web.FLAG_ITEM);
+            return null;
+        } else {
+            response.redirect(Path.Web.ITEMS);
+            return null;
+        }
     };
 
     public static Route getOneItemPlaceholder = (Request request, Response response) -> {

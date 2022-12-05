@@ -2,7 +2,6 @@ package app.rmiManagement;
 
 import app.database.Database;
 import app.item.Item;
-import sun.datatransfer.DataFlavorUtil;
 
 import java.rmi.*;
 import java.rmi.registry.*;
@@ -64,7 +63,7 @@ public class ItemManagement extends java.rmi.server.UnicastRemoteObject implemen
 //        return true;
 //    }
 
-    public boolean flag_item(int item_id) throws RemoteException{
+    public boolean flag_item(String item_id) throws RemoteException{
         String sql = "UPDATE item SET Flag = TRUE where ItemId = " + item_id;
         return db.modifySQL(sql);
     }

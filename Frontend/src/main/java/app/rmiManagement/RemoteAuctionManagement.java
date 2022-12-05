@@ -11,6 +11,11 @@ public interface RemoteAuctionManagement extends Remote {
                            Double buyNowPrice, String startTime, String expireTime, String sellerId) throws RemoteException;
 
     boolean placeBid(String auctionId, String userId, double bidPrice) throws RemoteException;
-    List<AuctionDesc> getAuctions() throws RemoteException;
+    List<AuctionDesc> getAuctions(boolean soonest_first) throws RemoteException;
+    List<AuctionDesc> getAuctionsByUser(String userId) throws RemoteException;
     boolean addToWatchlist(String auctionId, String userId) throws RemoteException;
+
+    void endAuction(String auctionId) throws RemoteException;
+
+    boolean checkOnAuction(String itemId) throws RemoteException;
 }

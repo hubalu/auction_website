@@ -1,5 +1,8 @@
 #parse("/velocity/layout.vm")
 #@mainLayout()
+#if($BalanceTooLow)
+    <p class="bad notification">You do not have sufficient balance.</p>
+#end
 <h1>Shopping Cart</h1>
 <form id="clearCart" method="post" action= "$WebPath.getCLEAR_CART()">
     <input type="submit" value="Clear Cart">
@@ -7,20 +10,20 @@
 
 <table>
     <tr>
-    <th width="20%" style="text-align:left">Item Name</th>
-    <th width="20%" style="text-align:left">Cost</th>
-    <th width="600%" style="text-align:left">Remove from Cart</th>
+    <th width="30%" style="text-align:left;">Item Name</th>
+    <th width="20%" style="text-align:left;">Cost</th>
+    <th width="50%" style="text-align:left;">Remove from Cart</th>
     </tr>
     #foreach($item in $cartItems)
         <tr>
-        <td style="text-align:left">
+        <td style="text-align:left;">
             <a class="book" href="$WebPath.getUPLOAD_AUCTION()$item.getAuction_id()">$item.getItem_name()<a>
         </td>
-        <td style="text-align:left">
+        <td style="text-align:left;">
             <a> $item.getBuy_now_price() </a>
         </td>
-        <td style="text-align:left">
-            <form style="float:centre" id="deleteItemForm" method="post" action="$WebPath.getREMOVE_CART()">
+        <td style="text-align:left;">
+            <form style="float:centre;" id="deleteItemForm" method="post" action="$WebPath.getREMOVE_CART()">
                 <input type="text" name="auctionID" value="$item.getAuction_id()" hidden>
                 <input type="submit" value="Remove">
             </form>

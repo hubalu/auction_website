@@ -1,0 +1,13 @@
+#parse("/velocity/layout.vm")
+#@mainLayout()
+<h1>Flagged Items</h1>
+<div class="row row-3">
+    #foreach($item in $flaggedItems)
+        <div class="col">
+            <a class="book" href="$WebPath.getITEM()$item.getItemID()">
+                $item.getItemName()
+            </a>
+        </div>
+    #end
+</div>
+#end

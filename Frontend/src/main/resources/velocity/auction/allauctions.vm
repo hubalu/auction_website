@@ -4,6 +4,29 @@
 <a class="book" href="$WebPath.getUPLOAD_AUCTION()">
     Upload Auction
 </a>
+<form id="sortedAuctionForm" method="get">
+    #if ($latest)
+        <div style="display:inline;">
+            <p>Sort by:
+                <input style="display:inline-block;" type="radio" id="earliest" name="sort_order" value="earliest">
+                <label style="display:inline-block;" for="earliest">Earliest expiration</label>
+                <input style="display:inline-block;" type="radio" id="latest" name="sort_order" value="latest" checked>
+                <label style="display:inline-block;" for="latest">Latest expiration</label>
+                <input style="display:inline-block;" type="submit" value="Sort">
+            </p>
+        </div>
+    #else
+        <div style="display:inline;">
+            <p>Sort by:
+                <input style="display:inline-block;" type="radio" id="earliest" name="sort_order" value="earliest" checked>
+                <label style="display:inline-block;" for="earliest">Earliest expiration</label>
+                <input style="display:inline-block;" type="radio" id="latest" name="sort_order" value="latest">
+                <label style="display:inline-block;" for="latest">Latest expiration</label>
+                <input style="display:inline-block;" type="submit" value="Sort">
+            </p>
+        </div>
+    #end
+</form>
 <div class="row row-3">
     #foreach($auction in $auctionList)
         <div class="col">

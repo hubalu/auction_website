@@ -1,5 +1,7 @@
-app/rmiManagement/RemoteItemManagement.class
 app/Application.class
+app/rmiManagement/RMIHelper.class
 app/database/Database.class
-app/item/Item.class
+app/rmiManagement/RemoteAuctionManagement.class
 app/rmiManagement/ItemManagement.class
+app/rmiManagement/RemoteItemManagement.class
+app/item/Item.class

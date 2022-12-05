@@ -39,10 +39,14 @@ public class Application {
         get(Path.Web.LOGIN,          LoginController.serveLoginPage);
         post(Path.Web.LOGIN,         LoginController.handleLoginPost);
         post(Path.Web.LOGOUT,        LoginController.handleLogoutPost);
-        get(Path.Web.ITEM,           ItemController.uploadItem);
-        post(Path.Web.ITEM,          ItemController.handleUploadItemPost);
-        get(Path.Web.ITEMS,          ItemController.getAllItemsPlaceholder);
-        get(Path.Web.ONE_ITEM,       ItemController.getOneItemPlaceholder);
+
+        get(Path.Web.ITEM,              ItemController.uploadItem);
+        post(Path.Web.ITEM,             ItemController.handleUploadItemPost);
+        get(Path.Web.ITEMS,             ItemController.getAllItemsPlaceholder);
+        get(Path.Web.ONE_ITEM,          ItemController.getOneItemPlaceholder);
+        post(Path.Web.FLAG_ITEM,        ItemController.flagItemPost);
+        get(Path.Web.FLAG_ITEM,         ItemController.getFlagedItems);
+        post(Path.Web.DELETE_ITEM,      ItemController.postDeleteItems);
 
         get(Path.Web.ONE_USER_INFO,     UserController.getOneUserInfo);
         get(Path.Web.USER_INFO,         UserController.getUserInfo);
@@ -61,6 +65,7 @@ public class Application {
         get(Path.Web.ONE_AUCTION,       BidController.getOneAuctionPlaceholder);
         post(Path.Web.UPLOAD_BID,       BidController.submitBidPlaceholder);
         post(Path.Web.ADD_TO_WATCHLIST, BidController.addToWatchlist);
+        get(Path.Web.PERSONAL_AUCTIONS,      BidController.getAllPersonalAuction);
 
         get(Path.Web.MAKE_PAYMENT,       PaymentController.makePayment);
         get(Path.Web.INSERT_BANK_BALANCE, PaymentController.insertBankBalance);

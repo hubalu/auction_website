@@ -1,0 +1,13 @@
+#parse("/velocity/layout.vm")
+#@mainLayout()
+<h1>Your bids</h1>
+<div class="row row-3">
+    #foreach($auction in $auctionList)
+        <div class="col">
+            <a class="book" href="$WebPath.getUPLOAD_AUCTION()$auction.getAuctionId()">
+                $auction.getItemName()
+            </a>
+        </div>
+    #end
+</div>
+#end

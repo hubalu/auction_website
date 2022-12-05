@@ -73,7 +73,14 @@ public class BidController {
         LoginController.ensureUserIsLoggedIn(request, response);
         RemoteAuctionManagement rmAuctionManagement = rmiHelper.getRemAuctionManagement();
         Map<String, Object> model = new HashMap<>();
-        List<AuctionDesc> auctionList = rmAuctionManagement.getAuctions();
+        boolean earliestExpirationFirst = true;
+        if (request.queryParams("sort_order") != null) {
+            earliestExpirationFirst = request.queryParams("sort_order").equals("earliest");
+            if (!request.queryParams("sort_order").equals("earliest")){
+                model.put("latest", true);
+            }
+        }
+        List<AuctionDesc> auctionList = rmAuctionManagement.getAuctions(earliestExpirationFirst);
         cachedAuctions = auctionList;
         model.put("auctionList", auctionList);
         return ViewUtil.render(request, model, Path.Template.ALL_AUCTIONS);
@@ -84,7 +91,7 @@ public class BidController {
         RemoteAuctionManagement rmAuctionManagement = rmiHelper.getRemAuctionManagement();
         if (clientAcceptsHtml(request)) {
             HashMap<String, Object> model = new HashMap<>();
-            cachedAuctions = rmAuctionManagement.getAuctions();;
+            cachedAuctions = rmAuctionManagement.getAuctions(true);
             String auctionId = request.params(":AuctionID");
             for (AuctionDesc auction : cachedAuctions){
                 if(auction.getAuctionId().equals(auctionId)){
@@ -111,5 +118,17 @@ public class BidController {
             response.redirect(Path.Web.ALL_AUCTIONS);
         }
         return ViewUtil.notAcceptable.handle(request, response);
+    };
+
+    public static Route getAllPersonalAuction = (Request request, Response response) -> {
+        LoginController.ensureUserIsLoggedIn(request, response);
+        RemoteAuctionManagement rmAuctionManagement = rmiHelper.getRemAuctionManagement();
+        Map<String, Object> model = new HashMap<>();
+
+        String userid = request.session().attribute("userID").toString();
+
+        List<AuctionDesc> auctionList = rmAuctionManagement.getAuctionsByUser(userid);
+        model.put("auctionList", auctionList);
+        return ViewUtil.render(request, model, Path.Template.PERSONAL_AUCTIONS);
     };
 }

@@ -26,7 +26,7 @@ public class CategoryDao {
     private MongoCollection collection;
 
     public CategoryDao(){
-        mongoClient = MongoClients.create("mongodb://mongo:27017");
+        mongoClient = MongoClients.create("mongodb://mongo_frontend:27017");
         database = mongoClient.getDatabase("CategoryDatabase");
 
         collection = database.getCollection("categoryData");

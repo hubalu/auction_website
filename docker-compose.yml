@@ -25,7 +25,7 @@ services:
     depends_on:
       - user
       - messenger
-      - mongo
+      - mongo_auction
     environment:
       WAIT_HOSTS: rabbit-mq:5672
       TZ: "America/Chicago"

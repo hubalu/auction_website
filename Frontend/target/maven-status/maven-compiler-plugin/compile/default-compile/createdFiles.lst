@@ -12,7 +12,6 @@ app/util/MessageBundle.class
 app/user/UserController.class
 app/rmiManagement/RMIHelper$MySecurityManager.class
 app/util/Path$Web.class
-app/category/Category.class
 app/rmiManagement/RMIHelper.class
 app/util/RequestUtil.class
 app/cart/CartController.class

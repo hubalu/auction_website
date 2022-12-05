@@ -1,7 +1,9 @@
-package app.rmiManagement;
+package app.item;
 
 import app.database.Database;
-import app.item.Item;
+import app.rmiManagement.RMIHelper;
+import app.rmiManagement.RemoteAuctionManagement;
+import app.rmiManagement.RemoteItemManagement;
 
 import java.rmi.*;
 import java.rmi.registry.*;

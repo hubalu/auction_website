@@ -25,6 +25,9 @@ public class OneHourAlert extends TimerTask {
 
     public void run(){
         try {
+            if(!db.checkAuctionValid(auction_id)){
+                return;
+            }
             List<String> user_ids = db.getWatchList(auction_id);
             if(user_ids == null){
                 System.out.println("No users on the watchlist for: " + auction_id);

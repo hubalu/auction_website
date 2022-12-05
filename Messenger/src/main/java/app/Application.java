@@ -43,6 +43,10 @@ public class Application {
                     String auction_id = jsonObj.get("auction_id").getAsString();
                     emailService.send_email(receiver, "Alert! One hour before the auction expiration: " + auction_id, "Dear customer " + user_id + ", the auction: "
                             + auction_id + "is gonna end very soon. Please bear in mind that anything could happen, have a good one.");
+                }else if(type.equals("auction wins")){
+                    String auction_id = jsonObj.get("auction_id").getAsString();
+                    emailService.send_email(receiver, "Congratulations! You win the auction: " + auction_id, "Dear customer " + user_id + ", the auction: "
+                            + auction_id + "just ended and you are the winner! Money has already been deducted from your account automatically. Thanks for your support!");
                 }else{
                     throw new RuntimeException("illegal json object content");
                 }

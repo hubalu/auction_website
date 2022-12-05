@@ -2,6 +2,7 @@ package app.rmiManagement;
 
 import app.database.Database;
 import app.item.Item;
+import sun.datatransfer.DataFlavorUtil;
 
 import java.rmi.*;
 import java.rmi.registry.*;
@@ -16,9 +17,12 @@ public class ItemManagement extends java.rmi.server.UnicastRemoteObject implemen
 
     public Database db;
 
+    RemoteAuctionManagement rmiAuction;
+
 
 
     public ItemManagement() throws RemoteException {
+        rmiAuction = RMIHelper.getRemAuctionManagement();
         try {
             // get the address of this host.
             address = (InetAddress.getLocalHost()).toString();
@@ -49,17 +53,25 @@ public class ItemManagement extends java.rmi.server.UnicastRemoteObject implemen
     }
 
     public boolean remove_item(String item_id) throws RemoteException{
+        if(rmiAuction.checkOnAuction(item_id)){
+            return false;
+        }
         String sql = "DELETE FROM item where ItemId = " + item_id;
         return db.modifySQL(sql);
     }
 
-    public boolean update_item(String field, Object value) throws RemoteException{
-        return true;
-    }
+//    public boolean update_item(String field, Object value) throws RemoteException{
+//        return true;
+//    }
 
     public boolean flag_item(int item_id) throws RemoteException{
         String sql = "UPDATE item SET Flag = TRUE where ItemId = " + item_id;
         return db.modifySQL(sql);
+    }
+
+    public List<Item> get_flag_items() throws RemoteException{
+        String sql = "SELECT * FROM item where Flag = TRUE";
+        return db.querySQL(sql);
     }
 
     public List<Item> search_item(String key_word, String Category, String sort_key, boolean desc) throws RemoteException {

@@ -91,7 +91,6 @@ public class CategoryController {
             }
             response.redirect(Path.Web.CATEGORY);
             return null;
-            //return ViewUtil.render(request, model, Path.Template.CATEGORY);
         } else {
             return ViewUtil.render(request, model, Path.Template.UNAUTHORIZED);
         }

@@ -43,9 +43,6 @@ public class ItemController {
         rmItemManagement.upload_item(request.session().attribute("userID").toString(), item_name, item_desc, category);
         Map<String, Object> model = new HashMap<>();
         ArrayList<Item> itemList = new ArrayList<>();
-//        itemList.add(new Item("30", "sdf", "sdf", "Sdf"));
-//        model.put("itemList", itemList);
-//        return ViewUtil.render(request, model, Path.Template.ITEMS);
         response.redirect(Path.Web.ITEMS);
         return null;
     };
@@ -74,7 +71,6 @@ public class ItemController {
             currentItems = rmItemManagement.search_item(search_value, null, "UploadTime", desc);
         }
         Map<String, Object> model = new HashMap<>();
-//        ArrayList<Item> itemList = generateItemList();
         model.put("itemList", currentItems);
         model.put("categories", categories);
         return ViewUtil.render(request, model, Path.Template.ITEMS);

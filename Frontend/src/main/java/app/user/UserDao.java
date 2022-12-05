@@ -32,11 +32,6 @@ public class UserDao {
     public UserDao(){
         mongoClient = MongoClients.create("mongodb://mongo:27017");
         database = mongoClient.getDatabase("LoginService");
-        //database.createCollection("userData");
-        /*this.pojoCodecRegistry =
-                fromRegistries(
-                        MongoClientSettings.getDefaultCodecRegistry(),
-                        fromProviders(PojoCodecProvider.builder().automatic(true).build())); */
 
         collection = database.getCollection("userData");
 
@@ -65,7 +60,6 @@ public class UserDao {
             System.err.println("Unable to insert due to an error: " + e);
             return null;
         }
-        //return users.stream().filter(b -> b.getUsername().equals(username)).findFirst().orElse(null);
     }
 
     public boolean addUser(String username, String password, UserType userType, int userID){
@@ -75,10 +69,8 @@ public class UserDao {
         Document user = createDBUserObject(username, password, userType, userID);
         System.out.println(user);
 
-        //System.out.println(user.getUsername() + user.getSalt() + user.getHashedPassword());
         try {
             collection.insertOne(user);
-            //System.out.println("Success! Inserted document id: " + result.getInsertedId());
             System.out.println("Insert success");
             return true;
         } catch (MongoException e) {
@@ -90,7 +82,6 @@ public class UserDao {
     public boolean updateUser(String username, String newPassword) {
         User user = getUserByUsername(username);
 
-        //System.out.println(user.getUsername() + user.getSalt() + user.getHashedPassword());
         try {
             String newSalt = BCrypt.gensalt();
             String newHashedPassword = BCrypt.hashpw(newPassword, newSalt);
@@ -140,7 +131,6 @@ public class UserDao {
         String newSalt = BCrypt.gensalt();
         String newHashedPassword = BCrypt.hashpw(password, newSalt);
 
-        //User user = new User(username, newSalt, newHashedPassword);
         userObj.append("_id", username);
         userObj.append("salt", newSalt);
         userObj.append("hashedPassword", newHashedPassword);

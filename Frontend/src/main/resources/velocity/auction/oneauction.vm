@@ -41,7 +41,7 @@
     </form>
     #end
 
-    <h2> Auction expires at: $auction.getExpireTime()</h2>
+    <h2> Auction expires at: $expireTime</h2>
 
     </div>
     #else

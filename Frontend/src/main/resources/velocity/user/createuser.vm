@@ -1,9 +1,9 @@
 #parse("/velocity/layout.vm")
 #@mainLayout()
+#if($userCreateFailed)
+    <p class="bad notification">User Creation Failed: Username or email already exists</p>
+#end
 <form id="userForm" method="post">
-    #if($userCreateFailed)
-        <p class="bad notification">User Creation Failed: Username already exists</p>
-    #end
     <h1>Create an Account</h1>
     <p>Fill in the following form</p>
     <br>

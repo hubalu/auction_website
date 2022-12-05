@@ -12,7 +12,6 @@ import java.util.Date;
 public class AuctionDesc implements Serializable, Comparable<AuctionDesc>{
     String auctionId;
     String itemId;
-
     String itemName;
     Double startingPrice;
     Double buyNowPrice;

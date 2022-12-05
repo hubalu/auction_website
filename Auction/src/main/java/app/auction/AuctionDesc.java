@@ -7,6 +7,7 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.TimeZone;
 
 @Value
 public class AuctionDesc implements Serializable, Comparable<AuctionDesc>{
@@ -33,11 +34,14 @@ public class AuctionDesc implements Serializable, Comparable<AuctionDesc>{
         this.bidderId = bidderId;
         String time_to_end = expireTime.replace("T", " ");
         String time_to_start = startTime.replace("T", " ");
-        DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+        dateFormat.setTimeZone(TimeZone.getTimeZone("CST"));
         Date start_time = null, end_time = null;
         try{
             start_time = dateFormat.parse(time_to_start);
             end_time = dateFormat.parse(time_to_end);
+            System.out.println(startTime);
+            System.out.println(end_time);
         }catch (Exception e){
             e.printStackTrace();
         }

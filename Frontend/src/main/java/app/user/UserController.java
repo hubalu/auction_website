@@ -159,7 +159,6 @@ public class UserController {
         return ViewUtil.render(request, model, Path.Template.CREATE_USER);
     };
 
-
     public static Route getOneUserInfo = (Request request, Response response) -> {
         LoginController.ensureUserIsLoggedIn(request, response);
         RemoteUserManagement rmiUserManagement = rmiHelper.getRemUserManagement();
@@ -200,7 +199,6 @@ public class UserController {
     };
 
     public static Route createUser = (Request request, Response response) -> {
-        LoginController.ensureUserIsLoggedIn(request, response);
         RemoteUserManagement rmiUserManagement = rmiHelper.getRemUserManagement();
         RemotePaymentManagement rmiPaymentManagement = rmiHelper.getRemPaymentManagement();
 
@@ -211,13 +209,19 @@ public class UserController {
         String password = request.queryParams("password");
         String phone_number = request.queryParams("phone_number");
 
+        Map<String, Object> model = new HashMap<>();
+
         int userId = rmiUserManagement.createUser(username, UserType.User, email, phone_number);
+        if (userId == -1){
+            model.put("userCreateFailed", true);
+            return ViewUtil.render(request, model, Path.Template.CREATE_USER);
+        }
         System.out.println(userId);
 
         rmiPaymentManagement.insertToBankBalance(String.format("%d", userId), 0.0);
 
-        Map<String, Object> model = new HashMap<>();
         boolean success = userDao.addUser(username, password, UserType.User, userId);
+        System.out.println(success);
         // RMI call User microservice
         if (success){
             return ViewUtil.render(request, model, Path.Template.LOGIN);
@@ -225,8 +229,6 @@ public class UserController {
             model.put("userCreateFailed", true);
             return ViewUtil.render(request, model, Path.Template.CREATE_USER);
         }
-
-        //rmItemManagement.upload_item("1", item_name, item_desc, category);
 
     };
 }

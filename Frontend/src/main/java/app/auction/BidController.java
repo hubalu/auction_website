@@ -96,6 +96,12 @@ public class BidController {
             for (AuctionDesc auction : cachedAuctions){
                 if(auction.getAuctionId().equals(auctionId)){
                     model.put("auction", auction);
+                    Date expireTime = auction.getExpireTime();
+                    Calendar cal = Calendar.getInstance();
+                    cal.setTime(expireTime);
+                    cal.setTimeZone(TimeZone.getTimeZone("CST"));
+
+                    model.put("expireTime", cal.getTime());
                 }
             }
             model.put("userID", request.session().attribute("userID"));

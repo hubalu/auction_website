@@ -30,7 +30,7 @@ public class MongoDB {
 			while (true){
 				try {
 					Thread.sleep(500);
-					mongoClient = MongoClients.create("mongodb://mongo:27017");
+					mongoClient = MongoClients.create("mongodb://mongo_auction:27017");
 				}catch (Exception e){
 					System.out.println("Failed to connect to mongodb...try again...");
 					continue;

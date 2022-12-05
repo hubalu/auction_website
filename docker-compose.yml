@@ -3,7 +3,7 @@ services:
 
   frontend:
     build: Frontend/.
-    # restart: always
+    restart: on-failure
     ports:
       - "4567:4567"
     depends_on:
@@ -13,17 +13,89 @@ services:
       - payment
       - cart
     links:
-      - mongo # TODO
+      - mongo_frontend
     environment:
-      WAIT_HOSTS: mongo:27017
+      WAIT_HOSTS: mongo_frontend:27017
     volumes:
       - ./Frontend:/code
+
+  auction:
+    build: Auction/.
+    restart: on-failure
+    depends_on:
+      - user
+      - messenger
+      - mongo
+    environment:
+      WAIT_HOSTS: rabbit-mq:5672
+      TZ: "America/Chicago"
+    volumes:
+      - ./Auction:/code
+
+  messenger:
+    build: Messenger/.
+    restart: on-failure
+    ports:
+      - "465:465"
+    links:
+      - rabbit-mq
+    environment:
+      WAIT_HOSTS: rabbit-mq:5672
+    volumes:
+      - ./Messenger:/code
+
+  user:
+    build: User/.
+    restart: on-failure
+    volumes:
+      - ./User:/code
+    environment:
+      WAIT_HOSTS: mysql-user:3306
+    depends_on:
+      - mysql-user
+
+  cart:
+    build: Shopping_Cart/.
+    restart: on-failure
+    volumes:
+      - ./Shopping_Cart:/code
+    environment:
+      WAIT_HOSTS: mysql-cart:3306
+    depends_on:
+      - mysql-cart
+
+  item:
+    build: Item/.
+    restart: on-failure
+    volumes:
+      - ./Item:/code
+    environment:
+      WAIT_HOSTS: postgresql-db:5432
+      TZ: "America/Chicago"
+    depends_on:
+      - postgresql-db
+
+  payment:
+    build: Payment/.
+    restart: on-failure
+    depends_on:
+      - user
+    links:
+      - mongo_payment
+    volumes:
+      - ./Payment:/code
   
-  mongo:
+  mongo_frontend:
     image: mongo
     restart: always
     environment:
       MONGO_INITDB_DATABASE: LoginService
+
+  mongo_auction:
+    image: mongo
+    restart: always
+    environment:
+      MONGO_INITDB_DATABASE: auctionSite
 
   mongo_payment:
     image: mongo
@@ -43,7 +115,7 @@ services:
     image: rabbitmq:3-alpine
     restart: always
 
-  mysql-db:
+  mysql-user:
     image: ubuntu/mysql
     restart: always
     environment:
@@ -51,65 +123,11 @@ services:
       MYSQL_ROOT_PASSWORD: secretpass
       MYSQL_DATABASE: userData
 
-  auction:
-    build: Auction/.
-    # restart: always
-    depends_on:
-      - user
-      - messenger
-      - mongo
+  mysql-cart:
+    image: ubuntu/mysql
+    restart: always
     environment:
-      WAIT_HOSTS: rabbit-mq:5672
-      TZ: "America/Chicago"
-    volumes:
-      - ./Auction:/code
+      MYSQL_USER: root
+      MYSQL_ROOT_PASSWORD: secretpass
+      MYSQL_DATABASE: Cart
 
-  messenger:
-    build: Messenger/.
-    ports:
-      - "465:465"
-    links:
-      - rabbit-mq
-    environment:
-      WAIT_HOSTS: rabbit-mq:5672
-    volumes:
-      - ./Messenger:/code
-
-  user:
-    build: User/.
-    volumes:
-      - ./User:/code
-    environment:
-      WAIT_HOSTS: mysql-db:3306
-    depends_on:
-      - mysql-db
-
-  cart:
-    build: Shopping_Cart/.
-    volumes:
-      - ./Shopping_Cart:/code
-    environment:
-      WAIT_HOSTS: mysql-db:3306
-    depends_on:
-      - mysql-db
-
-  item:
-    build: Item/.
-    # restart: always
-    volumes:
-      - ./Item:/code
-    environment:
-      WAIT_HOSTS: postgresql-db:5432
-      TZ: "America/Chicago"
-    depends_on:
-      - postgresql-db
-
-  payment:
-    build: Payment/.
-    # restart: always
-    depends_on:
-      - user
-    links:
-      - mongo_payment
-    volumes:
-      - ./Payment:/code

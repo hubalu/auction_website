@@ -1,4 +1,4 @@
+Responsibility of Payment:
 
-Payment is responsible for make payment/ view account balance/ insert initial amount. 
-
+Payment is mainly responsible for make payment/ view account balance/ insert initial amount. 
 It uses Mongo DB as database, and communicate with other microservices via RMI.

@@ -1,2 +1,4 @@
-Auction is responsible for listing item for auction/ place bid/ get uaction/ update auction . 
-It uses Mongo DB as database, and communicate with other microservices via RMI.
+Responsibility of Auction:
+
+Auction is mainly responsible for listing item for auction/ place bid/ get uaction/ update auction . 
+It uses Mongo DB as database, and communicate with other microservices via RMI and message queue.

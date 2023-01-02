@@ -6,7 +6,7 @@
 You can simply run our Application by running `docker compose up` and all dependencies should be sorted without issue. 
 
 ### Requirements
-A list of requirements could be found (here)[https://www.classes.cs.uchicago.edu/archive/2022/fall/51205-1/AuctionSiteRequirements.html]
+A list of requirements could be found [here](https://www.classes.cs.uchicago.edu/archive/2022/fall/51205-1/AuctionSiteRequirements.html)
 
 ### Design and Implementation
 Each microservice have their own separate database container that they interact with, all microservices except Messenger are connected to the Frontend via Remote Procedure calss (Java RMI), messenger uses a rabbit-mq queue to fetch emails to send and auction microservice is responsible for keeping timer and pushing email messages to the rabbit-mq queue when an event occurs (1 hour & 24 hours before an auction expires if it is on your watchlist, when someone outbids you on an auction, and when you successfully bid on an auction). 
